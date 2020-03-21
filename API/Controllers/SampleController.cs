@@ -1,17 +1,19 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using API.DTOs;
 using API.Domain.Models;
 using API.Domain.Services;
 
-//  https://localhost:5001/Sample default url to test the get method
+//  https://localhost:5002/Sample default url to test the get method
 //  of this controller
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
+    [Authorize]
     public class SampleController : ControllerBase
     {
         private readonly ISampleService sampleService;
