@@ -1,5 +1,10 @@
-<h1>
-  {{title}}
-  <router-outlet></router-outlet>
-  <button routerLink="/home">Home</button>
-</h1>
+<div class="content">
+	<h1>
+			Willkommen bei {{title}}
+	</h1>
+	<div class="body">
+			Unser Projekt heißt: {{projectName}}
+			Dieser Text ist dynamisch.
+	</div>
+			<router-outlet></router-outlet>
+</div>
