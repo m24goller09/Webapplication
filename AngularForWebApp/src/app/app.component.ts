@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+		selector: 'app-root',
+		templateUrl: './app.component.html',
+		styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Web App Software Engineering';
-  projectName = 'PROMAS';
+		projectName = 'PROMAS';
+		constructor() {
+			this.projectName = 'test';
+		}
 }
