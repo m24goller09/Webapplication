@@ -10,10 +10,13 @@ using API.Domain.Services;
 //  of this controller
 
 namespace API.Controllers
-{
+{   /*
     [ApiController]
     [Route("/[controller]")]
-    [Authorize]
+    [Authorize]*/
+    [Authorize(Policy = "ApiReader")]
+    [Route("api/Values")]
+    [ApiController]
     public class SampleController : ControllerBase
     {
         private readonly ISampleService sampleService;
@@ -25,9 +28,11 @@ namespace API.Controllers
             this.mapper         = mapper;    
         }
 
+        [Authorize(Policy = "Consumer")]
         [HttpGet]
         public SampleModelDTO Get()
         {
+            System.Console.WriteLine("here motherfucker");
             var model = sampleService.DumpWrapper();
             var dto = mapper.Map<SampleModel, SampleModelDTO>(model);  
             return dto;

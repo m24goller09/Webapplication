@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="identityserver4.entityframework" Version="2.3.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="microsoft.aspnetcore.identity.entityframeworkcore" Version="2.2.0" />
+    <PackageReference Include="microsoft.entityframeworkcore.design" Version="2.2.3" />
+    <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />  "Data Source =C:\\Users\\Christoph\\Desktop\\AAAMaria\\AuthServer\\test.sql;"-->
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+  </ItemGroup>
+  
+</Project>

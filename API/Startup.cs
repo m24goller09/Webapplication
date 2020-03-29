@@ -1,15 +1,18 @@
-using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using AutoMapper;
 
 using API.Services;
 using API.Domain.Services;
 using API.Domain.Repository;
 using API.Persistence.Repository;
+
 
 namespace API
 {
@@ -23,32 +26,30 @@ namespace API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();     
-
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
-            services.AddAuthentication( options => 
+            services.AddAuthentication(options =>
             {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;                
+            }).AddJwtBearer(o =>
+            {
+                o.Authority = "http://localhost:5000";
+                o.Audience = "resourceapi";
+                o.RequireHttpsMetadata = false;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
+                options.AddPolicy("Consumer", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
+            });
+
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
             })
-                .AddCookie( "Cookies" )
-                .AddOpenIdConnect( "oidc", options => 
-                {
-                    options.Authority = "http://localhost:5000";
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "mvc";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-
-                    options.SaveTokens = false;
-
-                    options.Scope.Add( "api1" );
-                    options.Scope.Add( "offline_access" );
-                });
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddScoped<ISampleRepo,     SampleRepository>();
             services.AddScoped<ISampleService,  SampleService>();
@@ -57,26 +58,18 @@ namespace API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-            //app.UseHttpsRedirection();
-
-            app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute()
-                    .RequireAuthorization();
-            });
+            app.UseMvc();
         }
     }
 }
