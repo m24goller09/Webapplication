@@ -35,7 +35,13 @@ create table Task (
 create table TaskAssignment (
 	username text,
 	taskID integer,
-	/* possible bug: it is possible to assign a user to a task but not to the project */
+	/* possible bug: it is possible to assign a user to a task but not to the project
+	this can be prevented by adding a column for the projectID here and referencing
+	ProjectAssignment (username, projectID) instead of User (username) and
+	Task (taskID, projectID) instead of Task (taskID)
+
+	I haven't implemented this because the additional column does not carry any information
+	and it might be simpler to do this check in the application code */
 
 	primary key (username, taskID),
 	foreign key (username) references User (username),
