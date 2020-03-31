@@ -6,16 +6,13 @@ using API.DTOs;
 using API.Domain.Models;
 using API.Domain.Services;
 
-//  https://localhost:5002/Sample default url to test the get method
+//  https://localhost:5050/Sample default url to test the get method
 //  of this controller
 
 namespace API.Controllers
-{   /*
-    [ApiController]
-    [Route("/[controller]")]
-    [Authorize]*/
-    [Authorize(Policy = "ApiReader")]
-    [Route("api/Values")]
+{   
+    //[Authorize(Policy = "ApiReader")]
+    [Route("Sample")]
     [ApiController]
     public class SampleController : ControllerBase
     {
@@ -28,11 +25,10 @@ namespace API.Controllers
             this.mapper         = mapper;    
         }
 
-        [Authorize(Policy = "Consumer")]
+        //[Authorize(Policy = "Consumer")]
         [HttpGet]
         public SampleModelDTO Get()
         {
-            System.Console.WriteLine("here motherfucker");
             var model = sampleService.DumpWrapper();
             var dto = mapper.Map<SampleModel, SampleModelDTO>(model);  
             return dto;
