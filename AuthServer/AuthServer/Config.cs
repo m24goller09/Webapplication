@@ -30,7 +30,8 @@ namespace AuthServer
         {
             return new[]
             {
-                new Client {
+                new Client 
+                {
                     RequireConsent = false,
                     ClientId = "angular_spa",
                     ClientName = "Angular SPA",
@@ -40,6 +41,14 @@ namespace AuthServer
                     PostLogoutRedirectUris = {"http://localhost:4200/"},
                     AllowedCorsOrigins = {"http://localhost"},
                     AllowAccessTokensViaBrowser = true,
+                    AccessTokenLifetime = 3600
+                },
+                new Client
+                {
+                    ClientId = "postman",
+                    ClientSecrets = { new Secret("secret".Sha256())},
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = { "openid", "profile", "email", "api.read" },
                     AccessTokenLifetime = 3600
                 }
             };

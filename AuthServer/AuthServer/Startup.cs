@@ -29,10 +29,10 @@ namespace AuthServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));//.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("Default")));//.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -40,13 +40,13 @@ namespace AuthServer
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                // this adds the operational data from DB (codes, tokens, consents)
+
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseMySql(Configuration.GetConnectionString("Default"));
-                    // this enables automatic token cleanup. this is optional.
+                    options.ConfigureDbContext = builder => builder.UseSqlite(Configuration.GetConnectionString("Default"));
+
                     options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30; // interval in seconds
+                    options.TokenCleanupInterval = 30;
                 })
                 //.AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
@@ -54,15 +54,6 @@ namespace AuthServer
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<AppUser>();
 
-                /* We'll play with this down the road... 
-                    services.AddAuthentication()
-                    .AddGoogle("Google", options =>
-                    {
-                        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                        options.ClientId = "<insert here>";
-                        options.ClientSecret = "<insert here>";
-                    });*/
 
             services.AddTransient<IProfileService, IdentityClaimsProfileService>();
 
@@ -76,7 +67,6 @@ namespace AuthServer
             }).SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
