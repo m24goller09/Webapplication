@@ -6,6 +6,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
+import { ProjectComponent } from './project/project.component';
+
 
 let routes: Routes;
 routes = [
@@ -16,7 +18,8 @@ routes = [
   declarations: [
     AppComponent,
     HomeComponent,
-    MenuBarComponent
+    MenuBarComponent,
+	ProjectComponent
   ],
   imports: [
   	BrowserModule,
