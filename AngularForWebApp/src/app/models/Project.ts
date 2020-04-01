@@ -3,4 +3,5 @@ export class Project {
 	creator:string;
 	description:string;
 	running:boolean;
+	id:number;
 }

@@ -1,0 +1,17 @@
+div:hover {
+    border-width: 0.15rem;
+    /*background-color:  rgb(229, 237, 243); */
+    background-color: rgb(234, 243, 235);
+}
+
+div div h5 span.id {
+    color: #808080;
+    font-size: 10pt;
+}
+
+
+div div div.projectCreator {
+    color: grey;
+    font-size: 10pt;
+    font-style: italic;
+}

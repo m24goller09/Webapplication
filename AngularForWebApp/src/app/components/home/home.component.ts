@@ -10,6 +10,7 @@ import {Project} from '../../models/Project';
 })
 export class HomeComponent implements OnInit {
 	projects:Project[];
+	count:number = 0;
     ngOnInit(): void {
     }
 	constructor(private dataService:ServerDataService) {
@@ -18,43 +19,50 @@ export class HomeComponent implements OnInit {
 				name: 'test',
 				creator: 'Me',
 				running: true,
-				description: 'This is the test description of this project and I like that long string.'
+				description: 'This is the test description of this project and I like that long string.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 2',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 3',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 2',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 2',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 2',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.',
+				id: ++this.count
 			},
 			{
 				name: 'Test No 2',
 				creator: 'Not me',
 				running: true,
-				description: 'What is this long project description nonsense.'
+				description: 'What is this long project description nonsense.',
+				id: ++this.count
 			}
 		]
 	}
