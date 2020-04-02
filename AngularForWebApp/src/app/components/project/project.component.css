@@ -4,14 +4,22 @@ div:hover {
     background-color: rgb(234, 243, 235);
 }
 
-div div h5 span.id {
+.id {
     color: #808080;
     font-size: 10pt;
 }
 
 
-div div div.projectCreator {
+.projectCreator {
     color: grey;
     font-size: 10pt;
     font-style: italic;
+}
+
+a{
+	width:100%;
+	height:100%;
+	display:block;
+	text-decoration: none;
+	color: inherit;
 }
