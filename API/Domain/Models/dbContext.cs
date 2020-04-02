@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace API
+namespace API.Domain.Models
 {
     public partial class dbContext : DbContext
     {
