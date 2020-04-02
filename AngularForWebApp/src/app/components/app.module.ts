@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, Title} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
@@ -23,10 +23,12 @@ routes = [
   ],
   imports: [
   	BrowserModule,
-	  RouterModule.forRoot(routes),
-	  HttpClientModule
+	RouterModule.forRoot(routes),
+	HttpClientModule
   ],
-  providers: [],
+  providers: [
+  	Title
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
