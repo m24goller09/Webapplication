@@ -1,4 +1,4 @@
-<div class="card p-2" style="width: 18rem; height: 16rem; margin: 0.5rem;">
+<div *ngIf="running==project.running.toString()||running=='def'" class="card p-2" style="width: 18rem; height: 16rem; margin: 0.5rem;">
 	<a href="{{project.id}}">
 	<div class="card-body">
 		<h5 class="card-title">{{project.name}} <span class="id" style="float: right;"> {{project.id}} </span></h5>

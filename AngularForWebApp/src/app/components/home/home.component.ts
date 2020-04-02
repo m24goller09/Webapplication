@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ServerDataService} from '../../services/server-data.service';
 import {Project} from '../../models/Project';
 
-
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.component.html',
@@ -11,8 +10,8 @@ import {Project} from '../../models/Project';
 export class HomeComponent implements OnInit {
 	projects:Project[];
 	count:number = 0;
-    ngOnInit(): void {
-    }
+	pRunning:string= 'def';
+    ngOnInit(): void {}
 	constructor(private dataService:ServerDataService) {
 		this.projects = [
 			{
@@ -58,9 +57,9 @@ export class HomeComponent implements OnInit {
 				id: ++this.count
 			},
 			{
-				name: 'Test No 2',
+				name: 'Test not running',
 				creator: 'Not me',
-				running: true,
+				running: false,
 				description: 'What is this long project description nonsense.',
 				id: ++this.count
 			}

@@ -8,10 +8,13 @@ import {HomeComponent} from './home/home.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ProjectComponent } from './project/project.component';
 
-
 let routes: Routes;
 routes = [
-  {path: 'home', component: HomeComponent}
+	{
+		path: '',
+		redirectTo: 'home',
+		pathMatch: 'full'
+	}
 ];
 
 @NgModule({
