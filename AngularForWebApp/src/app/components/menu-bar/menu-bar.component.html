@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
-	<a class="navbar-brand" href="">PROMAS</a>
+	<a class="navbar-brand" [routerLink]="['home','def']">PROMAS</a>
 	<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
 			aria-controls="collapsibleNavId"
 			aria-expanded="false" aria-label="Toggle navigation"></button>
 	<div class="collapse navbar-collapse" id="collapsibleNavId">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
-				   aria-expanded="false">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link dropdown-toggle" href="" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
+				   aria-expanded="false">Projects <span class="sr-only">(current)</span></a>
 				<div class="dropdown-menu" aria-labelledby="dropdownId">
-					<a class="dropdown-item" (click)="changeRunning('def')">All Projects</a>
-					<a class="dropdown-item" (click)="changeRunning('true')">Running Projects</a>
-					<a class="dropdown-item" (click)="changeRunning('false')">Finished Projects</a>
+					<a class="dropdown-item" [routerLink]="['home','def']" routerLinkActive="router-link-active" >All Projects</a>
+					<a class="dropdown-item" [routerLink]="['home','true']">Running Projects</a>
+					<a class="dropdown-item" [routerLink]="['home','false']">Finished Projects</a>
 				</div>
 			</li>
 			<li class="nav-item">

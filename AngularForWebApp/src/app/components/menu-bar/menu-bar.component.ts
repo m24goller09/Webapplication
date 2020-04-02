@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {ServerDataService} from '../../services/server-data.service';
+import { ServerDataService } from '../../services/server-data.service';
 
 @Component({
   selector: 'app-menu-bar',
@@ -8,15 +8,14 @@ import {ServerDataService} from '../../services/server-data.service';
 })
 export class MenuBarComponent implements OnInit {
 	@Input() title:string;
-	running: string;
+	filter: string;
 	constructor(private dataService:ServerDataService) {
 	}
 
 	ngOnInit(): void {
 		// running parameter as an observable
-		this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
-	}
-	changeRunning(running: string){
-		this.dataService.changeRunning(running);
+		//this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
+
+
 	}
 }

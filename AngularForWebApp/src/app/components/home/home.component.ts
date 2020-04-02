@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ServerDataService} from '../../services/server-data.service';
-import {Project} from '../../models/Project';
+import { Project } from '../../models/Project';
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
 	selector: 'app-home',
@@ -10,9 +11,22 @@ import {Project} from '../../models/Project';
 export class HomeComponent implements OnInit {
 	projects:Project[];
 	count:number = 0;
-	pRunning:string= 'def';
-    ngOnInit(): void {}
-	constructor(private dataService:ServerDataService) {
+	filter:string = 'def';
+
+
+	changeRunning(running: string) {
+		this.dataService.changeRunning(running);
+	}
+
+    ngOnInit(): void {
+		this.route.paramMap.subscribe(params => {
+			this.changeRunning(params.get('filter'));
+		})
+	}
+
+
+
+	constructor(private dataService: ServerDataService, private route: ActivatedRoute) {
 		this.projects = [
 			{
 				name: 'test',
@@ -65,4 +79,5 @@ export class HomeComponent implements OnInit {
 			}
 		]
 	}
+
 }
