@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20200329162313_initial")]
+    [Migration("20200405124133_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,10 +95,17 @@ namespace AuthServer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6b12f68e-ae19-439c-b4aa-6fb4fb4c25ee",
-                            ConcurrencyStamp = "f058a2e8-5105-46a8-839b-551fbec0fa67",
+                            Id = "e68b0180-8274-4e2f-a4e9-0e3c7ee727d8",
+                            ConcurrencyStamp = "0fedb1d1-7213-464b-871c-e5e42bc5ec69",
                             Name = "consumer",
                             NormalizedName = "CONSUMER"
+                        },
+                        new
+                        {
+                            Id = "91c0e488-32d0-411a-917a-b40cb9c0d68c",
+                            ConcurrencyStamp = "1b482208-850f-415a-a7f0-13c0eaaadbfd",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 

@@ -15,6 +15,7 @@ namespace AuthServer.Infrastructure.Data.Identity
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = Constants.Roles.Consumer, NormalizedName = Constants.Roles.Consumer.ToUpper() });
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = Constants.Roles.Admin, NormalizedName = Constants.Roles.Admin.ToUpper() });
         }
     }
 }

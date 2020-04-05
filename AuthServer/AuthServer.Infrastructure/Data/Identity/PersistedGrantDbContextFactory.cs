@@ -11,7 +11,7 @@ namespace AuthServer.Infrastructure.Data.Identity
         public PersistedGrantDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
-            optionsBuilder.UseSqlite("Data Source =..\\test.db;",
+            optionsBuilder.UseSqlite("Data Source = ..\\AuthDb.db;",
                 sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
             return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions());
         }
