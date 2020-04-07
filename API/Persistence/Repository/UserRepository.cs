@@ -40,5 +40,10 @@ namespace API.Persistence.Repository
         {
             dbContext.User.Update(user);
         }
+
+        public async Task DeleteAsync(UserRepository user)
+        {
+            await dbContext.User.DeleteAsync(user);
+        }
     }
 }
