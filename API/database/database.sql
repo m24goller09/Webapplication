@@ -25,25 +25,25 @@ create table ProjectAssignment (
 	foreign key (projectID) references Project (projectID)
 );
 
-create table Task (
-	taskID integer primary key,
+create table Subtask (
+	subtaskID integer primary key,
 	name text not null,
 	description text not null default '',
 	projectID integer not null references Project (projectID)
 );
 
-create table TaskAssignment (
+create table SubtaskAssignment (
 	username text,
-	taskID integer,
-	/* possible bug: it is possible to assign a user to a task but not to the project
+	subtaskID integer,
+	/* possible bug: it is possible to assign a user to a subtask but not to the project
 	this can be prevented by adding a column for the projectID here and referencing
 	ProjectAssignment (username, projectID) instead of User (username) and
-	Task (taskID, projectID) instead of Task (taskID)
+	Subtask (subtaskID, projectID) instead of Subtask (subtaskID)
 
 	I haven't implemented this because the additional column does not carry any information
 	and it might be simpler to do this check in the application code */
 
-	primary key (username, taskID),
+	primary key (username, subtaskID),
 	foreign key (username) references User (username),
-	foreign key (taskID) references Task (taskID)
+	foreign key (subtaskID) references Subtask (subtaskID)
 );

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace API.Domain.Models
 {
-    public partial class Task
+    public partial class Subtask
     {
-        public Task()
+        public Subtask()
         {
-            TaskAssignment = new HashSet<TaskAssignment>();
+            SubtaskAssignment = new HashSet<SubtaskAssignment>();
         }
 
-        public long TaskId { get; set; }
+        public long SubtaskId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public long ProjectId { get; set; }
 
         public virtual Project Project { get; set; }
-        public virtual ICollection<TaskAssignment> TaskAssignment { get; set; }
+        public virtual ICollection<SubtaskAssignment> SubtaskAssignment { get; set; }
     }
 }

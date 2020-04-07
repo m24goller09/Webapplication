@@ -8,7 +8,7 @@ namespace API.Domain.Models
         public Project()
         {
             ProjectAssignmentNavigation = new HashSet<ProjectAssignment>();
-            Task = new HashSet<Task>();
+            Subtask = new HashSet<Subtask>();
         }
 
         public long ProjectId { get; set; }
@@ -18,6 +18,6 @@ namespace API.Domain.Models
 
         public virtual ProjectAssignment ProjectAssignment { get; set; }
         public virtual ICollection<ProjectAssignment> ProjectAssignmentNavigation { get; set; }
-        public virtual ICollection<Task> Task { get; set; }
+        public virtual ICollection<Subtask> Subtask { get; set; }
     }
 }
