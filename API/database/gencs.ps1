@@ -2,4 +2,4 @@
 # Generate the C# classes with Entity Framework
 cd $PSScriptRoot/..
 dotnet ef dbcontext scaffold 'Data Source=database/db.sqlite' Microsoft.EntityFrameworkCore.Sqlite -o Domain/Models -f
-Move-Item Domain/Models/dbContext.cs Persistence/Context/dbContext.cs
+Move-Item -Force Domain/Models/dbContext.cs Persistence/Context/dbContext.cs
