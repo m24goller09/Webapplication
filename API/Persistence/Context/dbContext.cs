@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using API.Domain.Models;
 
-namespace API.Domain.Models
-{
+namespace API.Persistence.Context
+{ 
     public partial class dbContext : DbContext
     {
         public dbContext()
