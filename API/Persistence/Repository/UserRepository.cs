@@ -31,8 +31,8 @@ namespace API.Persistence.Repository
         public async Task<IEnumerable<User>> ListAsync()
         {
             return await dbContext.User
-                .Include(d => d.TaskAssignment) //JOIN
-                .Include(d => d.ProjectAssignment).ThenInclude(d => d.Project).ThenInclude(d => d.Task) // Multiple JOINS
+                .Include(d => d.SubtaskAssignment) //JOIN
+                .Include(d => d.ProjectAssignment).ThenInclude(d => d.Project).ThenInclude(d => d.Subtask) // Multiple JOINS
                 .ToListAsync();
         }
 
