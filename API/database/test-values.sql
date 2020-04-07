@@ -17,12 +17,12 @@ insert into ProjectAssignment (username, projectID) values
 ('lcdb', 0);
 commit transaction;
 
-insert into Task (taskID, projectID, name, description) values
+insert into Subtask (subtaskID, projectID, name, description) values
 (0, 0, 'Describe', 'Praise Rosings and describe it in great detail'),
 (1, 0, 'Ask questions', ''),
 (2, 0, 'Interfere', "Interfere in other people's affairs");
 
-insert into TaskAssignment (username, taskID) values
-('ew', 2), /* assigned to task but not to project */
+insert into SubtaskAssignment (username, subtaskID) values
+('ew', 2), /* assigned to subtask but not to project */
 ('lcdb', 1),
 ('mc', 0);

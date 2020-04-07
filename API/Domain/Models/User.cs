@@ -8,7 +8,7 @@ namespace API.Domain.Models
         public User()
         {
             ProjectAssignment = new HashSet<ProjectAssignment>();
-            TaskAssignment = new HashSet<TaskAssignment>();
+            SubtaskAssignment = new HashSet<SubtaskAssignment>();
         }
 
         public string Username { get; set; }
@@ -17,6 +17,6 @@ namespace API.Domain.Models
         public byte[] IsAdmin { get; set; }
 
         public virtual ICollection<ProjectAssignment> ProjectAssignment { get; set; }
-        public virtual ICollection<TaskAssignment> TaskAssignment { get; set; }
+        public virtual ICollection<SubtaskAssignment> SubtaskAssignment { get; set; }
     }
 }
