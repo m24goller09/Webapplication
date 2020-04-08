@@ -12,6 +12,7 @@ namespace API.Persistence.Repository
     public class UserRepository : IStandardRepository<User>
     {
         private readonly dbContext dbContext;
+
         UserRepository(dbContext dbContext)
         {
             this.dbContext = dbContext;
