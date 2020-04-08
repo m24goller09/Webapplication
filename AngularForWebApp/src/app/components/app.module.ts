@@ -12,7 +12,7 @@ import { ProjectViewComponent } from './project-view/project-view.component';
 let routes: Routes;
 routes = [
 	{
-		path: '',
+		path: ' ',
 		component: HomeComponent
 	},
 	{
@@ -20,7 +20,7 @@ routes = [
 		component: HomeComponent
 	},
 	{
-		path:'projectView/:id',
+		path:'projectView/:id/:name/:desc/:creator/:status',
 		component: ProjectViewComponent
 	}
 ];

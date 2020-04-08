@@ -9,11 +9,20 @@ import {ActivatedRoute } from '@angular/router'
 export class ProjectViewComponent implements OnInit {
 
 	projectID:number;
+	projectName: string;
+	projectDesc: string;
+	projectCreator: string;
+	projectStatus: string;
   	constructor(private route: ActivatedRoute) { }
 
   	ngOnInit(): void {
 		this.route.paramMap.subscribe(params =>{
 			this.projectID = +params.get('id')
+			this.projectName = params.get('name')
+			this.projectDesc = params.get('desc')
+			this.projectCreator = params.get('creator')
+			this.projectStatus = params.get('status')
+
 		})
 
   	}

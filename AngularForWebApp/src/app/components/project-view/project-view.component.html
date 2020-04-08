@@ -1,1 +1,26 @@
-<p>You have opened Project Nr. {{projectID}}</p>
+<div>
+	<div class="jumbotron">
+		<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h1 class="display-3">{{projectName}}</h1>
+		<div class="d-flex flex-column">
+			<div class="d-flex flex-row">
+				<div class="p-2">ID: </div>
+				<div class="p-2">{{projectID}}</div>
+			</div>
+			<div class="d-flex flex-row">
+				<div class="p-2">Creator: </div>
+				<div class="p-2">{{projectCreator}}</div>
+			</div>
+			<div class="d-flex flex-row">
+				<div class="p-2">Description: </div>
+				<div class="p-2">{{projectDesc}}</div>
+			</div>
+			<div class="d-flex flex-row">
+				<div class="p-2">Status: </div>
+				<div class="p-2">{{projectStatus}}</div>
+			</div>
+		</div>
+	</div>
+</div>
