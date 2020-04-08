@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Domain.Services
+namespace API.Models.Services
 {
     public interface IStandardService <Model>
     {
         Task<IEnumerable<Model>> ListAsync();
-        Task AddAsync(IList<Model> model);
+        Task AddAsync(Model model);
         Task<Model> FindByIdAsync(int id);
-        void Update(IDictionary<int, Model> modelsToUpdate);
-        void Remove(IList<Model> model);
+        Task Update(Model modelsToUpdate);
+        Task Remove(Model model);
     }
 }
 
