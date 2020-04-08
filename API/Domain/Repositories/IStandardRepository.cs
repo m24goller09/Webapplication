@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Domain.Repositories
+namespace API.Domain.Repository
 {
     public interface IStandardRepository <Model>
     {

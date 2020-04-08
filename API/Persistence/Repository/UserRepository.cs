@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API.Persistence.Context;
-using API.Domain.Repositories;
+using API.Domain.Repository;
 using API.Domain.Models;
 
 namespace API.Persistence.Repository
