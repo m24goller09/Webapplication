@@ -11,5 +11,6 @@ namespace API.Domain.Repositories
         Task AddAsync(Model model);
         Task<Model> FindByIdAsync(int id);
         void Update(Model model);
+        void Remove(Model model);
     }
 }
