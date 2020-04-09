@@ -33,14 +33,19 @@ namespace AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("Default")));
-
+            
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddIdentityServer()
+            services.AddIdentityServer( options =>
+            {
+                options.Events.RaiseSuccessEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseErrorEvents = true;
+            })
                 .AddDeveloperSigningCredential()
-
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseSqlite(Configuration.GetConnectionString("Default"));
@@ -94,10 +99,11 @@ namespace AuthServer
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
                 .WriteTo.File(@"authserver_log.txt");
+           
 
             loggerFactory.WithFilter(new FilterLoggerSettings
                 {
-                    { "IdentityServer4", LogLevel.Debug },
+                    { "IdentityServer4", LogLevel.Information },
                     { "Microsoft", LogLevel.Warning },
                     { "System", LogLevel.Warning },
                 }).AddSerilog(serilog.CreateLogger());
@@ -105,6 +111,7 @@ namespace AuthServer
             app.UseStaticFiles();
             app.UseCors("AllowAll");
             app.UseIdentityServer();
+            app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
