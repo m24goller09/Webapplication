@@ -11,12 +11,27 @@ function cleanup {
 
 trap cleanup EXIT
 
+
+function modified {
+	! git diff --quiet HEAD "./$1"
+}
+
 branch=$(git branch --show-current)
 if test $branch = API; then
 	# Test build
 	cd API
-	dotnet build || { echo API build failed; exit 1; }
+	if modified .; then
+		if ! dotnet build; then
+			echo API build failed
+			exit 1
+		fi
+	fi
 
 	cd ../AuthServer
-	dotnet build || { echo AuthServer build failed; exit 1; }
+	if modified .; then
+		if ! dotnet build; then
+			echo AuthServer build failed
+			exit 1
+		fi
+	fi
 fi
