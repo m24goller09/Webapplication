@@ -1,7 +1,10 @@
+
+
+
 div:hover {
     border-width: 0.15rem;
     /*background-color:  rgb(229, 237, 243); */
-    background-color: rgb(234, 243, 235);
+	background-color: rgb(234, 243, 235);
 }
 
 .id {

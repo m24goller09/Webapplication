@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router'
 })
 export class HomeComponent implements OnInit {
 	projects:Project[];
-	count:number = 0;
+	//count:number = 0;
 	filter:string = 'def';
 
 
@@ -22,11 +22,13 @@ export class HomeComponent implements OnInit {
 		this.route.paramMap.subscribe(params => {
 			this.changeRunning(params.get('filter'));
 		})
+		this.projects = this.dataService.getData();
 	}
 
 
 
 	constructor(private dataService: ServerDataService, private route: ActivatedRoute) {
+		/*
 		this.projects = [
 			{
 				name: 'test',
@@ -78,6 +80,7 @@ export class HomeComponent implements OnInit {
 				id: ++this.count
 			}
 		]
+		*/
 	}
 
 }
