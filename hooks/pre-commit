@@ -1,19 +1,37 @@
-#!/bin/sh
+#!/bin/bash
 # Nonzero exit status aborts commit
 # Working directory is repository root
 
 # Only test what is going to be commited
 git stash --quiet --keep-index
 
+function cleanup {
+	git stash pop --quiet
+}
+
+trap cleanup EXIT
+
+
+function modified {
+	! git diff --quiet HEAD "./$1"
+}
+
 branch=$(git branch --show-current)
 if test $branch = API; then
 	# Test build
 	cd API
-	dotnet build
-	exitstatus=$?
-	test $exitstatus -eq 0 || echo Build failed, aborting commit
+	if modified .; then
+		if ! dotnet build; then
+			echo API build failed
+			exit 1
+		fi
+	fi
+
+	cd ../AuthServer
+	if modified .; then
+		if ! dotnet build; then
+			echo AuthServer build failed
+			exit 1
+		fi
+	fi
 fi
-
-git stash pop --quiet
-
-exit $exitstatus
