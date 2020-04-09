@@ -1,0 +1,8 @@
+.add-button{
+	margin-left: 2.5rem;
+	margin-top: 2.5rem;
+	color:lightgrey;
+}
+.add-button:hover{
+	color: lightslategray;
+}

@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ProjectComponent } from './project/project.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
 
 let routes: Routes;
 routes = [
@@ -22,6 +23,10 @@ routes = [
 	{
 		path:'projectView/:id/:name/:desc/:creator/:status',
 		component: ProjectViewComponent
+	},
+	{
+		path: 'createProject',
+		component: CreateProjectComponent
 	}
 ];
 
@@ -31,7 +36,8 @@ routes = [
     HomeComponent,
     MenuBarComponent,
 	ProjectComponent,
-	ProjectViewComponent
+	ProjectViewComponent,
+	CreateProjectComponent
   ],
   imports: [
   	BrowserModule,
