@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+// first your own
+$theme-colors: (
+	"backlogSubTask": #ffe53c,
+	"runningSubTask": #0036d9,
+	"finnishedSubTask": #16d900
+);
+@import "../node_modules/bootstrap/scss/bootstrap";
