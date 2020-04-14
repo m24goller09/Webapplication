@@ -9,6 +9,7 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ProjectComponent } from './project/project.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { SubTaskComponent } from './subTask/subtask.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
 
 let routes: Routes;
 routes = [
@@ -23,6 +24,10 @@ routes = [
 	{
 		path:'projectView/:id/:name/:desc/:creator/:status',
 		component: ProjectViewComponent
+	},
+	{
+		path: 'createProject',
+		component: CreateProjectComponent
 	}
 ];
 
@@ -33,7 +38,8 @@ routes = [
     MenuBarComponent,
 	ProjectComponent,
 	ProjectViewComponent,
-	SubTaskComponent
+	SubTaskComponent,
+	CreateProjectComponent
   ],
   imports: [
   	BrowserModule,
