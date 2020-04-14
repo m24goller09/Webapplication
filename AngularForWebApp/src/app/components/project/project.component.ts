@@ -9,11 +9,10 @@ import {ServerDataService} from '../../services/server-data.service';
 })
 export class ProjectComponent implements OnInit {
 	@Input() project: Project;
-	@Input() running:String;
+	@Input() running: String;
 	constructor(private dataService:ServerDataService) { }
 
 	ngOnInit(): void {
 		this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
 	}
-
 }

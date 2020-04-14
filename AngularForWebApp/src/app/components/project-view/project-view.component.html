@@ -1,4 +1,4 @@
-<div>
+<div class="project-view">
 	<div class="jumbotron">
 		<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
 			<span aria-hidden="true">&times;</span>
@@ -25,14 +25,24 @@
 		<p>posible stats like: current amount of involved persons, workload,progres...</p>
 	</div>
 
-	<div class="card-body">
-		<h5 class="card-title">taskname <span class="id" style="float: right;"> task-id </span></h5>
-		<div class="projectCreator border-top" style="margin-bottom: 0.5rem">task-creator</div>
-		<p class="card-text " style="overflow: hidden; height: 8.5rem">
-			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-			magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-			gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-			elitr
-		</p>
+	<div class="subTask tasks-of-projects d-flex flex-md-row justify-content-around">
+		<div class="task-backlog">
+			<div class="columnHeader">Backlog</div>
+			<div class="card-body" *ngFor="let subTask of backlogTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+		<div class="task-running">
+			<div class="columnHeader">Running</div>
+			<div class="card-body" *ngFor="let subTask of runningTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+		<div class="task-finished">
+			<div class="columnHeader">Finished</div>
+			<div class="card-body" *ngFor="let subTask of finishedTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
 	</div>
 </div>

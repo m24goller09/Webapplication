@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { ProjectComponent } from './project/project.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { SubTaskComponent } from './subTask/subtask.component';
 
 let routes: Routes;
 routes = [
@@ -31,7 +32,8 @@ routes = [
     HomeComponent,
     MenuBarComponent,
 	ProjectComponent,
-	ProjectViewComponent
+	ProjectViewComponent,
+	SubTaskComponent
   ],
   imports: [
   	BrowserModule,
