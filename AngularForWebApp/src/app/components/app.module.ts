@@ -10,6 +10,7 @@ import { ProjectComponent } from './project/project.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { SubTaskComponent } from './subTask/subtask.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 let routes: Routes;
 routes = [
@@ -44,7 +45,8 @@ routes = [
   imports: [
   	BrowserModule,
 	RouterModule.forRoot(routes),
-	HttpClientModule
+	HttpClientModule,
+	BrowserAnimationsModule
   ],
   providers: [
   	Title
