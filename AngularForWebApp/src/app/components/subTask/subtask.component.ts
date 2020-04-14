@@ -5,7 +5,7 @@ import {StateOfTask} from '../../models/StateOfTask';
 @Component({
   selector: 'app-subTask',
   templateUrl: './subTask.component.html',
-  styleUrls: ['./subTask.component.css']
+  styleUrls: ['./subtask.component.scss']
 })
 
 export class SubTaskComponent implements OnInit {
@@ -26,5 +26,8 @@ export class SubTaskComponent implements OnInit {
 				this.state += "finished";
 				break;
 		}
+	}
+	showDetails(){
+
 	}
 }

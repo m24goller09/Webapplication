@@ -3,26 +3,26 @@
 		<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h1 class="display-3">{{projectName}}</h1>
+		<h1 id="projectName">{{projectName}}</h1>
 		<div class="d-flex flex-column">
 			<div class="d-flex flex-row">
-				<div class="p-2">ID: </div>
+				<div class="p-2">ID:</div>
 				<div class="p-2">{{projectID}}</div>
 			</div>
 			<div class="d-flex flex-row">
-				<div class="p-2">Creator: </div>
+				<div class="p-2">Creator:</div>
 				<div class="p-2">{{projectCreator}}</div>
 			</div>
 			<div class="d-flex flex-row">
-				<div class="p-2">Description: </div>
+				<div class="p-2">Description:</div>
 				<div class="p-2">{{projectDesc}}</div>
 			</div>
 			<div class="d-flex flex-row">
-				<div class="p-2">Status: </div>
-				<div class="p-2">{{projectStatus}}</div>
+				<div class="p-2">Status:</div>
+				<div class="p-2" *ngIf="projectStatus==true.toString(); else elseBlock">running</div>
+				<ng-template #elseBlock>finished</ng-template>
 			</div>
 		</div>
-		<p>posible stats like: current amount of involved persons, workload,progres...</p>
 	</div>
 
 	<div class="subTask tasks-of-projects d-flex flex-md-row justify-content-around">

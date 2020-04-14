@@ -1,7 +1,8 @@
-<div class="card {{ state }}">
+<div class="card {{ state }}" (click)="showDetails()">
 	<div class="card-body">
-		<h6 class="card-title font-weight-bold">{{ subTask.name }}</h6>
-		<p class="card-subtitle border-bottom">{{ subTask.creator }}</p>
-		<p class="card-text">{{ subTask.description }}</p>
+		<div class="card-title font-weight-bold">
+			<span class="text-info">#{{ subTask.id }} </span>{{ subTask.name }}
+		</div>
+		<p class="card-subtitle">{{ subTask.creator }}</p>
 	</div>
 </div>
