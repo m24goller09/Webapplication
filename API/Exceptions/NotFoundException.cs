@@ -2,7 +2,7 @@
 
 namespace API.Exceptions
 {
-    public class NotFoundException : AbstractException
+    public class NotFoundException : CustomException
     {
         public NotFoundException(string detail, string instance)
         {
@@ -14,6 +14,11 @@ namespace API.Exceptions
                 Detail = detail,
                 Instance = instance
             };
+        }
+
+        public override IActionResult GetActionResult()
+        {
+            return new NotFoundObjectResult(problemDetails);
         }
     }
 }

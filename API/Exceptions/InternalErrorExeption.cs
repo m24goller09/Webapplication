@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Exceptions
 {
-    public class InternalErrorException :  AbstractException
+    public class InternalErrorException :  CustomException
     {
         public InternalErrorException(string detail, string instance) 
         {
@@ -14,6 +14,11 @@ namespace API.Exceptions
                 Detail = detail,
                 Instance = instance
             };
+        }
+
+        public override IActionResult GetActionResult()
+        {
+            return new BadRequestObjectResult(problemDetails);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace API.Controllers
                 var dto = mapper.Map<User, UserDTO>(model);  
                 return Ok(dto);
             }
-            catch (AbstractException e)
+            catch (CustomException e)
             {
                 return e.GetActionResult();
             }
