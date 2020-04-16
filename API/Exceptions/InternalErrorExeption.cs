@@ -1,12 +1,20 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 
-public class InternalErrorException : Exception
+namespace API.Exceptions
 {
-    public ProblemDetails problemDetails { get; private set; }
-
-    public InternalErrorException (ProblemDetails problemDetails)
+    public class InternalErrorException :  AbstractException
     {
-        this.problemDetails = problemDetails;
+        public InternalErrorException(string detail, string instance) 
+        {
+            problemDetails = new ProblemDetails
+            {
+                Status = 500,
+                Type = "https://httpstatuses.com/500",
+                Title = "internal server error",
+                Detail = detail,
+                Instance = instance
+            };
+        }
     }
 }
+

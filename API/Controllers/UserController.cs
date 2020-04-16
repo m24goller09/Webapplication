@@ -7,13 +7,14 @@ using API.DTOs;
 using API.Domain.Models;
 using API.Domain.Services;
 using API.Services;
+using API.Exceptions;
 
 namespace API.Controllers
 {
     [Route("User")]
     [ApiController]
-    public class UserController : AbstractStandardController
-    {
+    public class UserController : ControllerBase
+    { 
         private readonly UserService userService;
         private readonly IMapper mapper;
 
@@ -32,9 +33,9 @@ namespace API.Controllers
                 var dto = mapper.Map<User, UserDTO>(model);  
                 return Ok(dto);
             }
-            catch (InternalErrorException e)
+            catch (AbstractException e)
             {
-                return HandleError(e);
+                return e.GetActionResult();
             }
         }
     }

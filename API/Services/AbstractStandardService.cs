@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Domain.Services;
 using API.Domain.Repository;
+using API.Exceptions;
 
 namespace API.Services
 {
@@ -25,19 +26,19 @@ namespace API.Services
 
         public virtual async Task<Model> FindByIdAsync(string id)
         {
-            return nullCheck(await standardRepository.FindByIdAsync(id));
+            return NullCheck(await standardRepository.FindByIdAsync(id));
         }
 
         public virtual async Task<Model> FindByIdAsync(int id)
         {
-            return nullCheck(await standardRepository.FindByIdAsync(id));
+            return NullCheck(await standardRepository.FindByIdAsync(id));
         }
 
-        private Model nullCheck(Model model)
+        private Model NullCheck(Model model)
         {
             if (model == null)
             {
-                throw new Exception("we need to specify how to handle this case!!");
+                throw new NotFoundException("Asked object does not exist", typeof(Model).ToString());
             }
             return model;
         }
