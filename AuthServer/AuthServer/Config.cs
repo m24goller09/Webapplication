@@ -39,7 +39,7 @@ namespace AuthServer
                     AllowedScopes = { "openid", "profile", "email", "api.read" },
                     RedirectUris = {"http://localhost:4200/auth-callback"},
                     PostLogoutRedirectUris = {"http://localhost:4200/"},
-                    AllowedCorsOrigins = {"http://localhost"},
+                    AllowedCorsOrigins = {"http://localhost:4200"},
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 3600
                 },
