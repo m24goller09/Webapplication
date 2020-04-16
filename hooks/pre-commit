@@ -3,7 +3,7 @@
 # Working directory is repository root
 
 # Only test what is going to be commited
-git stash --quiet --keep-index
+git stash --quiet --keep-index --include-untracked
 
 function cleanup {
 	git stash pop --quiet
