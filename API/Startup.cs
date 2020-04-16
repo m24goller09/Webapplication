@@ -37,7 +37,7 @@ namespace API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;                
             }).AddJwtBearer(o =>
             {
-                o.Authority = "http://localhost:5000";
+                o.Authority = "https://localhost:5000";
                 o.Audience = "resourceapi";
                 o.RequireHttpsMetadata = false;
             });
@@ -46,6 +46,7 @@ namespace API
             {
                 options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
                 options.AddPolicy("Consumer", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
+                options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
             });
 
             services.AddMvc(options =>
