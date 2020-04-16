@@ -8,6 +8,7 @@ using API.Domain.Models;
 using API.Domain.Services;
 using API.Services;
 using API.Exceptions;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -25,6 +26,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string username)
         {
             try
