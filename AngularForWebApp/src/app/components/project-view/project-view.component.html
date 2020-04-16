@@ -1,47 +1,50 @@
 <div class="project-view">
-	<div class="jumbotron">
-		<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<h1 id="projectName">{{projectName}}</h1>
-		<div class="d-flex flex-column">
-			<div class="d-flex flex-row">
-				<div class="p-2">ID:</div>
-				<div class="p-2">{{projectID}}</div>
-			</div>
-			<div class="d-flex flex-row">
-				<div class="p-2">Creator:</div>
-				<div class="p-2">{{projectCreator}}</div>
-			</div>
-			<div class="d-flex flex-row">
-				<div class="p-2">Description:</div>
-				<div class="p-2">{{projectDesc}}</div>
-			</div>
-			<div class="d-flex flex-row">
-				<div class="p-2">Status:</div>
-				<div class="p-2" *ngIf="projectStatus==true.toString(); else elseBlock">running</div>
-				<ng-template #elseBlock>finished</ng-template>
+	<div class="card mx-3 my-2">
+		<div class="card-header">
+			{{projectName}}
+			<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="card-body">
+			<div class="card-title">ID: <span class="text-info">#{{projectID}}</span></div>
+			<div class="card-text">
+					<div id="creator">Creator: {{projectCreator}}</div>
+					<div id="description">Description: {{projectDesc}}</div>
+					<div *ngIf="projectStatus==true.toString(); else elseBlock" class="text-info">running</div>
+					<ng-template #elseBlock><div class="text-success">finished</div></ng-template>
 			</div>
 		</div>
 	</div>
 
-	<div class="subTask tasks-of-projects d-flex flex-md-row justify-content-around">
-		<div class="task-backlog">
-			<div class="columnHeader">Backlog</div>
-			<div class="card-body" *ngFor="let subTask of backlogTasks">
+	<div class="subTask d-flex flex-md-row justify-content-center">
+		<div class="tasks backlog w-25 card">
+			<div class="card-header">Backlog</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of backlogTasks">
 				<app-subTask [subTask]=subTask></app-subTask>
 			</div>
 		</div>
-		<div class="task-running">
-			<div class="columnHeader">Running</div>
-			<div class="card-body" *ngFor="let subTask of runningTasks">
+
+		<div class="tasks running w-25 card">
+			<div class="card-header">Running</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of runningTasks">
 				<app-subTask [subTask]=subTask></app-subTask>
 			</div>
 		</div>
-		<div class="task-finished">
-			<div class="columnHeader">Finished</div>
-			<div class="card-body" *ngFor="let subTask of finishedTasks">
+
+		<div class="tasks finished w-25 card">
+			<div class="card-header">Finished</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of finishedTasks">
 				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+
+		<div class="tasks info w-25 card">
+			<div class="card-header">Task info</div>
+			<div class="card-body">
+				<p class="card-text mx-1 my-3">
+					This is a place holder for task information.
+				</p>
 			</div>
 		</div>
 	</div>

@@ -1,11 +1,3 @@
-#projectName{
-	border-bottom-color: black;
-	border-bottom-width: 0.1rem;
-	border-bottom-style: solid;
-}
-
-.jumbotron{
-	border-color: darkgray;
-	border-width: 0.1rem;
-	border-style: solid;
+.tasks{
+	margin: 1rem;
 }
