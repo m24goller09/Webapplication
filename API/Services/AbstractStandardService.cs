@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Models.Services;
-using API.Domain.Models;
+using API.Domain.Services;
 using API.Domain.Repository;
 
 namespace API.Services
@@ -24,15 +23,23 @@ namespace API.Services
             await unitOfWork.CompleteAsync();
         }
 
+        public virtual async Task<Model> FindByIdAsync(string id)
+        {
+            return nullCheck(await standardRepository.FindByIdAsync(id));
+        }
+
         public virtual async Task<Model> FindByIdAsync(int id)
         {
-            var tmpModel = await standardRepository.FindByIdAsync(id);
+            return nullCheck(await standardRepository.FindByIdAsync(id));
+        }
 
-            if (tmpModel == null)
+        private Model nullCheck(Model model)
+        {
+            if (model == null)
             {
                 throw new Exception("we need to specify how to handle this case!!");
             }
-            return tmpModel;
+            return model;
         }
 
         public virtual async Task<IEnumerable<Model>> ListAsync()

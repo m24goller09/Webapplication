@@ -22,7 +22,7 @@ namespace API.Persistence.Repository
             await dbContext.Project.AddAsync(project);
         }
 
-        public async Task<Project> FindByIdAsync(int id)
+        public async Task<Project> FindByIdAsync(dynamic id)
         {
             // Check if project is found will be made in the service class.
             return await dbContext.Project.FindAsync(id);

@@ -13,7 +13,7 @@ namespace API.Persistence.Repository
     {
         private readonly dbContext dbContext;
 
-        UserRepository(dbContext dbContext)
+        public UserRepository(dbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -23,7 +23,7 @@ namespace API.Persistence.Repository
             await dbContext.User.AddAsync(user);
         }
 
-        public async Task<User> FindByIdAsync(int id)
+        public async Task<User> FindByIdAsync(dynamic id)
         {
             // Check if user is found will be made in the service class.
             return await dbContext.User.FindAsync(id);

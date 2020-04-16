@@ -9,7 +9,8 @@ namespace API.Domain.Repository
     {
         Task<IEnumerable<Model>> ListAsync();
         Task AddAsync(Model model);
-        Task<Model> FindByIdAsync(int id);
+        // only accepts int and string
+        Task <Model> FindByIdAsync(dynamic id);
         void Update(Model model);
         void Remove(Model model);
     }

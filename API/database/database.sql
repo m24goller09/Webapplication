@@ -3,7 +3,8 @@ create table User (
 	/* password? */
 	firstname text not null default '',
 	lastname text not null default '',
-	isAdmin boolean not null default 0/* note: there are no booleans in sqlite, maybe add a check constraint */
+	/* note: there are no booleans in sqlite, maybe add a check constraint */
+	isAdmin boolean not null default 0
 );
 
 create table Project (

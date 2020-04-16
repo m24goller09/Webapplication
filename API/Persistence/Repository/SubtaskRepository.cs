@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API.Persistence.Context;
-using API.Domain.Repositories;
+using API.Domain.Repository;
 using API.Domain.Models;
 
 namespace API.Persistence.Repository
@@ -22,7 +22,7 @@ namespace API.Persistence.Repository
             await dbContext.Subtask.AddAsync(subtask);
         }
 
-        public async Task<Subtask> FindByIdAsync(int id)
+        public async Task<Subtask> FindByIdAsync(dynamic id)
         {
             // Check if subtask is found will be made in the service class.
             return await dbContext.Subtask.FindAsync(id);
