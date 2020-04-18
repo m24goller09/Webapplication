@@ -144,6 +144,7 @@ export class ServerDataService {
 				id: ++this.count
 			}
 		]
+		//alert("New Service");
     }
 
 
@@ -158,12 +159,16 @@ export class ServerDataService {
 	}
 
 	addData(pName:string,pCreator:string,pDesc:string){
+
 		let tProject:Project;
+		tProject = new Project();
+
 		tProject.name = pName;
 		tProject.creator = pCreator;
 		tProject.running = true;
 		tProject.description = pDesc;
 		tProject.id = ++this.count;
+
 		this.data.push(tProject);
 
 	}

@@ -2,6 +2,7 @@ import {BrowserModule, Title} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
@@ -25,10 +26,6 @@ routes = [
 	{
 		path:'projectView/:id/:name/:desc/:creator/:status',
 		component: ProjectViewComponent
-	},
-	{
-		path: 'createProject',
-		component: CreateProjectComponent
 	}
 ];
 
@@ -46,11 +43,13 @@ routes = [
   	BrowserModule,
 	RouterModule.forRoot(routes),
 	HttpClientModule,
-	BrowserAnimationsModule
+	BrowserAnimationsModule,
+	MatDialogModule
   ],
   providers: [
   	Title
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[CreateProjectComponent]
 })
 export class AppModule { }
