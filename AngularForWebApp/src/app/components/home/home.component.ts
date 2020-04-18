@@ -25,10 +25,5 @@ export class HomeComponent implements OnInit {
 		this.projects = this.dataService.getData();
 	}
 
-
-
-	constructor(private dataService: ServerDataService, private route: ActivatedRoute) {
-
-	}
-
+	constructor(private dataService: ServerDataService, private route: ActivatedRoute) {}
 }

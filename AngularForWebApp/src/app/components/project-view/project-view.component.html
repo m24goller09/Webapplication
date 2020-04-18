@@ -40,10 +40,15 @@
 		</div>
 
 		<div class="tasks info w-25 card">
-			<div class="card-header">Task info</div>
+			<div class="card-header state-{{subTaskToShow.state}}">Task info</div>
 			<div class="card-body">
+				<div class="font-weight-bold border-bottom">
+					<span class="text-info">#{{ subTaskToShow.id }}</span>
+					{{ subTaskToShow.name }}
+				</div>
+				<div class="text-muted">Creator: {{ subTaskToShow.creator }}</div>
 				<p class="card-text mx-1 my-3">
-					This is a place holder for task information.
+					{{ subTaskToShow.description }}
 				</p>
 			</div>
 		</div>

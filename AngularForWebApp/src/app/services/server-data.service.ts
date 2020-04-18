@@ -16,13 +16,17 @@ export class ServerDataService {
 
 	private runningParameter = new BehaviorSubject<string>("def");
 	currentRunning = this.runningParameter.asObservable();
+
+	private subTaskToShow = new BehaviorSubject<number>(-1);
+	taskToShow = this.subTaskToShow.asObservable();
+
   	constructor(private http:HttpClient) {
   		this.subTasksDummy = [
   			{
   				id:1,
 				name: 'sub task backlog',
 				creator: 'me',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: 'This is sub task 1, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -32,7 +36,7 @@ export class ServerDataService {
 				id:2,
 				name: 'sub task running',
 				creator: 'nice',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: ' 2 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -42,7 +46,7 @@ export class ServerDataService {
 				id:3,
 				name: 'sub task finished',
 				creator: 'not me',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: '3 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -52,7 +56,7 @@ export class ServerDataService {
 				id:4,
 				name: 'sub task backlog 2',
 				creator: 'nice',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: '4 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -62,7 +66,7 @@ export class ServerDataService {
 				id:5,
 				name: 'sub task running',
 				creator: 'nice',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: '5 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -72,7 +76,7 @@ export class ServerDataService {
 				id:6,
 				name: 'sub task running',
 				creator: 'nice',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: '6 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -82,7 +86,7 @@ export class ServerDataService {
 				id:7,
 				name: 'sub task running',
 				creator: 'nice',
-				description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
+				description: '7 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
 					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
 					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
 					'\t\t\telitr',
@@ -164,14 +168,23 @@ export class ServerDataService {
 
 	}
 
-  getSubtasks(id:number){
+	/**
+	 * Returns all sub tasks of the specified project, by the id.
+	 * @param idOfProject which specifies the project
+	 */
+	getSubtasks(idOfProject:number){
   		//TODO: get request for getting subtasks for id of task
   		// getSubtasks():Observable<SubTask[]>{
 	  //return this.http.get<SubTask[]>(dataBaseURL);
 	  return this.subTasksDummy;
-  }
-
-  changeRunning(running: string){
-  		this.runningParameter.next(running);
   	}
+
+  	changeRunning(running: string){
+  		this.runningParameter.next(running);
+	}
+
+	selectSubTaskToShow(idOfSubTask:number){
+		this.subTaskToShow.next(idOfSubTask);
+		console.log("new subtask selected"+idOfSubTask);
+	}
 }
