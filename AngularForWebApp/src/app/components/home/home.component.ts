@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit{
 	currentDialog:MatDialogRef<any> = null;
 	projects:Project[];
 	filter:string = 'def';
-	navigationSubscription;
 
 
 	changeRunning(running: string) {
@@ -38,7 +37,7 @@ export class HomeComponent implements OnInit{
 		});
 
 		this.currentDialog.afterClosed().subscribe(result=>{
-			alert("Dialog Closed");
+			//alert("Dialog Closed");
 
 		})
 	}
