@@ -55,9 +55,6 @@ namespace API
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
-            services.AddScoped<ISampleRepo,     SampleRepository>();
-            services.AddScoped<ISampleService,  SampleService>();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v0", new OpenApiInfo { Title = "Backend", Version = "v0" });
