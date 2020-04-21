@@ -29,7 +29,7 @@ namespace API.Services
             return NullCheck(await standardRepository.FindByIdAsync(id));
         }
 
-        public virtual async Task<Model> FindByIdAsync(int id)
+        public virtual async Task<Model> FindByIdAsync(long id)
         {
             return NullCheck(await standardRepository.FindByIdAsync(id));
         }
