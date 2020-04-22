@@ -34,7 +34,7 @@ namespace API
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;                
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
                 o.Authority = "https://localhost:5000";
@@ -55,9 +55,6 @@ namespace API
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
-            services.AddScoped<ISampleRepo,     SampleRepository>();
-            services.AddScoped<ISampleService,  SampleService>();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v0", new OpenApiInfo { Title = "Backend", Version = "v0" });
@@ -67,8 +64,12 @@ namespace API
 
             services.AddDbContext<dbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IStandardRepository<User>, UserRepository>();
             services.AddScoped<IStandardService<User>, UserService>();
+
+            services.AddScoped<IStandardRepository<Project>, ProjectRepository>();
+            services.AddScoped<IStandardService<Project>, ProjectService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
