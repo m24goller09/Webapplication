@@ -1,0 +1,56 @@
+<div class="project-view">
+	<div class="card mx-3 my-2">
+		<div class="card-header">
+			{{projectName}}
+			<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="card-body">
+			<div class="card-title">ID: <span class="text-info">#{{projectID}}</span></div>
+			<div class="card-text">
+					<div id="creator">Creator: {{projectCreator}}</div>
+					<div id="description">Description: {{projectDesc}}</div>
+					<div *ngIf="projectStatus==true.toString(); else elseBlock" class="text-info">running</div>
+					<ng-template #elseBlock><div class="text-success">finished</div></ng-template>
+			</div>
+		</div>
+	</div>
+
+	<div class="subTask d-flex flex-md-row justify-content-center">
+		<div class="tasks backlog w-25 card">
+			<div class="card-header">Backlog</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of backlogTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+
+		<div class="tasks running w-25 card">
+			<div class="card-header">Running</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of runningTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+
+		<div class="tasks finished w-25 card">
+			<div class="card-header">Finished</div>
+			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of finishedTasks">
+				<app-subTask [subTask]=subTask></app-subTask>
+			</div>
+		</div>
+
+		<div class="tasks info w-25 card">
+			<div class="card-header state-{{subTaskToShow.state}}">Task info</div>
+			<div class="card-body">
+				<div class="font-weight-bold border-bottom">
+					<span class="text-info">#{{ subTaskToShow.id }}</span>
+					{{ subTaskToShow.name }}
+				</div>
+				<div class="text-muted">Creator: {{ subTaskToShow.creator }}</div>
+				<p class="card-text mx-1 my-3">
+					{{ subTaskToShow.description }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
