@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 using API.Domain.Services;
 using API.Domain.Repository;
 using API.Exceptions;
+
+
 
 namespace API.Services
 {
@@ -18,10 +22,18 @@ namespace API.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public virtual async Task AddAsync(Model usertoAdd)
+        public virtual async Task<Model> AddAsync(Model modelToAdd)
         {
-            await standardRepository.AddAsync(usertoAdd);
-            await unitOfWork.CompleteAsync();
+            try
+            {
+                await standardRepository.AddAsync(modelToAdd);
+                await unitOfWork.CompleteAsync();
+            }
+            catch(DbUpdateException e)
+            {
+                throw new BadRequestException(e.InnerException.Message, typeof(Model).ToString());
+            }
+            return modelToAdd;
         }
 
         public virtual async Task<Model> FindByIdAsync(string id)

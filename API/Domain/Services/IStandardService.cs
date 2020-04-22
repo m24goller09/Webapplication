@@ -8,7 +8,7 @@ namespace API.Domain.Services
     public interface IStandardService <Model>
     {
         Task<IEnumerable<Model>> ListAsync();
-        Task AddAsync(Model model);
+        Task<Model> AddAsync(Model model);
         Task Update(Model modelsToUpdate);
         Task Remove(Model model);
     }
