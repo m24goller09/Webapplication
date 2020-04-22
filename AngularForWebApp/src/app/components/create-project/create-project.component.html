@@ -1,0 +1,23 @@
+<div class="container">
+	<h2 >Create a new Project</h2>
+	<hr>
+	<form class="form-horizontal" >
+		<div class="form-group">
+			<label class="control-label col-sm-4" for="NameInput" >Project-Name: </label>
+			<div class="col-sm-10">
+				<input #nameInput type="text" class="form-control" id="NameInput" placeholder="Enter Name" >
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="DescriptionInput">Description: </label>
+			<div class="col-sm-10">
+				<textarea #descInput class="form-control" id="DescriptionInput" cols="30" rows="5" placeholder="max 500 characters..."></textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="submit()" >Create</button>
+			</div>
+		</div>
+	</form>
+</div>

@@ -1,69 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {ServerDataService} from '../../services/server-data.service';
-import {Project} from '../../models/Project';
-
+import { Project } from '../../models/Project';
+import { ActivatedRoute, ROUTER_INITIALIZER} from '@angular/router';
+import { CreateProjectComponent } from '../create-project/create-project.component';
+import { MatDialog,MatDialogRef } from '@angular/material/dialog';
+import { Route } from '@angular/compiler/src/core';
+import { NgForOf } from '@angular/common';
 
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.component.html',
 	styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit{
+
+	currentDialog:MatDialogRef<any> = null;
 	projects:Project[];
-	count:number = 0;
-    ngOnInit(): void {
-    }
-	constructor(private dataService:ServerDataService) {
-		this.projects = [
-			{
-				name: 'test',
-				creator: 'Me',
-				running: true,
-				description: 'This is the test description of this project and I like that long string.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 3',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			}
-		]
+	filter:string = 'def';
+
+
+	changeRunning(running: string) {
+		this.dataService.changeRunning(running);
 	}
+
+    ngOnInit(): void {
+		this.route.paramMap.subscribe(params => {
+			this.changeRunning(params.get('filter'));
+		})
+		this.projects = this.dataService.getData();
+	}
+
+
+	openDialog():void{
+		this.currentDialog = this.matDialog.open(CreateProjectComponent, {
+			width: '500px'
+		});
+
+		this.currentDialog.afterClosed().subscribe(result=>{
+			//alert("Dialog Closed");
+
+		})
+	}
+
+	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute) {
+
+	}
+
+
 }

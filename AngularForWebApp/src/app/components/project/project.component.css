@@ -1,7 +1,11 @@
-div:hover {
-    border-width: 0.15rem;
-    /*background-color:  rgb(229, 237, 243); */
-    background-color: rgb(234, 243, 235);
+.card:hover {
+	border-width: 0.15rem;
+	background: rgba(40, 167, 69, 0.1);
+}
+
+.card{
+	border-left-width: 0.15rem;
+	border-left-color: rgba(40, 167, 69, 0.5);
 }
 
 .id {
@@ -9,6 +13,10 @@ div:hover {
     font-size: 10pt;
 }
 
+.card-text{
+	overflow: hidden;
+	height: 8.5rem;
+}
 
 .projectCreator {
     color: grey;

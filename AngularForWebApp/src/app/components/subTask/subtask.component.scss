@@ -1,0 +1,26 @@
+@import "src/styles";
+
+.card:hover {
+	cursor: pointer;
+}
+
+.task-backlog{
+	background-color: rgba(theme-color(backlogSubTask),0.15);
+}
+.task-backlog:hover{
+	background-color: rgba(theme-color(backlogSubTask),0.45);
+}
+
+.task-running{
+	background-color: rgba(theme-color(runningSubTask),0.15);
+}
+.task-running:hover{
+	background-color: rgba(theme-color(runningSubTask),0.45);
+}
+
+.task-finished{
+	background-color: rgba(theme-color(finishedSubTask),0.15);
+}
+.task-finished:hover{
+	background-color: rgba(theme-color(finishedSubTask),0.45);
+}
