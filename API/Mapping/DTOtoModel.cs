@@ -11,6 +11,7 @@ namespace API.Mapping
         public DTOtoModel()
         {
             CreateMap<UserDTO, User>();
+            CreateMap<ProjectDTO, Project>();
         }
     }
 }
