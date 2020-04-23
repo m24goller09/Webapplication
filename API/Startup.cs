@@ -72,6 +72,8 @@ namespace API
 
             services.AddScoped<IStandardRepository<Project>, ProjectRepository>();
             services.AddScoped<IStandardService<Project>, ProjectService>();
+
+            services.AddScoped<IStandardRepository<ProjectAssignment>, ProjectAssignmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

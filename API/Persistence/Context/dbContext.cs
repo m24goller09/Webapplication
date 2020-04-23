@@ -37,7 +37,7 @@ namespace API.Persistence.Context
             {
                 entity.Property(e => e.ProjectId)
                     .HasColumnName("projectID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -81,7 +81,7 @@ namespace API.Persistence.Context
             {
                 entity.Property(e => e.SubtaskId)
                     .HasColumnName("subtaskID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description)
                     .IsRequired()
