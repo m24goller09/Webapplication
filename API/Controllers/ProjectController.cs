@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -41,5 +42,14 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var models = await projectService.ListAsync();
+            return Ok(mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(models));
+        }
+
     }
 }
