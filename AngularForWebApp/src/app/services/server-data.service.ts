@@ -9,10 +9,10 @@ import {StateOfTask} from '../models/StateOfTask';
   providedIn: 'root'
 })
 export class ServerDataService {
-	dataBaseURL:string =  'hereNeedsToBeTheDBURL';
 	data: Project[];
 	subTasksDummy:SubTask[];
 	count: number = 0;
+	dataBaseURL:string = "http://localhost:5050/";
 
 	private runningParameter = new BehaviorSubject<string>("def");
 	currentRunning = this.runningParameter.asObservable();
@@ -147,30 +147,13 @@ export class ServerDataService {
 		//alert("New Service");
     }
 
-
-
+	/*
+	 * all getters
+	 */
 	getData(){
-	/*getData():Observable<ClassName[]>{
-	return this.data;
-	TODO: get request for getting data from the db
-	return this.http.get<ClassName[]>(dataBaseURL);	<- Class needs to be created and imported here
-	*/
-		return this.data;
-	}
-
-	addData(pName:string,pCreator:string,pDesc:string){
-
-		let tProject:Project;
-		tProject = new Project();
-
-		tProject.name = pName;
-		tProject.creator = pCreator;
-		tProject.running = true;
-		tProject.description = pDesc;
-		tProject.id = ++this.count;
-
-		this.data.push(tProject);
-
+		// TODO: let queryURL = this.dataBaseURL + "Projects"
+		let queryURL = this.dataBaseURL +"User/ew";
+		return this.http.get(queryURL);
 	}
 
 	/**
@@ -178,16 +161,48 @@ export class ServerDataService {
 	 * @param idOfProject which specifies the project
 	 */
 	getSubtasks(idOfProject:number){
-  		//TODO: get request for getting subtasks for id of task
-  		// getSubtasks():Observable<SubTask[]>{
-	  //return this.http.get<SubTask[]>(dataBaseURL);
-	  return this.subTasksDummy;
+  		/* TODO:
+		* let queryURL = this.dataBaseURL +"SubTasks/"+idOfProject;
+		* return this.http.get(queryURL);
+  		 */
+		return this.subTasksDummy;
   	}
 
+	/*
+   	 * all posts
+	 */
+	/**
+	 * Creates an project and adds it to the database with a post.
+	 * @param name
+	 * @param creator
+	 * @param description
+	 */
+	addData(name:string,creator:string,description:string){
+
+		let tProject:Project;
+		tProject = new Project();
+
+		tProject.name = name;
+		tProject.creator = creator;
+		tProject.description = description;
+		tProject.running = true;	// TODO remove this and let database handle this
+		tProject.id = ++this.count; // TODO remove this and let database handle this
+
+		this.data.push(tProject);	// TODO replace with an actual post
+	}
+
+	/**
+	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
+	 * @param running
+	 */
   	changeRunning(running: string){
   		this.runningParameter.next(running);
 	}
 
+	/**
+	 * Selects the sub task, which is identified by the given number and than more detailed information is shown on the project view.
+	 * @param idOfSubTask
+	 */
 	selectSubTaskToShow(idOfSubTask:number){
 		this.subTaskToShow.next(idOfSubTask);
 		console.log("new subtask selected"+idOfSubTask);

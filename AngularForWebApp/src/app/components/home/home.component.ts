@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit{
 		this.route.paramMap.subscribe(params => {
 			this.changeRunning(params.get('filter'));
 		})
-		this.projects = this.dataService.getData();
+		// TODO this.projects = this.dataService.getData();
 	}
 
 

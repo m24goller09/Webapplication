@@ -1,5 +1,7 @@
 import {Component } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
+// TODO: this import needs to be removed as well
+import {ServerDataService} from '../services/server-data.service';
 @Component({
 		selector: 'app-root',
 		templateUrl: './app.component.html',
@@ -7,9 +9,19 @@ import { Title }     from '@angular/platform-browser';
 })
 export class AppComponent {
 	projectName = 'PROMAS';
-	title:string = 'PROMAS';
-		constructor(private titleService:Title) {
-			this.titleService.setTitle(this.title);
-			this.projectName = 'test';
-		}
+	title:string = this.projectName;
+
+	// TODO: the following is only for demo and should be removed later
+	ngOnInit(): void {
+		console.log("Init");
+		this.dataService.getData().subscribe((result)=>{
+			console.log(result["username"]);
+			console.log(result["firstname"]);
+			console.log(result["lastname"]);
+		});
+	}
+
+	constructor(private titleService:Title, private dataService:ServerDataService) {
+		this.titleService.setTitle(this.title);
+	}
 }
