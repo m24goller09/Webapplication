@@ -12,7 +12,7 @@ namespace API.Persistence.Repository
     public class SubtaskRepository : IStandardRepository<Subtask>
     {
         private readonly dbContext dbContext;
-        SubtaskRepository(dbContext dbContext)
+        public SubtaskRepository(dbContext dbContext)
         {
             this.dbContext = dbContext;
         }

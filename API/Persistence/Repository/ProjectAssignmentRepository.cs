@@ -12,7 +12,7 @@ namespace API.Persistence.Repository
     public class ProjectAssignmentRepository : IStandardRepository<ProjectAssignment>
     {
         private readonly dbContext dbContext;
-        ProjectAssignmentRepository(dbContext dbContext)
+        public ProjectAssignmentRepository(dbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -45,6 +45,14 @@ namespace API.Persistence.Repository
         public void Remove(ProjectAssignment projAssign)
         {
             dbContext.ProjectAssignment.Remove(projAssign);
+        }
+
+        public async Task<IEnumerable<ProjectAssignment>> ListAsyncByUser(string userName)
+        {
+            return await dbContext.ProjectAssignment
+                .Where(s => s.Username.Equals(userName))
+                .Include(d => d.ProjectNavigation)
+                .ToListAsync();
         }
     }
 }
