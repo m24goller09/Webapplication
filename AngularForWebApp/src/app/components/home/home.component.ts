@@ -24,10 +24,19 @@ export class HomeComponent implements OnInit{
 	}
 
     ngOnInit(): void {
+		// subscribe to the parameter running
 		this.route.paramMap.subscribe(params => {
 			this.changeRunning(params.get('filter'));
-		})
-		// TODO this.projects = this.dataService.getData();
+		});
+		// get all projects from the data service
+		this.dataService.getData().subscribe((result)=>{
+			this.projects = [];
+			for (let i in result){
+				const project = result[i];
+				// TODO: Get actual running state from db, if API provides that
+				this.projects.push(new Project(project.name,project.manager,project.description,true,project.projectID));
+			}
+		});
 	}
 
 
@@ -38,7 +47,6 @@ export class HomeComponent implements OnInit{
 
 		this.currentDialog.afterClosed().subscribe(result=>{
 			//alert("Dialog Closed");
-
 		})
 	}
 

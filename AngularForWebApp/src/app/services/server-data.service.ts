@@ -9,9 +9,8 @@ import {StateOfTask} from '../models/StateOfTask';
   providedIn: 'root'
 })
 export class ServerDataService {
-	data: Project[];
+	projects: Project[];
 	subTasksDummy:SubTask[];
-	count: number = 0;
 	dataBaseURL:string = "http://localhost:5050/";
 
 	private runningParameter = new BehaviorSubject<string>("def");
@@ -93,66 +92,16 @@ export class ServerDataService {
 				state: StateOfTask.Running
 			}
 		]
-		this.data = [
-			{
-				name: 'test',
-				creator: 'Me',
-				running: true,
-				description: 'This is the test description of this project and I like that long string.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 3',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test No 2',
-				creator: 'Not me',
-				running: true,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			},
-			{
-				name: 'Test not running',
-				creator: 'Not me',
-				running: false,
-				description: 'What is this long project description nonsense.',
-				id: ++this.count
-			}
-		]
-		//alert("New Service");
-    }
+  	}
 
 	/*
 	 * all getters
 	 */
+	/**
+	 * Gets all projects of the db
+	 */
 	getData(){
-		// TODO: let queryURL = this.dataBaseURL + "Projects"
-		let queryURL = this.dataBaseURL +"User/ew";
+		let queryURL = this.dataBaseURL + "Project"
 		return this.http.get(queryURL);
 	}
 
@@ -178,19 +127,34 @@ export class ServerDataService {
 	 * @param description
 	 */
 	addData(name:string,creator:string,description:string){
-
-		let tProject:Project;
-		tProject = new Project();
-
-		tProject.name = name;
-		tProject.creator = creator;
-		tProject.description = description;
-		tProject.running = true;	// TODO remove this and let database handle this
-		tProject.id = ++this.count; // TODO remove this and let database handle this
-
-		this.data.push(tProject);	// TODO replace with an actual post
+		let project:Object = {
+			"projectID": 0, // no need to be set, is handled by the db
+			"name": name,
+			"description": description,
+			"manager": creator
+		}
+		this.http.post(this.dataBaseURL+"Project", project).subscribe(value => {
+			console.log(value);
+		});
 	}
 
+	/**
+	 * TODO wait for final version from API
+	 * Adds a user to the user database.
+	 * @param username which is the primary key of the user
+	 * @param placeholder
+	 * @param placeholder2
+	 */
+	addUser(username:string, placeholder:string,placeholder2:string){
+		let user = {
+			"username": username,
+			"firstname":placeholder,
+			"lastname":placeholder2
+		}
+		this.http.post(this.dataBaseURL+"User",user).subscribe(value => {
+			console.log(value);
+		});
+	}
 	/**
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
