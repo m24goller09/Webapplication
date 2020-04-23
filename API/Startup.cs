@@ -68,6 +68,8 @@ namespace API
             services.AddScoped<IStandardRepository<User>, UserRepository>();
             services.AddScoped<IStandardService<User>, UserService>();
 
+            services.AddScoped<IStandardRepository<ProjectAssignment>, ProjectAssignmentRepository>();
+
             services.AddScoped<IStandardRepository<Project>, ProjectRepository>();
             services.AddScoped<IStandardService<Project>, ProjectService>();
         }

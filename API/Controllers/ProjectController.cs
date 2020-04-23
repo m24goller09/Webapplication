@@ -44,11 +44,28 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var models = await projectService.ListAsync();
             return Ok(mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(models));
+        }
+
+        [HttpGet("ByUser/{userName}")]
+        [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetProjectByUser(string userName)
+        {
+            try
+            {
+                var models = await projectService.GetProjectByUserAsync(userName);
+                var dto = mapper.Map<IEnumerable<ProjectAssignment>, IEnumerable<ProjectDTO>>(models);
+                return Ok(dto);
+            }
+            catch(CustomException e)
+            {
+                return e.GetActionResult();
+            }
         }
 
     }
