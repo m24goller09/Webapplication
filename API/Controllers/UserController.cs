@@ -41,5 +41,27 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostUser([FromBody] UserDTO userToAdd)
+        {
+            try
+            {
+                var user = mapper.Map<UserDTO, User>(userToAdd);
+                var savedUser = await userService.AddAsync(user);
+                var dto = mapper.Map<User, UserDTO>(savedUser);
+                // return Created(..) requires also an uri to the GET-Method
+                return new ObjectResult(dto)
+                {
+                    StatusCode = 201
+                };
+            }
+            catch(CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
     }
 }
