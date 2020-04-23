@@ -66,7 +66,7 @@ namespace API.Controllers
                 };
                 var model = mapper.Map<ProjectDTO, Project>(dto);
                 await projectService.AddAsync(model);
-                return Ok();
+                return Ok(mapper.Map<Project, ProjectDTO>(model));
             }
             catch (CustomException e)
             {
