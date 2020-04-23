@@ -11,7 +11,8 @@ namespace API.Mapping
         public DTOtoModel()
         {
             CreateMap<UserDTO, User>();
-            CreateMap<ProjectDTO, Project>();
+            CreateMap<ProjectDTO, Project>()
+                .ForMember(det => det.ProjectId, act => act.Ignore());
         }
     }
 }

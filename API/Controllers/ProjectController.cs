@@ -54,19 +54,14 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post(string name, string description, string manager)
+        public async Task<IActionResult> Post([FromBody] ProjectDTO projectToAdd)
         {
             try
             {
-                var dto = new ProjectDTO()
-                {
-                    Name = name,
-                    Description = description,
-                    manager = manager,
-                };
-                var model = mapper.Map<ProjectDTO, Project>(dto);
-                await projectService.AddAsync(model);
-                return Ok(mapper.Map<Project, ProjectDTO>(model));
+                var project = mapper.Map<ProjectDTO, Project>(projectToAdd);
+                var savedProject = await projectService.AddAsync(project);
+                var dto = mapper.Map<Project, ProjectDTO>(savedProject);
+                return Ok(dto);
             }
             catch (CustomException e)
             {
