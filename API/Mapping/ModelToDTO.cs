@@ -11,6 +11,7 @@ namespace API.Mapping
         {
             CreateMap<User, UserDTO>();
             CreateMap<Project, ProjectDTO>();
+            CreateMap<ProjectDTO, Project>();
         }
     }
 }

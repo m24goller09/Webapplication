@@ -12,7 +12,8 @@ namespace API.Persistence.Repository
     public class ProjectAssignmentRepository : IStandardRepository<ProjectAssignment>
     {
         private readonly dbContext dbContext;
-        ProjectAssignmentRepository(dbContext dbContext)
+
+        public ProjectAssignmentRepository(dbContext dbContext)
         {
             this.dbContext = dbContext;
         }

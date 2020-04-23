@@ -9,5 +9,7 @@ namespace API.Domain.Repository
     public interface IUnitOfWork
     {
         Task CompleteAsync();
+        IDbContextTransaction BeginTransaction();
     }
+
 }
