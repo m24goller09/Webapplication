@@ -47,7 +47,7 @@ namespace API.Services
             }
             catch (DbUpdateException e)
             {
-                throw new BadRequestException(e.InnerException.Message, typeof(Project).ToString());
+                throw new BadRequestException(e.InnerException?.Message, typeof(Project).ToString());
             }
             return project;
         }
@@ -59,6 +59,25 @@ namespace API.Services
                 throw new NotFoundException("No projects for asked user", typeof(Project).ToString());
             }
             return projects;
+        }
+
+        public override async Task Update(Project modelToUpdate)
+        {
+            var currentUser = await standardRepository.FindByIdAsync(modelToUpdate.ProjectId);
+            NullCheck(currentUser);
+            try
+            {
+                // is the manager updateable?
+                //tmpUser.Manager = modelToUpdate.Manager;
+                currentUser.Name = modelToUpdate.Name;
+                currentUser.Description = modelToUpdate.Description;
+                // we don't need to call the update method, as ef-core still tracks this object 
+                await unitOfWork.CompleteAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new BadRequestException(e.InnerException?.Message, typeof(Project).ToString());
+            }
         }
     }
 }

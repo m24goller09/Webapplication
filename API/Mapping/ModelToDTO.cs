@@ -11,6 +11,7 @@ namespace API.Mapping
         {
             CreateMap<User, UserDTO>();
             CreateMap<Project, ProjectDTO>();
+            CreateMap<Subtask, SubTaskDTO>();
             CreateMap<ProjectAssignment, ProjectDTO>()
                 .ForMember(det => det.ProjectID, opt => opt.MapFrom(src => src.ProjectNavigation.ProjectId))
                 .ForMember(det => det.Name, opt => opt.MapFrom(src => src.ProjectNavigation.Name))
