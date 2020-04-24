@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit{
 	projects:Project[];
 	filter:string = 'def';
 
+	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute) {}
 
 	changeRunning(running: string) {
 		this.dataService.changeRunning(running);
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit{
 			this.changeRunning(params.get('filter'));
 		});
 		// get all projects from the data service
-		this.dataService.getData().subscribe((result)=>{
+		this.dataService.getProjects().subscribe((result)=>{
 			this.projects = [];
 			for (let i in result){
 				const project = result[i];
@@ -46,13 +47,8 @@ export class HomeComponent implements OnInit{
 		});
 
 		this.currentDialog.afterClosed().subscribe(result=>{
-			//alert("Dialog Closed");
+			// TODO was macht das? kann das weg?
+			console.log("subscribe log");
 		})
 	}
-
-	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute) {
-
-	}
-
-
 }

@@ -41,7 +41,7 @@ export class ProjectViewComponent implements OnInit {
 			this.projectStatus = params.get('status');
 		});
 		// load in sub tasks for opened project
-		this.divideSubTasks(this.dataService.getSubtasks(this.projectID));
+		this.divideSubTasks(this.dataService.getSubTasks(this.projectID));
 		// create observer which reacts to a changed sub task
 		this.dataService.taskToShow.subscribe(subTaskId =>{
 				if (this.tasks.has(subTaskId)){

@@ -100,7 +100,7 @@ export class ServerDataService {
 	/**
 	 * Gets all projects of the db
 	 */
-	getData(){
+	getProjects(){
 		let queryURL = this.dataBaseURL + "Project"
 		return this.http.get(queryURL);
 	}
@@ -109,7 +109,7 @@ export class ServerDataService {
 	 * Returns all sub tasks of the specified project, by the id.
 	 * @param idOfProject which specifies the project
 	 */
-	getSubtasks(idOfProject:number){
+	getSubTasks(idOfProject:number){
   		/* TODO:
 		* let queryURL = this.dataBaseURL +"SubTasks/"+idOfProject;
 		* return this.http.get(queryURL);
@@ -126,7 +126,7 @@ export class ServerDataService {
 	 * @param creator
 	 * @param description
 	 */
-	addData(name:string,creator:string,description:string){
+	addProject(name:string, creator:string, description:string){
 		let project:Object = {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
