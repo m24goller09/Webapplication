@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using API.DTOs;
@@ -26,6 +27,15 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var models = await projectService.ListAsync();
+            return Ok(mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(models));
+        }
+
+
         [HttpGet("{projectid}")]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -43,12 +53,21 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("ByUser/{userName}")]
         [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetProjectByUser(string userName)
         {
-            var models = await projectService.ListAsync();
-            return Ok(mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(models));
+            try
+            {
+                var dtos = from model in (await projectService.GetProjectByUserAsync(userName))
+                           select mapper.Map<Project, ProjectDTO>(model.ProjectNavigation);
+                return Ok(dtos);
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
         }
 
         [HttpPost]
@@ -59,6 +78,7 @@ namespace API.Controllers
             try
             {
                 var project = mapper.Map<ProjectDTO, Project>(projectToAdd);
+                project.ProjectId = 0;
                 var savedProject = await projectService.AddAsync(project);
                 var dto = mapper.Map<Project, ProjectDTO>(savedProject);
                 return Ok(dto);
@@ -68,16 +88,17 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
-        [HttpGet("ByUser/{userName}")]
-        [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
+
+        [HttpPut]
+        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProjectByUser(string userName)
+        public async Task<IActionResult> UpdateProject([FromBody] ProjectDTO projectToUpdate)
         {
             try
             {
-                var models = await projectService.GetProjectByUserAsync(userName);
-                var dto = mapper.Map<IEnumerable<ProjectAssignment>, IEnumerable<ProjectDTO>>(models);
-                return Ok(dto);
+                var modelToUpdate = mapper.Map<ProjectDTO, Project>(projectToUpdate);
+                await projectService.Update(modelToUpdate);
+                return Ok();
             }
             catch(CustomException e)
             {

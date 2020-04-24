@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    public class ProjectDTO
+    public class SubTaskDTO
     {
-        public long ProjectID { get; set; }
+        public long SubtaskId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
-        public string Manager { get; set; }
+        public long ProjectId { get; set; }
         [Required]
         public string State { get; set; }
     }

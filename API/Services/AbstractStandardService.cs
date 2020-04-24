@@ -31,7 +31,7 @@ namespace API.Services
             }
             catch(DbUpdateException e)
             {
-                throw new BadRequestException(e.InnerException.Message, typeof(Model).ToString());
+                throw new BadRequestException(e.InnerException?.Message, typeof(Model).ToString());
             }
             return modelToAdd;
         }
@@ -46,7 +46,7 @@ namespace API.Services
             return NullCheck(await standardRepository.FindByIdAsync(id));
         }
 
-        private Model NullCheck(Model model)
+        protected Model NullCheck(Model model)
         {
             if (model == null)
             {
@@ -66,9 +66,6 @@ namespace API.Services
             await unitOfWork.CompleteAsync();
         }
 
-        public virtual Task Update(Model modelToUpdate)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task Update(Model modelToUpdate);
     }
 }

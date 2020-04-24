@@ -16,5 +16,11 @@ namespace API.Services
         {
 
         }
+
+        public override Task Update(User modelToUpdate)
+        {
+            // is never called.. 
+            throw new NotImplementedException();
+        }
     }
 }

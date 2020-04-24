@@ -2,11 +2,25 @@
 # Nonzero exit status aborts commit
 # Working directory is repository root
 
-# Only test what is going to be commited
-git stash --quiet --keep-index --include-untracked
+# I don't understand git well enough to explain this, see here
+# https://stackoverflow.com/questions/20479794/how-do-i-properly-git-stash-pop-in-pre-commit-hooks-to-get-a-clean-working-tree/
+
+# First, stash index and work dir, keeping only the
+# to-be-committed changes in the working directory.
+old_stash=$(git rev-parse -q --verify refs/stash)
+git stash save -q --keep-index
+new_stash=$(git rev-parse -q --verify refs/stash)
+
+# If there were no changes (e.g., `--amend` or `--allow-empty`)
+# then nothing was stashed, and we should skip everything,
+# including the tests themselves.  (Presumably the tests passed
+# on the previous commit, so there is no need to re-run them.)
+if [ "$old_stash" = "$new_stash" ]; then
+    exit 0
+fi
 
 function cleanup {
-	git stash pop --quiet
+	git reset --hard -q && git stash apply --index -q && git stash drop -q
 }
 
 trap cleanup EXIT
@@ -20,18 +34,9 @@ branch=$(git branch --show-current)
 if test $branch = API; then
 	# Test build
 	cd API
-	if modified .; then
-		if ! dotnet build; then
-			echo API build failed
-			exit 1
-		fi
-	fi
-
+	modified . && ! dotnet build && { echo API build failed; exit 1; }
 	cd ../AuthServer
-	if modified .; then
-		if ! dotnet build; then
-			echo AuthServer build failed
-			exit 1
-		fi
-	fi
+	modified . && ! dotnet build && { echo AuthServer build failed; exit 1; }
 fi
+
+exit 0
