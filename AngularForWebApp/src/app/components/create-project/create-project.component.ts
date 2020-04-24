@@ -13,24 +13,21 @@ export class CreateProjectComponent implements OnInit {
 	@ViewChild('nameInput') nameInput: ElementRef;
 	@ViewChild('descInput') descInput: ElementRef;
 
-	count:number=0;
-
 	constructor(private dataService: ServerDataService,private dialogRef:MatDialogRef<CreateProjectComponent>) { }
 
-  	ngOnInit(): void {
-	}
+  	ngOnInit(): void {}
 
 	submit(){
 		let tempName:string = this.nameInput.nativeElement.value;
 		let tempDescription:string = this.descInput.nativeElement.value;
-		let tempCreator = "me" + ++this.count;
-		this.dataService.addData(tempName,tempCreator,tempDescription);
+		this.dataService.addProject(tempName,tempDescription).subscribe(value => {
+			// TODO test if this works
+			open("/projectView/"+ServerDataService.parseProjects(value)[0].projectId);
+		});
 		this.onClose();
-
 	}
 
 	onClose(){
 		this.dialogRef.close()
 	}
-
 }

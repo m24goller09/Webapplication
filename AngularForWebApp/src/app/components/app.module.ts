@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 let routes: Routes;
 routes = [
 	{
-		path: ' ',
+		path: '',
 		component: HomeComponent
 	},
 	{
@@ -24,7 +24,7 @@ routes = [
 		component: HomeComponent
 	},
 	{
-		path:'projectView/:id/:name/:desc/:creator/:status',
+		path:'projectView/:id',
 		component: ProjectViewComponent
 	}
 ];

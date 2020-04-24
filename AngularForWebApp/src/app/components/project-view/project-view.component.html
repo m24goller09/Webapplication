@@ -1,18 +1,17 @@
-<div class="project-view">
+<div *ngIf="project!=null" class="project-view">
 	<div class="card mx-3 my-2">
 		<div class="card-header">
-			{{projectName}}
+			{{project.name}}
 			<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="card-body">
-			<div class="card-title">ID: <span class="text-info">#{{projectID}}</span></div>
+			<div class="card-title">ID: <span class="text-info">#{{project.id}}</span></div>
 			<div class="card-text">
-					<div id="creator">Creator: {{projectCreator}}</div>
-					<div id="description">Description: {{projectDesc}}</div>
-					<div *ngIf="projectStatus==true.toString(); else elseBlock" class="text-info">running</div>
-					<ng-template #elseBlock><div class="text-success">finished</div></ng-template>
+				<div id="creator">Creator: {{project.creator}}</div>
+				<div id="description">Description: {{project.description}}</div>
+				<!-- TODO add new way of displaying all three states of the project -->
 			</div>
 		</div>
 	</div>

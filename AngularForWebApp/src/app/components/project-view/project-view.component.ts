@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {ServerDataService} from '../../services/server-data.service';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
+import {Project} from '../../models/Project';
+import {ActivatedRoute} from '@angular/router';
+import {StateOfProject} from '../../models/StateOfProject';
 
 @Component({
   selector: 'app-project-view',
@@ -10,12 +12,9 @@ import {StateOfTask} from '../../models/StateOfTask';
   styleUrls: ['./project-view.component.scss']
 })
 export class ProjectViewComponent implements OnInit {
+	// TODO add loading icon
+	project:Project = null;
 
-	projectID:number;
-	projectName: string;
-	projectDesc: string;
-	projectCreator: string;
-	projectStatus: string;
 	backlogTasks: SubTask[];
 	runningTasks: SubTask[];
 	finishedTasks: SubTask[];
@@ -34,23 +33,27 @@ export class ProjectViewComponent implements OnInit {
 
   	ngOnInit(): void {
 		this.route.paramMap.subscribe(params =>{
-			this.projectID = +params.get('id');
-			this.projectName = params.get('name');
-			this.projectDesc = params.get('desc');
-			this.projectCreator = params.get('creator');
-			this.projectStatus = params.get('status');
-		});
-		// load in sub tasks for opened project
-		this.divideSubTasks(this.dataService.getSubTasks(this.projectID));
-		// create observer which reacts to a changed sub task
-		this.dataService.taskToShow.subscribe(subTaskId =>{
-				if (this.tasks.has(subTaskId)){
-					this.subTaskToShow = this.tasks.get(subTaskId);
-				} else {
-					this.subTaskToShow = this.defaultSubTask;
-				}
+			try {
+				let id:number = Number.parseInt(params.get("id"));
+				this.dataService.getProject(id).subscribe(value => {
+					this.project = ServerDataService.parseProject(value);
+
+					// load in sub tasks for opened project
+					this.divideSubTasks(this.dataService.getSubTasks(this.project.id));
+					// create observer which reacts to a changed sub task
+					this.dataService.taskToShow.subscribe(subTaskId =>{
+							if (this.tasks.has(subTaskId)){
+								this.subTaskToShow = this.tasks.get(subTaskId);
+							} else {
+								this.subTaskToShow = this.defaultSubTask;
+							}
+						}
+					);
+				});
+			}catch (e) {
+				throw e;
 			}
-		);
+		});
 	}
 
 	private selectSubTaskToShow(idOfSubTask:number){

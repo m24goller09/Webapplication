@@ -4,11 +4,15 @@
 }
 
 .card{
+	width: 18rem;
+	height: 16rem;
+	margin: 0.5rem;
 	border-left-width: 0.15rem;
 	border-left-color: rgba(40, 167, 69, 0.5);
 }
 
 .id {
+	float: right;
     color: #808080;
     font-size: 10pt;
 }
