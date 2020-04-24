@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using API.DTOs;
@@ -59,9 +60,9 @@ namespace API.Controllers
         {
             try
             {
-                var models = await projectService.GetProjectByUserAsync(userName);
-                var dto = mapper.Map<IEnumerable<ProjectAssignment>, IEnumerable<ProjectDTO>>(models);
-                return Ok(dto);
+                var dtos = from model in (await projectService.GetProjectByUserAsync(userName))
+                           select mapper.Map<Project, ProjectDTO>(model.ProjectNavigation);
+                return Ok(dtos);
             }
             catch (CustomException e)
             {

@@ -15,8 +15,10 @@ namespace API.Domain.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Manager { get; set; }
+        public string State { get; set; }
 
         public virtual ProjectAssignment ProjectAssignment { get; set; }
+        public virtual ProjectState StateNavigation { get; set; }
         public virtual ICollection<ProjectAssignment> ProjectAssignmentNavigation { get; set; }
         public virtual ICollection<Subtask> Subtask { get; set; }
     }

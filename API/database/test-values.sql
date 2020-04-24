@@ -1,20 +1,20 @@
-insert into User (username, firstname, lastname) values
-('ew', 'Emma', 'Woodhouse'),
-('eb', 'Elizabeth', 'Bennet'),
-('cc', 'Charlotte', 'Collins'),
-('mc', 'Mr.', 'Collins'),
-('lcdb', 'Catherine', 'de Bourgh');
+insert into User (username, name) values
+('ew', 'Emma Woodhouse'),
+('eb', 'Elizabeth Bennet'),
+('cc', 'Charlotte Collins'),
+('mc', 'Mr. Collins'),
+('lcdb', 'Catherine de Bourgh');
 
 
 begin transaction;
-insert into Project (projectID, name, description, manager) values
-('0', 'Rosings', 'Dine at Rosings', 'lcdb');
+	insert into Project (projectID, name, description, manager) values
+	('0', 'Rosings', 'Dine at Rosings', 'lcdb');
 
-insert into ProjectAssignment (username, projectID) values
-('eb', 0),
-('cc', 0),
-('mc', 0),
-('lcdb', 0);
+	insert into ProjectAssignment (username, projectID) values
+	('eb', 0),
+	('cc', 0),
+	('mc', 0),
+	('lcdb', 0);
 commit transaction;
 
 insert into Subtask (subtaskID, projectID, name, description) values

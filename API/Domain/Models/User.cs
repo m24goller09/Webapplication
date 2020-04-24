@@ -12,9 +12,7 @@ namespace API.Domain.Models
         }
 
         public string Username { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public byte[] IsAdmin { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<ProjectAssignment> ProjectAssignment { get; set; }
         public virtual ICollection<SubtaskAssignment> SubtaskAssignment { get; set; }

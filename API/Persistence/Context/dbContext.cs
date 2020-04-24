@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using API.Domain.Models;
 
 namespace API.Persistence.Context
-{ 
+{
     public partial class dbContext : DbContext
     {
         public dbContext()
@@ -18,8 +18,10 @@ namespace API.Persistence.Context
 
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<ProjectAssignment> ProjectAssignment { get; set; }
+        public virtual DbSet<ProjectState> ProjectState { get; set; }
         public virtual DbSet<Subtask> Subtask { get; set; }
         public virtual DbSet<SubtaskAssignment> SubtaskAssignment { get; set; }
+        public virtual DbSet<SubtaskState> SubtaskState { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -51,6 +53,16 @@ namespace API.Persistence.Context
                     .IsRequired()
                     .HasColumnName("name");
 
+                entity.Property(e => e.State)
+                    .IsRequired()
+                    .HasColumnName("state")
+                    .HasDefaultValueSql("'running'");
+
+                entity.HasOne(d => d.StateNavigation)
+                    .WithMany(p => p.Project)
+                    .HasForeignKey(d => d.State)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
                 entity.HasOne(d => d.ProjectAssignment)
                     .WithMany(p => p.Project)
                     .HasForeignKey(d => new { d.Manager, d.ProjectId })
@@ -76,6 +88,13 @@ namespace API.Persistence.Context
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<ProjectState>(entity =>
+            {
+                entity.HasKey(e => e.State);
+
+                entity.Property(e => e.State).HasColumnName("state");
+            });
+
             modelBuilder.Entity<Subtask>(entity =>
             {
                 entity.Property(e => e.SubtaskId)
@@ -93,9 +112,19 @@ namespace API.Persistence.Context
 
                 entity.Property(e => e.ProjectId).HasColumnName("projectID");
 
+                entity.Property(e => e.State)
+                    .IsRequired()
+                    .HasColumnName("state")
+                    .HasDefaultValueSql("'running'");
+
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Subtask)
                     .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.StateNavigation)
+                    .WithMany(p => p.Subtask)
+                    .HasForeignKey(d => d.State)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
@@ -118,26 +147,22 @@ namespace API.Persistence.Context
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<SubtaskState>(entity =>
+            {
+                entity.HasKey(e => e.State);
+
+                entity.Property(e => e.State).HasColumnName("state");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Username);
 
                 entity.Property(e => e.Username).HasColumnName("username");
 
-                entity.Property(e => e.Firstname)
+                entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("firstname")
-                    .HasDefaultValueSql("''");
-
-                entity.Property(e => e.IsAdmin)
-                    .IsRequired()
-                    .HasColumnName("isAdmin")
-                    .HasColumnType("boolean")
-                    .HasDefaultValueSql("0/* note: there are no booleans in sqlite, maybe add a check constraint */");
-
-                entity.Property(e => e.Lastname)
-                    .IsRequired()
-                    .HasColumnName("lastname")
+                    .HasColumnName("name")
                     .HasDefaultValueSql("''");
             });
 

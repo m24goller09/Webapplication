@@ -15,5 +15,7 @@ namespace API.DTOs
         public string Description { get; set; }
         [Required]
         public long ProjectId { get; set; }
+        [Required]
+        public string State { get; set; }
     }
 }

@@ -31,6 +31,7 @@ namespace API.Services
             {
                 currentSubtask.Name = modelToUpdate.Name;
                 currentSubtask.Description = modelToUpdate.Description;
+                currentSubtask.State = modelToUpdate.State;
                 // we don't need to call the update method, as ef-core still tracks this object 
                 await unitOfWork.CompleteAsync();
             }
