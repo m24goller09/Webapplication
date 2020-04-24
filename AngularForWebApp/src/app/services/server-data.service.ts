@@ -18,9 +18,6 @@ export class  ServerDataService {
 	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
 	stateOfProjectObservable = this.stateOfProject.asObservable();
 
-	private subTaskToShow = new BehaviorSubject<number>(-1);
-	taskToShow = this.subTaskToShow.asObservable();
-
   	constructor(private http:HttpClient) {
   		this.subTasksDummy = [
   			{
@@ -169,14 +166,6 @@ export class  ServerDataService {
 	 */
   	changeRunning(running:StateOfProject){
   		this.stateOfProject.next(running);
-	}
-
-	/**
-	 * Selects the sub task, which is identified by the given number and than more detailed information is shown on the project view.
-	 * @param idOfSubTask
-	 */
-	selectSubTaskToShow(idOfSubTask:number){
-		this.subTaskToShow.next(idOfSubTask);
 	}
 
 	/**

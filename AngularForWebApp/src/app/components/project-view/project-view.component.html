@@ -20,21 +20,21 @@
 		<div class="tasks backlog w-25 card">
 			<div class="card-header">Backlog</div>
 			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of backlogTasks">
-				<app-subTask [subTask]=subTask></app-subTask>
+				<app-subTask (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 
 		<div class="tasks running w-25 card">
 			<div class="card-header">Running</div>
 			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of runningTasks">
-				<app-subTask [subTask]=subTask></app-subTask>
+				<app-subTask (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 
 		<div class="tasks finished w-25 card">
 			<div class="card-header">Finished</div>
 			<div class="projectContainer mx-1 my-3" *ngFor="let subTask of finishedTasks">
-				<app-subTask [subTask]=subTask></app-subTask>
+				<app-subTask  (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 
