@@ -3,7 +3,7 @@ import {ServerDataService} from '../../services/server-data.service';
 import { Project } from '../../models/Project';
 import { ActivatedRoute, ROUTER_INITIALIZER} from '@angular/router';
 import { CreateProjectComponent } from '../create-project/create-project.component';
-import { MatDialog,MatDialogRef } from '@angular/material/dialog';
+import { MatDialog,MatDialogRef,MatDialogConfig } from '@angular/material/dialog';
 import { Route } from '@angular/compiler/src/core';
 import { NgForOf } from '@angular/common';
 
@@ -14,7 +14,6 @@ import { NgForOf } from '@angular/common';
 })
 export class HomeComponent implements OnInit{
 
-	currentDialog:MatDialogRef<any> = null;
 	projects:Project[];
 	filter:string = 'def';
 
@@ -42,13 +41,10 @@ export class HomeComponent implements OnInit{
 
 
 	openDialog():void{
-		this.currentDialog = this.matDialog.open(CreateProjectComponent, {
-			width: '500px'
-		});
 
-		this.currentDialog.afterClosed().subscribe(result=>{
-			// TODO was macht das? kann das weg?
-			console.log("subscribe log");
-		})
+		const dialogConfig = new MatDialogConfig();
+		dialogConfig.autoFocus = true;
+		dialogConfig.width="50%";
+		this.matDialog.open(CreateProjectComponent,dialogConfig);
 	}
 }

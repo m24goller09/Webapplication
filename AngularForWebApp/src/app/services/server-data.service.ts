@@ -10,6 +10,7 @@ import {StateOfTask} from '../models/StateOfTask';
 })
 export class ServerDataService {
 	projects: Project[];
+	formProject: Project;
 	subTasksDummy:SubTask[];
 	dataBaseURL:string = "http://localhost:5050/";
 
@@ -97,6 +98,7 @@ export class ServerDataService {
 	/*
 	 * all getters
 	 */
+
 	/**
 	 * Gets all projects of the db
 	 */
@@ -121,21 +123,26 @@ export class ServerDataService {
    	 * all posts
 	 */
 	/**
-	 * Creates an project and adds it to the database with a post.
+	 * Gets an Project from the CreateProjectComponent and adds it to the database with a post.
 	 * @param name
-	 * @param creator
 	 * @param description
 	 */
-	addProject(name:string, creator:string, description:string){
-		let project:Object = {
-			"projectID": 0, // no need to be set, is handled by the db
+	addProject(name:string,description:string){
+		 alert(name);
+
+		let project: Object = {
+			"projectID":0,
 			"name": name,
-			"description": description,
-			"manager": creator
+			"description":description,
+			"manager":"lcdb",
+		    "state":"running"
 		}
-		this.http.post(this.dataBaseURL+"Project", project).subscribe(value => {
+
+		this.http.post(this.dataBaseURL+"Project",project).subscribe(value => {
 			console.log(value);
 		});
+
+
 	}
 
 	/**

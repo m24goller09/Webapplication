@@ -1,23 +1,30 @@
-<div class="container">
-	<h2 >Create a new Project</h2>
-	<hr>
-	<form class="form-horizontal" >
-		<div class="form-group">
-			<label class="control-label col-sm-4" for="NameInput" >Project-Name: </label>
-			<div class="col-sm-10">
-				<input #nameInput type="text" class="form-control" id="NameInput" placeholder="Enter Name" >
-			</div>
+
+<div style="overflow: auto; heigt:5rem;" class="bg-transparent">
+	<form #form="ngForm" (submit)="onSubmit(form)" >
+
+		<div class="modal-header bg-dark text-center h-50">
+			<h3 class="modal-title  text-white text-uppercase w-100 font-weight-bold">New Project </h3>
+			<button type="button"  class=" btn btn-light" aria-label="Close" (click)="onClose()">
+			<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="DescriptionInput">Description: </label>
-			<div class="col-sm-10">
-				<textarea #descInput class="form-control" id="DescriptionInput" cols="30" rows="5" placeholder="max 500 characters..."></textarea>
-			</div>
+
+
+		<div class="form-group mt-2">
+			<label for="formGroupExampleInput" class="font-weight-bold"><u>Project name: </u></label>
+			<input  type="text" class="form-control" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="dataService.formProject.name">
 		</div>
+
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="submit()">Create</button>
-			</div>
+			<label for="formGroupExampleInput2" class="font-weight-bold"><u>Project description: </u></label>
+			<textarea class="form-control" colls="30" rows="5" name="ProjectDescription" #ProjectDescription="ngModel" [(ngModel)]="dataService.formProject.description"> </textarea>
 		</div>
+
+
+		<div class="modal-footer bg-dark d-flex justify-content-center">
+        	<button class="btn btn-outline-success m-4 my-2 my-sm-0" type="submit" (click)="onClose()">Create</button>
+      	</div>
+
 	</form>
 </div>
+
