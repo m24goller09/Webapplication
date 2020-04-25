@@ -145,9 +145,7 @@ export class  ServerDataService {
 			"state" : "running"
 		}
 
-		this.http.post(this.dataBaseURL+"Project", project).subscribe(value => {
-			console.log(value);
-		})
+		return this.http.post(this.dataBaseURL+"Project", project);
 	}
 
 	/**

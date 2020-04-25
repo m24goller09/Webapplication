@@ -43,6 +43,9 @@ export class CreateProjectComponent implements OnInit {
 
 	onSubmit(form:NgForm){
 		//alert(form.value.ProjectName);
-		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription);
+		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription).subscribe(value => {
+			let id = ServerDataService.parseProject(value).id;
+			window.location.href ="/projectView/"+id;
+		})
 	}
 }
