@@ -42,7 +42,7 @@ export class CreateProjectComponent implements OnInit {
 	}
 
 	onSubmit(form:NgForm){
-		alert(form.value.ProjectName);
+		//alert(form.value.ProjectName);
 		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription);
 	}
 }

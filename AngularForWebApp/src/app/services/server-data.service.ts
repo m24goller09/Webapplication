@@ -136,7 +136,7 @@ export class  ServerDataService {
 	 * @param description description of the project to add
 	 */
 	addProject(name:string, description:string){
-		alert(name);
+		//alert(name);
 		let project:Object = {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
@@ -144,7 +144,10 @@ export class  ServerDataService {
 			"manager": "lcdb",
 			"state" : "running"
 		}
-		return this.http.post(this.dataBaseURL+"Project", project);
+
+		this.http.post(this.dataBaseURL+"Project", project).subscribe(value => {
+			console.log(value);
+		})
 	}
 
 	/**
