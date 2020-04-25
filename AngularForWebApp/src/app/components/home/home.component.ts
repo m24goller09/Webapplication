@@ -6,6 +6,7 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
 import { MatDialog,MatDialogRef,MatDialogConfig } from '@angular/material/dialog';
 import { Route } from '@angular/compiler/src/core';
 import { NgForOf } from '@angular/common';
+import {StateOfProject} from '../../models/StateOfProject';
 
 @Component({
 	selector: 'app-home',
@@ -19,23 +20,18 @@ export class HomeComponent implements OnInit{
 
 	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute) {}
 
-	changeRunning(running: string) {
+	changeRunning(running:StateOfProject) {
 		this.dataService.changeRunning(running);
 	}
 
     ngOnInit(): void {
 		// subscribe to the parameter running
 		this.route.paramMap.subscribe(params => {
-			this.changeRunning(params.get('filter'));
+			this.changeRunning(Project.parseState(params.get('filter')));
 		});
 		// get all projects from the data service
 		this.dataService.getProjects().subscribe((result)=>{
-			this.projects = [];
-			for (let i in result){
-				const project = result[i];
-				// TODO: Get actual running state from db, if API provides that
-				this.projects.push(new Project(project.name,project.manager,project.description,true,project.projectID));
-			}
+			this.projects = ServerDataService.parseProjects(result);
 		});
 	}
 

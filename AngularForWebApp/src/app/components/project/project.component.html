@@ -1,8 +1,8 @@
-<div *ngIf="running==project.running.toString()||running=='def'" class="card p-2" style="width: 18rem; height: 16rem; margin: 0.5rem;">
-	<a [routerLink]="['/projectView',project.id,project.name,project.description,project.creator,project.running]" routerLinkActive="router-link-active" >
+<div *ngIf="state===project.state || state===null" class="card p-2">
+	<a [routerLink]="['/projectView',project.id]" routerLinkActive="router-link-active">
 	<div class="card-body">
-		<h5 class="card-title">{{project.name}} <span class="id" style="float: right;"> {{project.id}} </span></h5>
-		<div class="projectCreator border-top" style="margin-bottom: 0.5rem">{{project.creator}}</div>
+		<h5 class="card-title">{{project.name}} </h5>
+		<div class="projectCreator border-top my-1">{{project.creator}}</div>
 		<p class="card-text">
 			{{project.description}}
 		</p>

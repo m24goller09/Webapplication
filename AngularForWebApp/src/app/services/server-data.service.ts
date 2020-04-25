@@ -4,21 +4,20 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Project} from '../models/Project';
 import {SubTask} from '../models/SubTask';
 import {StateOfTask} from '../models/StateOfTask';
+import {StateOfProject} from '../models/StateOfProject';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServerDataService {
+export class  ServerDataService {
 	projects: Project[];
 	formProject: Project;
 	subTasksDummy:SubTask[];
 	dataBaseURL:string = "http://localhost:5050/";
 
-	private runningParameter = new BehaviorSubject<string>("def");
-	currentRunning = this.runningParameter.asObservable();
-
-	private subTaskToShow = new BehaviorSubject<number>(-1);
-	taskToShow = this.subTaskToShow.asObservable();
+	// setting all observables to share data across the websites
+	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
+	stateOfProjectObservable = this.stateOfProject.asObservable();
 
   	constructor(private http:HttpClient) {
   		this.subTasksDummy = [
@@ -108,6 +107,15 @@ export class ServerDataService {
 	}
 
 	/**
+	 * Get the project of the db, which is identified by the given id
+	 * @param idOfProject the id of the project to get from the db
+	 */
+	getProject(idOfProject:number){
+		let queryURL = this.dataBaseURL + "Project/" + idOfProject;
+		return this.http.get(queryURL);
+	}
+
+	/**
 	 * Returns all sub tasks of the specified project, by the id.
 	 * @param idOfProject which specifies the project
 	 */
@@ -123,26 +131,20 @@ export class ServerDataService {
    	 * all posts
 	 */
 	/**
-	 * Gets an Project from the CreateProjectComponent and adds it to the database with a post.
-	 * @param name
-	 * @param description
+	 * Creates an project and adds it to the database with a post.
+	 * @param name name of the project to add
+	 * @param description description of the project to add
 	 */
-	addProject(name:string,description:string){
-		 alert(name);
-
-		let project: Object = {
-			"projectID":0,
+	addProject(name:string, description:string){
+		alert(name);
+		let project:Object = {
+			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
-			"description":description,
-			"manager":"lcdb",
-		    "state":"running"
+			"description": description,
+			"manager": "lcdb",
+			"state" : "running"
 		}
-
-		this.http.post(this.dataBaseURL+"Project",project).subscribe(value => {
-			console.log(value);
-		});
-
-
+		return this.http.post(this.dataBaseURL+"Project", project);
 	}
 
 	/**
@@ -166,16 +168,29 @@ export class ServerDataService {
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
 	 */
-  	changeRunning(running: string){
-  		this.runningParameter.next(running);
+  	changeRunning(running:StateOfProject){
+  		this.stateOfProject.next(running);
 	}
 
 	/**
-	 * Selects the sub task, which is identified by the given number and than more detailed information is shown on the project view.
-	 * @param idOfSubTask
+	 * Parses an array of JSON Objects to an array of projects
+	 * @param rawProjects an array of json objects which represent projects
+	 * @return an array of parsed projects
 	 */
-	selectSubTaskToShow(idOfSubTask:number){
-		this.subTaskToShow.next(idOfSubTask);
-		console.log("new subtask selected"+idOfSubTask);
+	static parseProjects(rawProjects:Object){
+		let projects = [];
+		for (let i in rawProjects){
+			const project = rawProjects[i];
+			projects.push(ServerDataService.parseProject(project));
+		}
+		return projects;
+	}
+
+	/**
+	 * Parses an JSON Object to an project object.
+	 * @param project the json object to parse
+	 */
+	static parseProject(project:any){
+		return new Project(project.name,project.manager,project.description,project.state,project.projectID);
 	}
 }
