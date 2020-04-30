@@ -124,6 +124,8 @@ export class  ServerDataService {
 	 */
 	static parseSubTasks(subTasks:Object){
 		let parsedSubTasks = [];
+		return [ServerDataService.parseSubTask(subTasks)];
+		// TODO comment out
 		for (let i in subTasks){
 			const subTask = subTasks[i];
 			console.log(subTask);
@@ -137,6 +139,7 @@ export class  ServerDataService {
 	 * @param subTask the json object to parse
 	 */
 	static parseSubTask(subTask:any){
+		console.log("parse "+subTask.state);
 		return new SubTask(subTask.subtaskId,subTask.name,"TODO: placeholder",subTask.description,subTask.state);
 	}
 }

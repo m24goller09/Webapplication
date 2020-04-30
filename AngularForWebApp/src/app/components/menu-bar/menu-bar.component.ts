@@ -1,21 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ServerDataService } from '../../services/server-data.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu-bar',
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css']
 })
-export class MenuBarComponent implements OnInit {
+export class MenuBarComponent {
 	@Input() title:string;
-	filter: string;
-	constructor(private dataService:ServerDataService) {
-	}
-
-	ngOnInit(): void {
-		// running parameter as an observable
-		//this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
-
-
-	}
+	constructor() {}
 }

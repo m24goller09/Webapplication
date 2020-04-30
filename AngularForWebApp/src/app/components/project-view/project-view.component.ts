@@ -22,24 +22,24 @@ export class ProjectViewComponent implements OnInit {
 	// initial sub task, show this if this project has no sub tasks
 	private defaultSubTask: SubTask = {
 		id: -1,
-		name:"Sub task information",
-		creator:"def",
-		description:"No information to show.",
-		state:StateOfTask.Backlog
+		name:"No sub task to display.",
+		creator:"",
+		description:"Please create an sub task to show more information",
+		state:StateOfTask.Running
 	};
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService) { }
 
   	ngOnInit(): void {
+  		// default sub task is shown in the beginning
+  		this.subTaskToShow = this.defaultSubTask;
 		this.route.paramMap.subscribe(params =>{
 			try {
 				let id:number = Number.parseInt(params.get("id"));
 				this.dataService.getProject(id).subscribe(value => {
 					this.project = ServerDataService.parseProject(value);
-
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
-						console.log(value);
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
 					});
 				});
@@ -59,9 +59,14 @@ export class ProjectViewComponent implements OnInit {
 	 * @param subTasks which are being divided into the three arrays
 	 */
 	private divideSubTasks(subTasks: SubTask[]) {
-		 this.backlogTasks = [];
-		 this.runningTasks = [];
-		 this.finishedTasks = [];
+		if (subTasks.length <= 0){
+			// if there are no sub tasks from this project, display the default task
+			this.subTaskToShow = this.defaultSubTask;
+			return;
+		}
+		this.backlogTasks = [];
+		this.runningTasks = [];
+		this.finishedTasks = [];
 
 		for (let subTask of subTasks){
 			// put all sub tasks in map to quickly show info
