@@ -45,14 +45,14 @@ namespace AuthServer
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseErrorEvents = true;
             })
-                .AddDeveloperSigningCredential()
+                .AddDeveloperSigningCredential()/*
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseNpgsql(Configuration.GetConnectionString("Default"));
 
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
-                })
+                })*/
                 //.AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
