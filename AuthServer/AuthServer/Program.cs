@@ -14,6 +14,7 @@ namespace AuthServer
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5000");
+                .UseUrls("https://https://promas.herokuapp.com/");
+                //.UseUrls("http://localhost:5000");
     }
 }
