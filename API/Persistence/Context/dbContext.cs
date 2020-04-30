@@ -20,7 +20,6 @@ namespace API.Persistence.Context
         public virtual DbSet<ProjectAssignment> ProjectAssignment { get; set; }
         public virtual DbSet<ProjectState> ProjectState { get; set; }
         public virtual DbSet<Subtask> Subtask { get; set; }
-        public virtual DbSet<SubtaskAssignment> SubtaskAssignment { get; set; }
         public virtual DbSet<SubtaskState> SubtaskState { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -101,6 +100,12 @@ namespace API.Persistence.Context
                     .HasColumnName("subtaskID")
                     .ValueGeneratedOnAdd();
 
+                entity.Property(e => e.Assigned).HasColumnName("assigned");
+
+                entity.Property(e => e.Creator)
+                    .IsRequired()
+                    .HasColumnName("creator");
+
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasColumnName("description")
@@ -126,24 +131,14 @@ namespace API.Persistence.Context
                     .WithMany(p => p.Subtask)
                     .HasForeignKey(d => d.State)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
 
-            modelBuilder.Entity<SubtaskAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.Username, e.SubtaskId });
+                entity.HasOne(d => d.ProjectAssignment)
+                    .WithMany(p => p.SubtaskProjectAssignment)
+                    .HasForeignKey(d => new { d.Assigned, d.ProjectId });
 
-                entity.Property(e => e.Username).HasColumnName("username");
-
-                entity.Property(e => e.SubtaskId).HasColumnName("subtaskID");
-
-                entity.HasOne(d => d.Subtask)
-                    .WithMany(p => p.SubtaskAssignment)
-                    .HasForeignKey(d => d.SubtaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.SubtaskAssignment)
-                    .HasForeignKey(d => d.Username)
+                entity.HasOne(d => d.ProjectAssignmentNavigation)
+                    .WithMany(p => p.SubtaskProjectAssignmentNavigation)
+                    .HasForeignKey(d => new { d.Creator, d.ProjectId })
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
