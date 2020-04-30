@@ -4,8 +4,6 @@ import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
 import {Project} from '../../models/Project';
 import {ActivatedRoute} from '@angular/router';
-import {StateOfProject} from '../../models/StateOfProject';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-project-view',
@@ -40,7 +38,10 @@ export class ProjectViewComponent implements OnInit {
 					this.project = ServerDataService.parseProject(value);
 
 					// load in sub tasks for opened project
-					this.divideSubTasks(this.dataService.getSubTasks(this.project.id));
+					this.dataService.getSubTasks(this.project.id).subscribe(value => {
+						console.log(value);
+						this.divideSubTasks(ServerDataService.parseSubTasks(value));
+					});
 				});
 			}catch (e) {
 				throw e;

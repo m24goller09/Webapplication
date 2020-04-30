@@ -19,80 +19,7 @@ export class  ServerDataService {
 	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
 	stateOfProjectObservable = this.stateOfProject.asObservable();
 
-  	constructor(private http:HttpClient) {
-  		this.subTasksDummy = [
-  			{
-  				id:1,
-				name: 'sub task backlog',
-				creator: 'me',
-				description: 'This is sub task 1, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Backlog
-			},
-			{
-				id:2,
-				name: 'sub task running',
-				creator: 'nice',
-				description: ' 2 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			},
-			{
-				id:3,
-				name: 'sub task finished',
-				creator: 'not me',
-				description: '3 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Finished
-			},
-			{
-				id:4,
-				name: 'sub task backlog 2',
-				creator: 'nice',
-				description: '4 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Backlog
-			},
-			{
-				id:5,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '5 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			},
-			{
-				id:6,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '6 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Finished
-			},
-			{
-				id:7,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '7 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			}
-		]
-  	}
+  	constructor(private http:HttpClient) {}
 
 	/*
 	 * all getters
@@ -120,11 +47,8 @@ export class  ServerDataService {
 	 * @param idOfProject which specifies the project
 	 */
 	getSubTasks(idOfProject:number){
-  		/* TODO:
-		* let queryURL = this.dataBaseURL +"SubTasks/"+idOfProject;
-		* return this.http.get(queryURL);
-  		 */
-		return this.subTasksDummy;
+		let queryURL = this.dataBaseURL +"SubTask/"+idOfProject;
+		return this.http.get(queryURL);
   	}
 
 	/*
@@ -136,7 +60,6 @@ export class  ServerDataService {
 	 * @param description description of the project to add
 	 */
 	addProject(name:string, description:string){
-		//alert(name);
 		let project:Object = {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
@@ -144,7 +67,6 @@ export class  ServerDataService {
 			"manager": "lcdb",
 			"state" : "running"
 		}
-
 		return this.http.post(this.dataBaseURL+"Project", project);
 	}
 
@@ -193,5 +115,28 @@ export class  ServerDataService {
 	 */
 	static parseProject(project:any){
 		return new Project(project.name,project.manager,project.description,project.state,project.projectID);
+	}
+
+	/**
+	 * Parses an array of JSON Objects to an array of sub tasks
+	 * @param subTasks an array of json objects which represent sub tasks
+	 * @return an array of parsed sub tasks
+	 */
+	static parseSubTasks(subTasks:Object){
+		let parsedSubTasks = [];
+		for (let i in subTasks){
+			const subTask = subTasks[i];
+			console.log(subTask);
+			parsedSubTasks.push(ServerDataService.parseSubTask(subTask));
+		}
+		return parsedSubTasks;
+	}
+
+	/**
+	 * Parses an JSON Object to an sub task object.
+	 * @param subTask the json object to parse
+	 */
+	static parseSubTask(subTask:any){
+		return new SubTask(subTask.subtaskId,subTask.name,"TODO: placeholder",subTask.description,subTask.state);
 	}
 }

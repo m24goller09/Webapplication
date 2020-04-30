@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit{
 
 
 	openDialog():void{
-
 		const dialogConfig = new MatDialogConfig();
 		dialogConfig.autoFocus = true;
 		dialogConfig.width="50%";
