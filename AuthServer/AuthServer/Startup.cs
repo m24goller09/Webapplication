@@ -46,13 +46,13 @@ namespace AuthServer
                 options.Events.RaiseErrorEvents = true;
             })
                 .AddDeveloperSigningCredential()
-                .AddOperationalStore(options =>
+                /*.AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseSqlite(Configuration.GetConnectionString("Default"));
 
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
-                })
+                })*/
                 //.AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
