@@ -57,7 +57,7 @@ namespace AuthServer.Controllers
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
