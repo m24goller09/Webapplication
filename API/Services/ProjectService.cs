@@ -51,6 +51,7 @@ namespace API.Services
             }
             return project;
         }
+
         public async Task <IEnumerable<ProjectAssignment>> GetProjectByUserAsync(string userName)
         {
             var projects = await projectAssignmentRepository.ListAsyncByUser(userName);
@@ -63,14 +64,15 @@ namespace API.Services
 
         public override async Task Update(Project modelToUpdate)
         {
-            var currentUser = await standardRepository.FindByIdAsync(modelToUpdate.ProjectId);
-            NullCheck(currentUser);
+            var currentProject = await standardRepository.FindByIdAsync(modelToUpdate.ProjectId);
+            NullCheck(currentProject);
             try
             {
                 // is the manager updateable?
                 //tmpUser.Manager = modelToUpdate.Manager;
-                currentUser.Name = modelToUpdate.Name;
-                currentUser.Description = modelToUpdate.Description;
+                currentProject.Name = modelToUpdate.Name;
+                currentProject.Description = modelToUpdate.Description;
+                currentProject.State = modelToUpdate.State;
                 // we don't need to call the update method, as ef-core still tracks this object 
                 await unitOfWork.CompleteAsync();
             }

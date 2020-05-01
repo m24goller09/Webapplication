@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    public class SubTaskDTO
+    public class SubtaskDTO
     {
         public long SubtaskId { get; set; }
         [Required]
@@ -15,5 +15,11 @@ namespace API.DTOs
         public string Description { get; set; }
         [Required]
         public long ProjectId { get; set; }
+        [Required]
+        public string State { get; set; }
+        [Required]
+        public string Creator { get; set; }
+        [Required]
+        public string Assigned { get; set; }
     }
 }

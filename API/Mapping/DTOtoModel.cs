@@ -12,7 +12,7 @@ namespace API.Mapping
         {
             CreateMap<UserDTO, User>();
             CreateMap<ProjectDTO, Project>();
-            CreateMap<SubTaskDTO, Subtask>();
+            CreateMap<SubtaskDTO, Subtask>();
         }
     }
 }

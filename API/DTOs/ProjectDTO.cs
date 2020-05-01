@@ -11,6 +11,8 @@ namespace API.DTOs
         [Required]
         public string Description { get; set; }
         [Required]
-        public string manager { get; set; }
+        public string Manager { get; set; }
+        [Required]
+        public string State { get; set; }
     }
 }
