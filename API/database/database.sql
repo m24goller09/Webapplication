@@ -1,4 +1,4 @@
-create table User (
+create table public.User (
 	username text primary key,
 	name text not null default ''
 );
@@ -9,15 +9,13 @@ create table ProjectState (
 
 insert into ProjectState values ('running'), ('finished'), ('paused');
 
+
 create table Project (
-	projectID integer primary key,
+	projectID serial primary key,
 	name text not null,
 	description text not null default '',
 	manager text not null,
-	state text not null default 'running' references ProjectState (state),
-
-	/* Deferrable foreign key due to chicken-and-egg problem */
-	foreign key (manager, projectID) references ProjectAssignment (username, projectID) deferrable initially deferred
+	state text not null default 'running' references ProjectState (state)
 );
 
 create table ProjectAssignment (
@@ -25,9 +23,13 @@ create table ProjectAssignment (
 	projectID integer,
 	
 	primary key (username, projectID),
-	foreign key (username) references User (username),
-	foreign key (projectID) references Project (projectID)
+	foreign key (username) references public.User (username)
 );
+
+alter table ProjectAssignment add foreign key (projectID) references Project (projectID);
+/* Deferrable foreign key due to chicken-and-egg problem */
+alter table Project add foreign key (manager, projectID) references ProjectAssignment (username, projectID) deferrable initially deferred;
+
 
 create table SubtaskState (
 	state text primary key
@@ -36,7 +38,7 @@ create table SubtaskState (
 insert into SubtaskState values ('running'), ('backlog'), ('finished');
 
 create table Subtask (
-	subtaskID integer primary key,
+	subtaskID serial primary key,
 	name text not null,
 	description text not null default '',
 	projectID integer not null references Project (projectID),
