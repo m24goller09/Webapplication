@@ -11,7 +11,7 @@ namespace API.Mapping
         {
             CreateMap<User, UserDTO>();
             CreateMap<Project, ProjectDTO>();
-            CreateMap<Subtask, SubTaskDTO>();
+            CreateMap<Subtask, SubtaskDTO>();
             CreateMap<ProjectAssignment, ProjectDTO>();
         }
     }

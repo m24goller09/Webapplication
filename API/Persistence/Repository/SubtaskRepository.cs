@@ -31,7 +31,6 @@ namespace API.Persistence.Repository
         public async Task<IEnumerable<Subtask>> ListAsync()
         {
             return await dbContext.Subtask
-                .Include(d => d.SubtaskAssignment) //JOIN
                 .Include(d => d.Project).ThenInclude(d => d.Subtask) // Multiple JOINS
                 .ToListAsync();
         }

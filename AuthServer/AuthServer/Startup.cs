@@ -32,7 +32,7 @@ namespace AuthServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Default")));
             
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -45,14 +45,14 @@ namespace AuthServer
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseErrorEvents = true;
             })
-                .AddDeveloperSigningCredential()
+                .AddDeveloperSigningCredential()/*
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlite(Configuration.GetConnectionString("Default"));
+                    options.ConfigureDbContext = builder => builder.UseNpgsql(Configuration.GetConnectionString("Default"));
 
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
-                })
+                })*/
                 //.AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
@@ -111,7 +111,6 @@ namespace AuthServer
             app.UseStaticFiles();
             app.UseCors("AllowAll");
             app.UseIdentityServer();
-            app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
