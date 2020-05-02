@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using API.Domain.Models;
+using Microsoft.Extensions.Logging;
 
 namespace API.Persistence.Context
 {
@@ -27,8 +28,9 @@ namespace API.Persistence.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=database/db.sqlite");
+                optionsBuilder.UseNpgsql("Host=ec2-54-195-247-108.eu-west-1.compute.amazonaws.com;Database=d4hdqiagptl9hv;Username=lhiesjkvkixdqr;Password=e8169549ae0b155ff9aecc588e85c4acfe921337b82b10d639605811599f657d;sslmode=Prefer;Trust Server Certificate=true");
             }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -97,7 +99,7 @@ namespace API.Persistence.Context
             modelBuilder.Entity<Subtask>(entity =>
             {
                 entity.Property(e => e.SubtaskId)
-                    .HasColumnName("subtaskID")
+                    .HasColumnName("subtaskID")                    
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Assigned).HasColumnName("assigned");
