@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Project} from '../models/Project';
 import {SubTask} from '../models/SubTask';
 import {StateOfTask} from '../models/StateOfTask';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import {StateOfTask} from '../models/StateOfTask';
 export class ServerDataService {
 	projects: Project[];
 	subTasksDummy:SubTask[];
-	dataBaseURL:string = "http://localhost:5050/";
+	dataBaseURL:string = environment.server;
 
 	private runningParameter = new BehaviorSubject<string>("def");
 	currentRunning = this.runningParameter.asObservable();
