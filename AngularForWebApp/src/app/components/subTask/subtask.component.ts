@@ -5,7 +5,7 @@ import {ServerDataService} from '../../services/server-data.service';
 
 @Component({
   selector: 'app-subTask',
-  templateUrl: './subTask.component.html',
+  templateUrl: './subtask.component.html',
   styleUrls: ['./subtask.component.scss']
 })
 
