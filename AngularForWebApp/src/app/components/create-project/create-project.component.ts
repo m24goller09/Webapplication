@@ -24,7 +24,7 @@ export class CreateProjectComponent implements OnInit {
 		let tempName:string = this.nameInput.nativeElement.value;
 		let tempDescription:string = this.descInput.nativeElement.value;
 		let tempCreator = "me" + ++this.count;
-		this.dataService.addData(tempName,tempCreator,tempDescription);
+		this.dataService.addProject(tempName,tempCreator,tempDescription);
 		this.onClose();
 
 	}
