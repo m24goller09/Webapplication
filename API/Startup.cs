@@ -84,13 +84,15 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseSwagger();
-
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v0/swagger.json", "Backend");
-                });
+                
             }
+            // Should be in if above!!
+            app.UseSwagger();
+            // Should be in if above!!
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v0/swagger.json", "Backend");
+            });
 
             app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
