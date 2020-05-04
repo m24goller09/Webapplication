@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import { ServerDataService } from '../../services/server-data.service';
-import { ActivatedRoute,Router } from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
 import {NgForm} from '@angular/forms';
 import { StateOfProject } from '../../models/StateOfProject';

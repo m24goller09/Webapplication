@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace API.Domain.Models
+namespace API.DTOs
 {
-    public partial class Subtask
+    public class SubtaskDTO
     {
         public long SubtaskId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public long ProjectId { get; set; }
+        [Required]
         public string State { get; set; }
+        [Required]
         public string Creator { get; set; }
+        [Required]
         public string Assigned { get; set; }
-
-        public virtual Project Project { get; set; }
-        public virtual ProjectAssignment ProjectAssignment { get; set; }
-        public virtual ProjectAssignment ProjectAssignmentNavigation { get; set; }
-        public virtual SubtaskState StateNavigation { get; set; }
     }
 }

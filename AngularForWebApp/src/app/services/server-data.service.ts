@@ -5,15 +5,16 @@ import {Project} from '../models/Project';
 import {SubTask} from '../models/SubTask';
 import {StateOfTask} from '../models/StateOfTask';
 import {StateOfProject} from '../models/StateOfProject';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class  ServerDataService {
+export class ServerDataService {
 	projects: Project[];
 	formProject: Project;
 	subTasksDummy:SubTask[];
-	dataBaseURL:string = "http://localhost:5050/";
+	dataBaseURL:string = environment.server;
 
 	// setting all observables to share data across the websites
 	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
@@ -64,7 +65,7 @@ export class  ServerDataService {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
 			"description": description,
-			"manager": "lcdb",
+			"manager": "lcdb", // TODO use logged in user
 			"state" : "running"
 		}
 		return this.http.post(this.dataBaseURL+"Project", project);

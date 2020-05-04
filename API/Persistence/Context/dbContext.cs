@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using API.Domain.Models;
+using Microsoft.Extensions.Logging;
 
 namespace API.Persistence.Context
 {
@@ -20,7 +21,6 @@ namespace API.Persistence.Context
         public virtual DbSet<ProjectAssignment> ProjectAssignment { get; set; }
         public virtual DbSet<ProjectState> ProjectState { get; set; }
         public virtual DbSet<Subtask> Subtask { get; set; }
-        public virtual DbSet<SubtaskAssignment> SubtaskAssignment { get; set; }
         public virtual DbSet<SubtaskState> SubtaskState { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -28,8 +28,9 @@ namespace API.Persistence.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=database/db.sqlite");
+                optionsBuilder.UseNpgsql("Host=ec2-54-195-247-108.eu-west-1.compute.amazonaws.com;Database=d4hdqiagptl9hv;Username=lhiesjkvkixdqr;Password=e8169549ae0b155ff9aecc588e85c4acfe921337b82b10d639605811599f657d;sslmode=Prefer;Trust Server Certificate=true");
             }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -98,8 +99,14 @@ namespace API.Persistence.Context
             modelBuilder.Entity<Subtask>(entity =>
             {
                 entity.Property(e => e.SubtaskId)
-                    .HasColumnName("subtaskID")
+                    .HasColumnName("subtaskID")                    
                     .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Assigned).HasColumnName("assigned");
+
+                entity.Property(e => e.Creator)
+                    .IsRequired()
+                    .HasColumnName("creator");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -126,24 +133,14 @@ namespace API.Persistence.Context
                     .WithMany(p => p.Subtask)
                     .HasForeignKey(d => d.State)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
 
-            modelBuilder.Entity<SubtaskAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.Username, e.SubtaskId });
+                entity.HasOne(d => d.ProjectAssignment)
+                    .WithMany(p => p.SubtaskProjectAssignment)
+                    .HasForeignKey(d => new { d.Assigned, d.ProjectId });
 
-                entity.Property(e => e.Username).HasColumnName("username");
-
-                entity.Property(e => e.SubtaskId).HasColumnName("subtaskID");
-
-                entity.HasOne(d => d.Subtask)
-                    .WithMany(p => p.SubtaskAssignment)
-                    .HasForeignKey(d => d.SubtaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.SubtaskAssignment)
-                    .HasForeignKey(d => d.Username)
+                entity.HasOne(d => d.ProjectAssignmentNavigation)
+                    .WithMany(p => p.SubtaskProjectAssignmentNavigation)
+                    .HasForeignKey(d => new { d.Creator, d.ProjectId })
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

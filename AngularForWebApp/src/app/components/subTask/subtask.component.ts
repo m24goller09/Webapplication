@@ -5,7 +5,7 @@ import {ProjectViewComponent} from '../project-view/project-view.component';
 
 @Component({
   selector: 'app-subTask',
-  templateUrl: './subTask.component.html',
+  templateUrl: './subtask.component.html',
   styleUrls: ['./subtask.component.scss']
 })
 
