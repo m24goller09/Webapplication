@@ -37,8 +37,8 @@ namespace AuthServer
                     ClientName = "Angular SPA",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = { "openid", "profile", "email", "api.read" },
-                    RedirectUris = { "https://promas.herokuapp.com/auth-callback/", "http://localhost:4200/auth-callback/" },
-                    PostLogoutRedirectUris = {"https://promas.herokuapp.com/"},
+                    RedirectUris = { "https://promas.herokuapp.com/auth-callback", "http://localhost:4200/auth-callback/" },
+                    PostLogoutRedirectUris = {"https://promas.herokuapp.com", "http://localhost:4200/"},
                     AllowedCorsOrigins = { "https://promas.herokuapp.com" ,"http://localhost:4200" },
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 3600
