@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { BaseService } from "../../shared/base.service";
 import { ConfigService } from '../../shared/config.service';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -47,7 +48,10 @@ export class AuthService extends BaseService {
 	}
 
 	get authorizationHeaderValue(): string {
-		return `${this.user.token_type} ${this.user.access_token}`;
+		if (this.user != null){
+			return `${this.user.token_type} ${this.user.access_token}`;
+		}
+		throw new Error("No User given in auth.service!");
 	}
 
 	get name(): string {
@@ -81,13 +85,13 @@ export function getClientSettings(): UserManagerSettings {
 		authority: 'https://promasauthserver.herokuapp.com',
 		//authority: 'https://localhost:5000',
 		client_id: 'angular_spa',
-		redirect_uri: 'http://localhost:4200/auth-callback',
-		post_logout_redirect_uri: 'http://localhost:4200/',
+		redirect_uri: environment.home+'auth-callback/',
+		post_logout_redirect_uri: environment.home,
 		response_type: "id_token token",
 		scope: "openid profile email api.read",
 		filterProtocolClaims: true,
 		loadUserInfo: true,
 		automaticSilentRenew: true,
-		silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
+		silent_redirect_uri: environment.home+'silent-refresh.html/'
 	};
 }

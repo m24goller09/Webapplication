@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 			console.log("Register");
 		}
 		else{
-			console.log("login succesfull");
+			//console.log("login succesfull");
 		}
 	}
 
