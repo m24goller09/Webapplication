@@ -9,6 +9,7 @@ import { NgForOf } from '@angular/common';
 import { StateOfProject } from '../../models/StateOfProject';
 import { finalize } from 'rxjs/operators'
 import { AuthService } from '../core/authentication/auth.service';
+import {log} from 'util';
 
 
 
@@ -63,7 +64,10 @@ export class HomeComponent implements OnInit{
 
 	onLogin() {
 		console.log("Login");
-		this.authService.login();
+		this.authService.login().then(r =>{
+			console.log("home:");
+			console.log(r)
+		});
 	}
 
 	async onRegister() {

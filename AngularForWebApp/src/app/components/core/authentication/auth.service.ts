@@ -19,13 +19,14 @@ export class AuthService extends BaseService {
 	authNavStatus$ = this._authNavStatusSource.asObservable();
 
 	private manager = new UserManager(getClientSettings());
-	private user: User | null;
+	private user: User = null;
 
 	constructor(private http: HttpClient, private configService: ConfigService) {
 		super();
 
 		this.manager.getUser().then(user => {
 			this.user = user;
+			console.log("con");
 			this._authNavStatusSource.next(this.isAuthenticated());
 		});
 	}
@@ -34,9 +35,16 @@ export class AuthService extends BaseService {
 		return this.manager.signinRedirect();
 	}
 
-	async completeAuthentication() {
-		this.user = await this.manager.signinRedirectCallback();
-		this._authNavStatusSource.next(this.isAuthenticated());
+	completeAuthentication() {
+		return this.manager.signinRedirectCallback().then(user =>{
+			this.user = user;
+			console.log("test");
+			console.log(user);
+			this._authNavStatusSource.next(this.isAuthenticated());
+		}).catch(error =>{
+			this._authNavStatusSource.next(this.isAuthenticated());
+			console.error(error);
+		});
 	}
 
 	register(userRegistration: any) {
@@ -75,23 +83,36 @@ export class AuthService extends BaseService {
 			})
 		};
 
-		return this.http.get(this.configService.resourceApiURI + '/Project/ByUser/'+this.userName, httpOptions).pipe(catchError(this.handleError));
+		return this.http.get(this.configService.resourceApiURI + 'Project/ByUser/'+this.userName, httpOptions).pipe(catchError(this.handleError));
 		//return this.http.get(this.configService.resourceApiURI + '/Sample', httpOptions).pipe(catchError(this.handleError));
+	}
+	getClaims(): any{
+		return this.user.profile;
 	}
 }
 
-export function getClientSettings(): UserManagerSettings {
+export function getClientSettings(): { showDebugInformation: boolean; loadUserInfo: boolean; metadata: { jwks_uri: string; end_session_endpoint: string; issuer: string; authorization_endpoint: string; userinfo_endpoint: string }; authority: string; response_type: string; redirect_uri: string; post_logout_redirect_uri: string; client_id: string; filterProtocolClaims: boolean } {
 	return {
-		authority: 'https://promasauthserver.herokuapp.com',
+		authority: 'https://promasauthserver.herokuapp.com/',
 		//authority: 'https://localhost:5000',
 		client_id: 'angular_spa',
 		redirect_uri: environment.home+'auth-callback/',
 		post_logout_redirect_uri: environment.home,
 		response_type: "id_token token",
-		scope: "openid profile email api.read",
+		showDebugInformation: true,
 		filterProtocolClaims: true,
 		loadUserInfo: true,
+		/*,
+		scope: "openid profile email api.read",
 		automaticSilentRenew: true,
-		silent_redirect_uri: environment.home+'silent-refresh.html/'
+		silent_redirect_uri: environment.home+'silent-refresh.html'
+		 */
+		metadata: {
+			issuer: 'https://promasauthserver.herokuapp.com/',
+			jwks_uri: 'https://promasauthserver.herokuapp.com' + "/.well-known/openid-configuration/jwks",
+			end_session_endpoint: 'https://promasauthserver.herokuapp.com' + "/connect/endsession",
+			authorization_endpoint: 'https://promasauthserver.herokuapp.com' + "/connect/authorize",
+			userinfo_endpoint: 'https://promasauthserver.herokuapp.com' + "/connect/userinfo",
+		}
 	};
 }

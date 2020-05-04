@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ServerDataService } from '../../services/server-data.service';
 import { AuthService } from '../core/authentication/auth.service';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-menu-bar',
@@ -12,6 +14,8 @@ export class MenuBarComponent {
 	@Input() title:string;
 	filter: string;
 	allowed:boolean;
+	private subscription:Subscription;
+	private isAuthenticated: boolean;
 	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
 
@@ -19,8 +23,9 @@ export class MenuBarComponent {
 		this.allowed=true;
 		// running parameter as an observable
 		//this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
-		if (window.location.href == "http://localhost:4200/" || window.location.href == "http://localhost:4200/register") {
-			this.allowed = false;
+		this.subscription = this.authService.authNavStatus$.subscribe(status => this.allowed = status);
+		if (this.subscription) {
+			//this.allowed = false;
 		}
 
 	}
@@ -29,7 +34,7 @@ export class MenuBarComponent {
 		try{
 			console.log('Signout');
 			await this.authService.signout();
-			this.router.navigate(['']);
+			await this.router.navigate(['']);
 		}
 		catch(er){
 			console.log(er);
@@ -38,6 +43,9 @@ export class MenuBarComponent {
 
 	onLogin() {
 		console.log("Login");
-		this.authService.login();
+		this.authService.login().then(r =>{
+			console.log("menu-bar:");
+			console.log(r)
+		});
 	}
 }

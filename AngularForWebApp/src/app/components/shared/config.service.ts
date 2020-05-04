@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class ConfigService {
@@ -11,6 +12,6 @@ export class ConfigService {
 	}
 
 	get resourceApiURI() {
-		return 'http://localhost:5050';
+		return environment.server;
 	}
 }

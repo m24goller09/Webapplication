@@ -13,15 +13,15 @@ export class AuthCallbackComponent implements OnInit {
 
 	constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
-	async ngOnInit() {
+	ngOnInit() {
 		console.log("Auth-Callback");
 		// check for error
 		if (this.route.snapshot.fragment.indexOf('error') >= 0) {
 			this.error = true;
-			return;
+			throw new Error("Error in auth-callback.component.ts line:21");
 		}
-		console.log(this.route.snapshot.data);
-		await this.authService.completeAuthentication();
+		this.authService.completeAuthentication();
+		console.log("after");
 		this.router.navigate(['/home/def']);
 	}
 }
