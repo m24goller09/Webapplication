@@ -16,6 +16,8 @@ namespace API.Controllers
 {
     [Route("Project")]
     [ApiController]
+    [Authorize(Policy = "ApiReader")]
+    [Authorize(Policy = "Consumer")]
     public class ProjectController : ControllerBase
     {
         private readonly ProjectService projectService;
@@ -26,8 +28,8 @@ namespace API.Controllers
             this.projectService =  (ProjectService) projectService;
             this.mapper = mapper;
         }
-
-        [HttpGet]
+        
+        [HttpGet]  
         [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {

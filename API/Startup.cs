@@ -37,7 +37,7 @@ namespace API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = "https://localhost:5000";
+                o.Authority = "https://promasauthserver.herokuapp.com";
                 o.Audience = "resourceapi";
                 o.RequireHttpsMetadata = false;
             });
@@ -45,8 +45,8 @@ namespace API
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
-                options.AddPolicy("Consumer", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
-                options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+                options.AddPolicy("Consumer", policy => policy.RequireRole("admin", "consumer"));
+                options.AddPolicy("Admin", policy => policy.RequireRole("admin"));            
             });
 
             services.AddMvc(options =>
