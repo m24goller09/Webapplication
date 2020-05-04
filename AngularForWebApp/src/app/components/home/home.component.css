@@ -1,8 +1,18 @@
-.add-button{
-	margin-left: 2.5rem;
-	margin-top: 2.5rem;
-	color:lightgrey;
+.add-button {
+    margin-left: 2.5rem;
+    margin-top: 2.5rem;
+    color: lightgrey;
 }
-.add-button:hover{
-	color: lightslategray;
+
+.add-button:hover {
+    color: lightslategray;
+}
+
+#login {
+    text-decoration-line: underline;
+    color: blue;
+}
+
+#login:hover {
+    cursor: pointer;
 }

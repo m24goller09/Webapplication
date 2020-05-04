@@ -1,5 +1,5 @@
 import {BrowserModule, Title} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -13,21 +13,50 @@ import { ProjectViewComponent } from './project-view/project-view.component';
 import { SubTaskComponent } from './subTask/subtask.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegisterComponent } from './register/register.component';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+
+import { ConfigService } from './shared/config.service';
 
 let routes: Routes;
 routes = [
 	{
 		path: '',
-		component: HomeComponent
+		redirectTo:'register',
+		pathMatch: 'full'
+	},
+	{
+		path: 'register',
+		component:RegisterComponent
+	},
+	{
+		path: 'login',
+		redirectTo:'register',
+		pathMatch: 'full'
 	},
 	{
 		path: 'home/:filter',
 		component: HomeComponent
 	},
 	{
+		path: 'home',
+		redirectTo:'home/def',
+		pathMatch:'full'
+	},
+	{
 		path:'projectView/:id',
 		component: ProjectViewComponent
+	},
+	{
+		path: 'auth-callback',
+		component: AuthCallbackComponent
+	},
+	{
+		path:'**', redirectTo:'',pathMatch:'full'
 	}
+
 ];
 
 @NgModule({
@@ -38,7 +67,9 @@ routes = [
 	ProjectComponent,
 	ProjectViewComponent,
 	SubTaskComponent,
-	CreateProjectComponent
+	CreateProjectComponent,
+	RegisterComponent,
+	AuthCallbackComponent,
   ],
   imports: [
   	BrowserModule,
@@ -46,10 +77,17 @@ routes = [
 	HttpClientModule,
 	BrowserAnimationsModule,
 	MatDialogModule,
-	FormsModule
+	FormsModule,
+	CoreModule,
+	SharedModule,
   ],
+  exports:[RouterModule],
   providers: [
-  	Title
+	  Title,
+	  ConfigService
+  ],
+  schemas: [
+      CUSTOM_ELEMENTS_SCHEMA
   ],
   bootstrap: [AppComponent],
   entryComponents:[CreateProjectComponent]

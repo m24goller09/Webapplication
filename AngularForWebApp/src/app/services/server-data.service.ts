@@ -74,14 +74,12 @@ export class  ServerDataService {
 	 * TODO wait for final version from API
 	 * Adds a user to the user database.
 	 * @param username which is the primary key of the user
-	 * @param placeholder
-	 * @param placeholder2
+	 * @param name
 	 */
-	addUser(username:string, placeholder:string,placeholder2:string){
+	addUser(username:string,name:string){
 		let user = {
 			"username": username,
-			"firstname":placeholder,
-			"lastname":placeholder2
+			"name":name,
 		}
 		this.http.post(this.dataBaseURL+"User",user).subscribe(value => {
 			console.log(value);
