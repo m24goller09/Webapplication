@@ -37,7 +37,7 @@ namespace API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = "https://promasauthserver.herokuapp.com";
+                o.Authority = "https://promasauthserver.herokuapp.com/";
                 o.Audience = "resourceapi";
                 o.RequireHttpsMetadata = false;
             });
@@ -59,6 +59,7 @@ namespace API
             {
                 c.SwaggerDoc("v0", new OpenApiInfo { Title = "Backend", Version = "v0" });
             });
+
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -93,7 +94,6 @@ namespace API
             }
 
             app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
             app.UseAuthentication();
 
             app.UseMvc();

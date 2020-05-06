@@ -42,14 +42,6 @@ namespace AuthServer
                     AllowedCorsOrigins = { "https://promas.herokuapp.com" ,"http://localhost:4200" },
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 3600
-                },
-                new Client
-                {
-                    ClientId = "postman",
-                    ClientSecrets = { new Secret("secret".Sha256())},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "openid", "profile", "email", "api.read" },
-                    AccessTokenLifetime = 3600
                 }
             };
         }
