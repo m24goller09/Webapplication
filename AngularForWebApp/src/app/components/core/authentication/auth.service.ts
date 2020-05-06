@@ -88,7 +88,7 @@ export class AuthService extends BaseService {
 	}
 }
 
-export function getClientSettings(): { showDebugInformation: boolean; loadUserInfo: boolean; metadata: { jwks_uri: string; end_session_endpoint: string; issuer: string; authorization_endpoint: string; userinfo_endpoint: string }; authority: string; response_type: string; redirect_uri: string; post_logout_redirect_uri: string; client_id: string; filterProtocolClaims: boolean } {
+export function getClientSettings(): { showDebugInformation: boolean; loadUserInfo: boolean; metadata: { jwks_uri: string; end_session_endpoint: string; issuer: string; authorization_endpoint: string; userinfo_endpoint: string }; automaticSilentRenew: boolean; authority: string; scope: string; response_type: string; redirect_uri: string; post_logout_redirect_uri: string; silent_redirect_uri: string; client_id: string; filterProtocolClaims: boolean } {
 	return {
 		authority: 'https://promasauthserver.herokuapp.com/',
 		//authority: 'https://localhost:5000',
@@ -99,11 +99,9 @@ export function getClientSettings(): { showDebugInformation: boolean; loadUserIn
 		showDebugInformation: true,
 		filterProtocolClaims: true,
 		loadUserInfo: true,
-		/*,
 		scope: "openid profile email api.read",
 		automaticSilentRenew: true,
-		silent_redirect_uri: environment.home+'silent-refresh.html'
-		 */
+		silent_redirect_uri: environment.home+'silent-refresh.html',
 		metadata: {
 			issuer: 'https://promasauthserver.herokuapp.com/',
 			jwks_uri: 'https://promasauthserver.herokuapp.com' + "/.well-known/openid-configuration/jwks",
