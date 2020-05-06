@@ -16,8 +16,8 @@ namespace API.Controllers
 {
     [Route("Project")]
     [ApiController]
-    [Authorize(Policy = "ApiReader")]
-    [Authorize(Policy = "Consumer")]
+    //[Authorize(Policy = "ApiReader")]
+    //[Authorize(Policy = "Consumer")]
     public class ProjectController : ControllerBase
     {
         private readonly ProjectService projectService;
