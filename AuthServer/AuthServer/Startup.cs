@@ -44,6 +44,8 @@ namespace AuthServer
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseErrorEvents = true;
+                options.IssuerUri = "https://promasauthserver.herokuapp.com/";
+                options.PublicOrigin = "https://promasauthserver.herokuapp.com";
             })
                 .AddDeveloperSigningCredential()/*
                 .AddOperationalStore(options =>
