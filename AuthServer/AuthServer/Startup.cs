@@ -111,7 +111,7 @@ namespace AuthServer
             app.UseStaticFiles();
             app.UseCors("AllowAll");
             app.UseIdentityServer();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
