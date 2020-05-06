@@ -56,8 +56,8 @@ export class AuthService extends BaseService {
 		if (this.user != null){
 			return `${this.user.token_type} ${this.user.access_token}`;
 		}
-		console.error("no user in auth service");
-		//throw new Error("No User given in auth.service!");
+		// User is not logged in and tries to access to something => redirect to login
+		this.login();
 	}
 
 	get name(): string {
@@ -72,17 +72,18 @@ export class AuthService extends BaseService {
 		await this.manager.signoutRedirect();
 	}
 
-	fetchTopSecretData(token: string) {
-
+	getFromApiWithToken(call: string) {
+		const token: string = this.authorizationHeaderValue;
 		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				'Authorization': token
 			})
 		};
-		return this.http.get(this.configService.resourceApiURI + 'Project/ByUser/'+this.userName, httpOptions).pipe(catchError(this.handleError));
+		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
 		//return this.http.get(this.configService.resourceApiURI + '/Sample', httpOptions).pipe(catchError(this.handleError));
 	}
+
 	getClaims(): any{
 		return this.user.profile;
 	}
@@ -91,7 +92,6 @@ export class AuthService extends BaseService {
 export function getClientSettings(): { showDebugInformation: boolean; loadUserInfo: boolean; metadata: { jwks_uri: string; end_session_endpoint: string; issuer: string; authorization_endpoint: string; userinfo_endpoint: string }; automaticSilentRenew: boolean; authority: string; scope: string; response_type: string; redirect_uri: string; post_logout_redirect_uri: string; silent_redirect_uri: string; client_id: string; filterProtocolClaims: boolean } {
 	return {
 		authority: 'https://promasauthserver.herokuapp.com/',
-		//authority: 'https://localhost:5000',
 		client_id: 'angular_spa',
 		redirect_uri: environment.home+'auth-callback/',
 		post_logout_redirect_uri: environment.home,

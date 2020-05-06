@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit{
 	projects:Project[];
 	filter:string = 'def';
 	busy: boolean;
-	claims = null;
 
 	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
 
@@ -32,26 +31,17 @@ export class HomeComponent implements OnInit{
 	}
 
     ngOnInit(): void {
-
 		this.busy = true;
 		// subscribe to the parameter running
 		this.route.paramMap.subscribe(params => {
 			this.changeRunning(Project.parseState(params.get('filter')));
 		});
-		// get all projects from the data service
-		this.dataService.getProjects().subscribe((result)=>{
+		// get all projects from the user
+		this.dataService.getProjectOfCurrentUser().pipe(finalize(() => {
+			this.busy = false;
+		})).subscribe(result => {
 			this.projects = ServerDataService.parseProjects(result);
 		});
-
-
-		this.authService.fetchTopSecretData(this.authService.authorizationHeaderValue)
-			.pipe(finalize(() => {
-				this.busy = false;
-			})).subscribe(
-				result => {
-					this.claims = result;
-				});
-
 	}
 
 

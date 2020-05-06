@@ -20,8 +20,8 @@ export class AuthCallbackComponent implements OnInit {
 			this.error = true;
 			throw new Error("Error in auth-callback.component.ts line:21");
 		}
-		this.authService.completeAuthentication();
-		console.log("after");
-		this.router.navigate(['/home/def']);
+		this.authService.completeAuthentication().then(value => {
+			this.router.navigate(['/home/def']);
+		});
 	}
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ServerDataService } from '../../services/server-data.service';
 import { AuthService } from '../core/authentication/auth.service';
 import {Router} from '@angular/router';
-import {environment} from '../../../environments/environment';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -10,24 +9,15 @@ import {Subscription} from 'rxjs';
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css']
 })
-export class MenuBarComponent {
+export class MenuBarComponent implements OnInit{
 	@Input() title:string;
-	filter: string;
 	allowed:boolean;
-	private subscription:Subscription;
-	private isAuthenticated: boolean;
+	private subscription: Subscription;
 	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
 
 	ngOnInit(): void {
-		this.allowed=true;
-		// running parameter as an observable
-		//this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
 		this.subscription = this.authService.authNavStatus$.subscribe(status => this.allowed = status);
-		if (this.subscription) {
-			//this.allowed = false;
-		}
-
 	}
 
 	async signout() {
@@ -47,5 +37,8 @@ export class MenuBarComponent {
 			console.log("menu-bar:");
 			console.log(r)
 		});
+	}
+	profileTest(){
+		console.log(this.authService.getClaims());
 	}
 }

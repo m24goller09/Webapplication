@@ -6,6 +6,7 @@ import {SubTask} from '../models/SubTask';
 import {StateOfTask} from '../models/StateOfTask';
 import {StateOfProject} from '../models/StateOfProject';
 import {environment} from '../../environments/environment';
+import {AuthService} from '../components/core/authentication/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ServerDataService {
 	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
 	stateOfProjectObservable = this.stateOfProject.asObservable();
 
-  	constructor(private http:HttpClient) {}
+  	constructor(private http:HttpClient, private authService:AuthService) {}
 
 	/*
 	 * all getters
@@ -30,8 +31,11 @@ export class ServerDataService {
 	 * Gets all projects of the db
 	 */
 	getProjects(){
-		let queryURL = this.dataBaseURL + "Project"
-		return this.http.get(queryURL);
+		return this.authService.getFromApiWithToken("Project/");
+	}
+
+	getProjectOfCurrentUser(){
+		return this.authService.getFromApiWithToken("Project/ByUser/" + this.authService.userName);
 	}
 
 	/**
@@ -39,8 +43,7 @@ export class ServerDataService {
 	 * @param idOfProject the id of the project to get from the db
 	 */
 	getProject(idOfProject:number){
-		let queryURL = this.dataBaseURL + "Project/" + idOfProject;
-		return this.http.get(queryURL);
+		return this.authService.getFromApiWithToken("Project/" + idOfProject);
 	}
 
 	/**
@@ -48,8 +51,7 @@ export class ServerDataService {
 	 * @param idOfProject which specifies the project
 	 */
 	getSubTasks(idOfProject:number){
-		let queryURL = this.dataBaseURL +"SubTask/ByProject/"+idOfProject;
-		return this.http.get(queryURL);
+		return this.authService.getFromApiWithToken("SubTask/ByProject/"+idOfProject);
   	}
 
 	/*
@@ -65,7 +67,7 @@ export class ServerDataService {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
 			"description": description,
-			"manager": "lcdb", // TODO use logged in user
+			"manager": this.authService.userName, // TODO not sure if this works
 			"state" : "running"
 		}
 		return this.http.post(this.dataBaseURL+"Project", project);

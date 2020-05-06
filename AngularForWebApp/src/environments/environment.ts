@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	server: "http://localhost:5050/",
+	server: "https://promasapi.herokuapp.com/",//server: "http://localhost:5050/",
 	home: "http://localhost:4200/"
 };
 
