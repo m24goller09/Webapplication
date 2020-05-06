@@ -48,7 +48,7 @@ export class ServerDataService {
 	 * @param idOfProject which specifies the project
 	 */
 	getSubTasks(idOfProject:number){
-		let queryURL = this.dataBaseURL +"SubTask/"+idOfProject;
+		let queryURL = this.dataBaseURL +"SubTask/ByProject/"+idOfProject;
 		return this.http.get(queryURL);
   	}
 
@@ -123,12 +123,8 @@ export class ServerDataService {
 	 */
 	static parseSubTasks(subTasks:Object){
 		let parsedSubTasks = [];
-		return [ServerDataService.parseSubTask(subTasks)];
-		// TODO comment out
 		for (let i in subTasks){
-			const subTask = subTasks[i];
-			console.log(subTask);
-			parsedSubTasks.push(ServerDataService.parseSubTask(subTask));
+			parsedSubTasks.push(ServerDataService.parseSubTask(subTasks[i]));
 		}
 		return parsedSubTasks;
 	}
@@ -139,6 +135,6 @@ export class ServerDataService {
 	 */
 	static parseSubTask(subTask:any){
 		console.log("parse "+subTask.state);
-		return new SubTask(subTask.subtaskId,subTask.name,"TODO: placeholder",subTask.description,subTask.state);
+		return new SubTask(subTask.subtaskId,subTask.name,subTask.manager,subTask.description,subTask.state);
 	}
 }

@@ -26,7 +26,6 @@ export class AuthService extends BaseService {
 
 		this.manager.getUser().then(user => {
 			this.user = user;
-			console.log("con");
 			this._authNavStatusSource.next(this.isAuthenticated());
 		});
 	}
@@ -38,8 +37,6 @@ export class AuthService extends BaseService {
 	completeAuthentication() {
 		return this.manager.signinRedirectCallback().then(user =>{
 			this.user = user;
-			console.log("test");
-			console.log(user);
 			this._authNavStatusSource.next(this.isAuthenticated());
 		}).catch(error =>{
 			this._authNavStatusSource.next(this.isAuthenticated());
@@ -59,7 +56,8 @@ export class AuthService extends BaseService {
 		if (this.user != null){
 			return `${this.user.token_type} ${this.user.access_token}`;
 		}
-		throw new Error("No User given in auth.service!");
+		console.error("no user in auth service");
+		//throw new Error("No User given in auth.service!");
 	}
 
 	get name(): string {
@@ -82,7 +80,6 @@ export class AuthService extends BaseService {
 				'Authorization': token
 			})
 		};
-
 		return this.http.get(this.configService.resourceApiURI + 'Project/ByUser/'+this.userName, httpOptions).pipe(catchError(this.handleError));
 		//return this.http.get(this.configService.resourceApiURI + '/Sample', httpOptions).pipe(catchError(this.handleError));
 	}
