@@ -3,7 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 import {MatDialogModule} from '@angular/material/dialog';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
@@ -20,6 +20,12 @@ import { SharedModule } from './shared/shared.module';
 
 import { ConfigService } from './shared/config.service';
 import { AddButtonComponent } from './add-button/add-button.component';
+import { CreateSubTaskComponent } from './create-sub-task/create-sub-task.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 let routes: Routes;
 routes = [
@@ -72,17 +78,24 @@ routes = [
 	RegisterComponent,
 	AuthCallbackComponent,
 	AddButtonComponent,
+	CreateSubTaskComponent,
   ],
-  imports: [
-  	BrowserModule,
-	RouterModule.forRoot(routes),
-	HttpClientModule,
-	BrowserAnimationsModule,
-	MatDialogModule,
-	FormsModule,
-	CoreModule,
-	SharedModule,
-  ],
+	imports: [
+		BrowserModule,
+		RouterModule.forRoot(routes),
+		HttpClientModule,
+		BrowserAnimationsModule,
+		MatDialogModule,
+		FormsModule,
+		ReactiveFormsModule,
+		CoreModule,
+		SharedModule,
+		MatButtonModule,
+		MatInputModule,
+		MatSliderModule,
+		MatOptionModule,
+		MatSelectModule,
+	],
   exports:[RouterModule],
   providers: [
 	  Title,

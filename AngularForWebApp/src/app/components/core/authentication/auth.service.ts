@@ -83,7 +83,7 @@ export class AuthService extends BaseService {
 		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
 		//return this.http.get(this.configService.resourceApiURI + '/Sample', httpOptions).pipe(catchError(this.handleError));
 	}
-
+	
 	getClaims(): any{
 		return this.user.profile;
 	}

@@ -12,9 +12,7 @@ import {AuthService} from '../components/core/authentication/auth.service';
   providedIn: 'root'
 })
 export class ServerDataService {
-	projects: Project[];
 	formProject: Project;
-	subTasksDummy:SubTask[];
 	dataBaseURL:string = environment.server;
 
 	// setting all observables to share data across the websites

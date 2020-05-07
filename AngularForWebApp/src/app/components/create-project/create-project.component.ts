@@ -14,14 +14,11 @@ export class CreateProjectComponent implements OnInit {
 	@ViewChild('nameInput') nameInput: ElementRef;
 	@ViewChild('descInput') descInput: ElementRef;
 
-	count:number=0;
-
 	constructor(public dataService: ServerDataService,private dialogRef:MatDialogRef<CreateProjectComponent>) { }
 
   	ngOnInit(): void {
 		  this.resetForm();
 	}
-
 
 	resetForm(form?:NgForm){
 		if(form!=null)
@@ -41,7 +38,6 @@ export class CreateProjectComponent implements OnInit {
 	}
 
 	onSubmit(form:NgForm){
-		//alert(form.value.ProjectName);
 		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription).subscribe(value => {
 			let id = ServerDataService.parseProject(value).id;
 			window.location.href ="/projectView/"+id;
