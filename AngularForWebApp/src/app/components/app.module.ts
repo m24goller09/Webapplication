@@ -25,7 +25,7 @@ let routes: Routes;
 routes = [
 	{
 		path: '',
-		redirectTo:'register',
+		redirectTo:'home/def',
 		pathMatch: 'full'
 	},
 	{
@@ -34,7 +34,7 @@ routes = [
 	},
 	{
 		path: 'login',
-		redirectTo:'register',
+		redirectTo:'home/def',
 		pathMatch: 'full'
 	},
 	{
