@@ -70,7 +70,8 @@ export class ServerDataService {
 			"manager": this.authService.userName, // TODO not sure if this works
 			"state" : "running"
 		}
-		return this.http.post(this.dataBaseURL+"Project", project);
+		return this.authService.postToApiWithToken('Project/',project);
+		//return this.http.post(this.dataBaseURL+"Project", project);
 	}
 
 	/**
