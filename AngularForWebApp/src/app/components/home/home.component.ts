@@ -1,17 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import {ServerDataService} from '../../services/server-data.service';
 import { Project } from '../../models/Project';
-import { ActivatedRoute, ROUTER_INITIALIZER, Router} from '@angular/router';
-import { CreateProjectComponent } from '../create-project/create-project.component';
-import { MatDialog,MatDialogRef,MatDialogConfig } from '@angular/material/dialog';
-import { Route } from '@angular/compiler/src/core';
-import { NgForOf } from '@angular/common';
+import { ActivatedRoute, Router} from '@angular/router';
 import { StateOfProject } from '../../models/StateOfProject';
 import { finalize } from 'rxjs/operators'
 import { AuthService } from '../core/authentication/auth.service';
-import {log} from 'util';
-
-
 
 @Component({
 	selector: 'app-home',
@@ -24,7 +17,7 @@ export class HomeComponent implements OnInit{
 	filter:string = 'def';
 	busy: boolean;
 
-	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
+	constructor( private dataService: ServerDataService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
 
 	changeRunning(running:StateOfProject) {
 		this.dataService.changeRunning(running);
@@ -42,14 +35,6 @@ export class HomeComponent implements OnInit{
 		})).subscribe(result => {
 			this.projects = ServerDataService.parseProjects(result);
 		});
-	}
-
-
-	openDialog():void{
-		const dialogConfig = new MatDialogConfig();
-		dialogConfig.autoFocus = true;
-		dialogConfig.width="50%";
-		this.matDialog.open(CreateProjectComponent,dialogConfig);
 	}
 
 	onLogin() {

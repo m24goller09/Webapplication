@@ -19,6 +19,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
 import { ConfigService } from './shared/config.service';
+import { AddButtonComponent } from './add-button/add-button.component';
 
 let routes: Routes;
 routes = [
@@ -70,6 +71,7 @@ routes = [
 	CreateProjectComponent,
 	RegisterComponent,
 	AuthCallbackComponent,
+	AddButtonComponent,
   ],
   imports: [
   	BrowserModule,
