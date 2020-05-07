@@ -81,11 +81,22 @@ export class AuthService extends BaseService {
 			})
 		};
 		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
-		//return this.http.get(this.configService.resourceApiURI + '/Sample', httpOptions).pipe(catchError(this.handleError));
+	}
+
+	postToApiWithToken(call: string, bodyData: any) {
+		const token: string = this.authorizationHeaderValue;
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				'Authorization': token
+			}),
+			body: bodyData
+		};
+		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError));
 	}
 	
 	getClaims(): any{
-		return this.user.profile;
+		return this.user != null ? this.user.profile : '';
 	}
 }
 

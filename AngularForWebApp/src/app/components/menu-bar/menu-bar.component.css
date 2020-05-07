@@ -1,3 +1,21 @@
-a:hover{
+a:hover {
+    cursor: pointer;
+}
+
+#profileDrop {
+    background-color: #343a40;
+}
+
+#profileDrop:hover{
 	cursor: pointer;
+}
+
+#profileHeader {
+    font-size: smaller;
+    color: white;
+}
+
+#profileElement {
+    font-size: smaller;
+    color: lightgrey;
 }
