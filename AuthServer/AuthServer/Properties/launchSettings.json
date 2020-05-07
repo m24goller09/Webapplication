@@ -9,17 +9,10 @@
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "commandName": "IISExpress"
     },
     "AuthServer": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5000"
+      "commandName": "Project"
     }
   }
 }
