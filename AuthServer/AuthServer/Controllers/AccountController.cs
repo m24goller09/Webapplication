@@ -13,6 +13,7 @@ using AuthServer.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace AuthServer.Controllers
 {
@@ -24,8 +25,9 @@ namespace AuthServer.Controllers
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events, IConfiguration configuration)
         {
             _userManager = userManager;
             _interaction = interaction;
@@ -33,6 +35,7 @@ namespace AuthServer.Controllers
             _clientStore = clientStore;
             _events = events;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -82,6 +85,12 @@ namespace AuthServer.Controllers
                     }
 
                     return Redirect(model.ReturnUrl);
+                }
+                else if(button == "register")
+                {
+                    // redirect to the register page
+                    var x = _configuration.GetConnectionString("RegisterPage");
+                    return Redirect(_configuration.GetConnectionString("RegisterPage"));
                 }
                 else
                 {
