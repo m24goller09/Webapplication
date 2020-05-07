@@ -74,6 +74,13 @@ namespace AuthServer.Controllers
                     // if the user cancels, send a result back into IdentityServer as if they 
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
+
+                    if (button == "register")
+                    {
+                        // redirect to the register page
+                        return Redirect(_configuration.GetConnectionString("RegisterPage"));
+                    }
+
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
 
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
@@ -85,12 +92,6 @@ namespace AuthServer.Controllers
                     }
 
                     return Redirect(model.ReturnUrl);
-                }
-                else if(button == "register")
-                {
-                    // redirect to the register page
-                    var x = _configuration.GetConnectionString("RegisterPage");
-                    return Redirect(_configuration.GetConnectionString("RegisterPage"));
                 }
                 else
                 {
