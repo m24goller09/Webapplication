@@ -3,7 +3,6 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../core/authentication/auth.service';
 import {ServerDataService} from '../../services/server-data.service';
-import {SubTask} from '../../models/SubTask';
 
 export interface DialogData {
 	id: number;

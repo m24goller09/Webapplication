@@ -11,13 +11,13 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./project-view.component.scss']
 })
 export class ProjectViewComponent implements OnInit {
-	// TODO add loading icon
 	project:Project = null;
 
-	backlogTasks: SubTask[] = [];
-	runningTasks: SubTask[] = [];
-	finishedTasks: SubTask[] = [];
-	tasks = new Map();
+	tasks = {
+		"Backlog": [],
+		"Running": [],
+		"Finished": []
+	};
 	subTaskToShow: SubTask;
 	// initial sub task, show this if this project has no sub tasks
 	private defaultSubTask: SubTask = {
@@ -70,11 +70,12 @@ export class ProjectViewComponent implements OnInit {
 			this.subTaskToShow = this.defaultSubTask;
 			return;
 		}
+		let first: boolean = true;
 		for (let subTask of subTasks){
-			// put all sub tasks in map to quickly show info
-			if (this.tasks.size === 0){
+			if (first){
 				// select first task for info tab
 				this.subTaskToShow = subTask;
+				first = false;
 			}
 			this.insertIntoArray(subTask);
 		}
@@ -87,16 +88,21 @@ export class ProjectViewComponent implements OnInit {
 	insertIntoArray(subTask: SubTask){
 		switch (subTask.state) {
 			case StateOfTask.Backlog:
-				this.backlogTasks.push(subTask);
+				this.tasks.Backlog.push(subTask);
 				break;
 			case StateOfTask.Running:
-				this.runningTasks.push(subTask);
+				this.tasks.Running.push(subTask);
 				break;
 			case StateOfTask.Finished:
-				this.finishedTasks.push(subTask);
+				this.tasks.Finished.push(subTask);
 				break;
 			default:
 				throw new Error('Wrong type of sub task!');
 		}
+	}
+
+	// keep insert order on iterating
+	asIsOrder(a, b) {
+		return -1;
 	}
 }

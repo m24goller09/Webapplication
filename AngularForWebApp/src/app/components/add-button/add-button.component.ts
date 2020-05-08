@@ -33,7 +33,9 @@ export class AddButtonComponent implements OnInit {
 			width: '40vw',
 			data: {state: this.state, id: this.id}
 		}).afterClosed().subscribe(value => {
-			this.createdSubTask.emit(value);
+			if (value !== null && value !== undefined){
+				this.createdSubTask.emit(value);
+			}
 		});
 	}
 }
