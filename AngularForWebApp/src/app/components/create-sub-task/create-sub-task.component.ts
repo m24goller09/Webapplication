@@ -2,6 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../core/authentication/auth.service';
+import {ServerDataService} from '../../services/server-data.service';
+import {SubTask} from '../../models/SubTask';
 
 export interface DialogData {
 	id: number;
@@ -18,7 +20,8 @@ export class CreateSubTaskComponent {
 	state: string;
 	title = new FormControl('', [Validators.required, Validators.minLength(3)]);
 	description = new FormControl('', [Validators.required, Validators.minLength(10)]);
-	constructor( public dialogRef: MatDialogRef<CreateSubTaskComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, fb: FormBuilder, private auth:AuthService) {
+	constructor(public dialog: MatDialogRef<CreateSubTaskComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData,
+				fb: FormBuilder, private auth:AuthService, private dataService:ServerDataService) {
 		this.form = fb.group({
 			"subtaskId": 0,
 			"name": this.title,
@@ -26,7 +29,7 @@ export class CreateSubTaskComponent {
 			"projectId": data.id,
 			"state": [data.state,Validators.required],
 			"creator": auth.userName,
-			"assigned": ''
+			"assigned": auth.userName
 		});
 	}
 
@@ -38,10 +41,13 @@ export class CreateSubTaskComponent {
 	}
 
 	onSubmit(){
-		console.log("submit");
 		if (this.form.valid){
-			console.log(this.form.value);
+			this.dataService.addSubTask(this.form.value).subscribe(value => {
+				this.dialog.close(value);
+			});
 		}
-		this.dialogRef.close();
+	}
+	cancel(){
+		this.dialog.close(null);
 	}
 }

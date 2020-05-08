@@ -65,11 +65,18 @@ export class ServerDataService {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
 			"description": description,
-			"manager": this.authService.userName, // TODO not sure if this works
+			"manager": this.authService.userName,
 			"state" : "running"
 		}
 		return this.authService.postToApiWithToken('Project/',project);
-		//return this.http.post(this.dataBaseURL+"Project", project);
+	}
+
+	/**
+	 * Adds an sub task to the database using the api
+	 * @param subTask
+	 */
+	addSubTask(subTask: any){
+		return this.authService.postToApiWithToken('Subtask/',subTask);
 	}
 
 	/**
@@ -135,7 +142,6 @@ export class ServerDataService {
 	 * @param subTask the json object to parse
 	 */
 	static parseSubTask(subTask:any){
-		console.log("parse "+subTask.state);
 		return new SubTask(subTask.subtaskId,subTask.name,subTask.manager,subTask.description,subTask.state);
 	}
 }

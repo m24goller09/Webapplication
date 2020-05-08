@@ -94,7 +94,7 @@ export class AuthService extends BaseService {
 		};
 		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError));
 	}
-	
+
 	getClaims(): any{
 		return this.user != null ? this.user.profile : '';
 	}
