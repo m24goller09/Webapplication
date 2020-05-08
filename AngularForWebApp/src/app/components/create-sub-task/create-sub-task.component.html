@@ -31,7 +31,7 @@
 		</mat-form-field>
 		</p>
 		<div mat-dialog-actions>
-			<button mat-button type="button">No Thanks</button>
+			<button mat-button type="button" (click)="cancel()">No Thanks</button>
 			<button mat-button type="submit" [disabled]="form.invalid">Add</button>
 		</div>
 	</form>
