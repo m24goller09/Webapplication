@@ -20,7 +20,6 @@ export class SubTask {
 		this.name = name;
 		this.creator = creator;
 		this.description = description;
-		console.log(state);
 		this.state = SubTask.parseState(state);
 	}
 

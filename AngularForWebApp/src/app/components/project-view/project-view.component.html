@@ -18,21 +18,36 @@
 
 	<div class="subTask d-flex flex-md-row justify-content-center">
 		<div class="tasks backlog w-25 card">
-			<div class="card-header">Backlog</div>
+			<div class="card-header">
+				Backlog
+				<span class="add-button-container">
+					<app-add-button [state]="'backlog'" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
+				</span>
+			</div>
 			<div class="projectContainer">
 				<app-subTask *ngFor="let subTask of backlogTasks" (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 
 		<div class="tasks running w-25 card">
-			<div class="card-header">Running</div>
+			<div class="card-header">
+				Running
+				<span class="add-button-container">
+					<app-add-button [state]="'running'" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
+				</span>
+			</div>
 			<div class="projectContainer">
 				<app-subTask *ngFor="let subTask of runningTasks" (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 
 		<div class="tasks finished w-25 card">
-			<div class="card-header">Finished</div>
+			<div class="card-header">
+				Finished
+				<span class="add-button-container">
+					<app-add-button [state]="'finished'" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
+				</span>
+			</div>
 			<div class="projectContainer">
 				<app-subTask *ngFor="let subTask of finishedTasks" (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
 			</div>

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
-import {ProjectViewComponent} from '../project-view/project-view.component';
 
 @Component({
   selector: 'app-subTask',
@@ -13,7 +12,7 @@ export class SubTaskComponent implements OnInit {
 	@Input() subTask: SubTask;
 	@Output() selectEvent = new EventEmitter<SubTask>();
 	state: string = "task-";
-	constructor(private projectView:ProjectViewComponent) {}
+	constructor() {}
 	ngOnInit(): void {
 		switch (this.subTask.state) {
 			case StateOfTask.Backlog:

@@ -53,6 +53,12 @@ export class ProjectViewComponent implements OnInit {
   		this.subTaskToShow = $event;
 	}
 
+	newSubTaskCreated(value){
+		const newSubTask = ServerDataService.parseSubTask(value);
+		this.insertIntoArray(newSubTask);
+  		this.subTaskToShow = newSubTask;
+	}
+
 	/**
 	 * Divides all sub tasks into three arrays by their states. (backlog, running and finished)
 	 * And selects first task to show in the info tab.
@@ -74,20 +80,27 @@ export class ProjectViewComponent implements OnInit {
 				// select first task for info tab
 				this.subTaskToShow = subTask;
 			}
-			this.tasks.set(subTask.id,subTask);
-			switch (subTask.state) {
-				case StateOfTask.Backlog:
-					this.backlogTasks.push(subTask);
-					break;
-				case StateOfTask.Running:
-					this.runningTasks.push(subTask);
-					break;
-				case StateOfTask.Finished:
-					this.finishedTasks.push(subTask);
-					break;
-				default:
-					console.error('Wrong type of sub task!');
-			}
+			this.insertIntoArray(subTask);
+		}
+	}
+
+	/**
+	 * Inserts the given sub task into one of three arrays, by the state of the sub task
+	 * @param subTask The sub task to insert
+	 */
+	insertIntoArray(subTask: SubTask){
+		switch (subTask.state) {
+			case StateOfTask.Backlog:
+				this.backlogTasks.push(subTask);
+				break;
+			case StateOfTask.Running:
+				this.runningTasks.push(subTask);
+				break;
+			case StateOfTask.Finished:
+				this.finishedTasks.push(subTask);
+				break;
+			default:
+				throw new Error('Wrong type of sub task!');
 		}
 	}
 }

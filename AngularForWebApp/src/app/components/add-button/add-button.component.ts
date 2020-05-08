@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CreateProjectComponent} from '../create-project/create-project.component';
+import {CreateSubTaskComponent} from '../create-sub-task/create-sub-task.component';
+import {SubTask} from '../../models/SubTask';
 
 @Component({
   selector: 'app-add-button',
@@ -8,14 +10,31 @@ import {CreateProjectComponent} from '../create-project/create-project.component
   styleUrls: ['./add-button.component.css']
 })
 export class AddButtonComponent implements OnInit {
+	@Input() state: string = null;
+	@Input() id: number = null;
+	@Output() createdSubTask = new EventEmitter();
 	constructor(private matDialog: MatDialog) { }
 
 	ngOnInit(): void {}
 
 	openDialog():void{
-		const dialogConfig = new MatDialogConfig();
-		dialogConfig.autoFocus = true;
-		dialogConfig.width="50%";
-		this.matDialog.open(CreateProjectComponent,dialogConfig);
+		if (this.state !== null){
+			this.addSubTaskDialog();
+		}else {
+			const dialogConfig = new MatDialogConfig();
+			dialogConfig.autoFocus = true;
+			dialogConfig.width="50%";
+			this.matDialog.open(CreateProjectComponent,dialogConfig);
+		}
+	}
+
+	addSubTaskDialog(): void {
+		this.matDialog.open(CreateSubTaskComponent, {
+			width: '40vw',
+			height: '80vh',
+			data: {state: this.state, id: this.id}
+		}).afterClosed().subscribe(value => {
+			this.createdSubTask.emit(value);
+		});
 	}
 }

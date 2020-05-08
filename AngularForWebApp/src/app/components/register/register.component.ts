@@ -41,7 +41,6 @@ export class RegisterComponent implements OnInit {
 	}
 
 	onLogin() {
-		console.log("Login");
 		this.authService.login();
 	}
 }

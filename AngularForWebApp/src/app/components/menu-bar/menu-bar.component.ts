@@ -12,12 +12,19 @@ import {Subscription} from 'rxjs';
 export class MenuBarComponent implements OnInit{
 	@Input() title:string;
 	allowed:boolean;
+	userName:string;
+	email:string;
 	private subscription: Subscription;
 	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
 
 	ngOnInit(): void {
-		this.subscription = this.authService.authNavStatus$.subscribe(status => this.allowed = status);
+		this.subscription = this.authService.authNavStatus$.subscribe(status => {
+			this.allowed = status
+			this.email = this.authService.getClaims()['email'];
+			this.userName = this.authService.getClaims()['name'];
+			this.profileTest()
+		});
 	}
 
 	async signout() {
