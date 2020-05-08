@@ -3,7 +3,9 @@ import {ServerDataService} from '../../services/server-data.service';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
 import {Project} from '../../models/Project';
+import {StateOfProject} from '../../models/StateOfProject';
 import {ActivatedRoute} from '@angular/router';
+import {AuthService} from '../core/authentication/auth.service';
 
 @Component({
   selector: 'app-project-view',
@@ -28,9 +30,12 @@ export class ProjectViewComponent implements OnInit {
 		state:StateOfTask.Running
 	};
 
-  	constructor(private route: ActivatedRoute, private dataService: ServerDataService) { }
+	editor:boolean = false;
+
+  	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
 
   	ngOnInit(): void {
+		console.log(this.editor);
   		// default sub task is shown in the beginning
   		this.subTaskToShow = this.defaultSubTask;
 		this.route.paramMap.subscribe(params =>{
@@ -104,5 +109,32 @@ export class ProjectViewComponent implements OnInit {
 	// keep insert order on iterating
 	asIsOrder(a, b) {
 		return -1;
+	}
+
+	toggleView(){
+		if(this.authService.userName == this.project.creator){
+			if(this.editor == false){
+				console.log("entered Editor");
+				this.editor = true;
+				console.log(this.project.state);
+			}
+			else{
+				console.log("left editor");
+				this.editor = false;
+			}
+		}
+		else{
+			console.log('No Access to Editor-Window');
+			
+		}
+	}
+
+	submitChanges(){
+		let title = document.getElementById('titleInput') as HTMLInputElement;
+		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
+		let st = document.getElementById('stateSelect') as HTMLSelectElement;
+		let stateString = st.value;		
+		this.dataService.editProject(this.project.id,title.value,desc.value,stateString);
+		this.toggleView();
 	}
 }

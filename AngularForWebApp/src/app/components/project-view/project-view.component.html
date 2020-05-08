@@ -1,16 +1,49 @@
 <div *ngIf="project!=null" class="project-view">
 	<div class="card mx-3 my-2">
-		<div class="card-header">
+		<div *ngIf="!editor" class="card-header">
 			{{project.name}}
-			<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
+			<button type="button" class="close float-right mr-1" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>
 			</button>
+			<img (click)="toggleView()" id="edit" src="../../assets/edit.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|} float-right mr-1" alt="Edit">
 		</div>
 		<div class="card-body">
 			<div class="card-title">ID: <span class="text-info">#{{project.id}}</span></div>
 			<div class="card-text">
+				<div *ngIf="editor" class="mt-2 mb-2">
+					<div>Title:</div>					
+    				<input type="text" class="form-control" id="titleInput" value="{{project.name}}">
+					<div class="mt-2">Description:</div>
+					<textarea class="form-control" colls="30" rows="5"  id="descriptionInput">{{project.description}} </textarea>
+					<div class="mt-2"> State of Project:</div>
+					<select id="stateSelect"  class="custom-select state-select">
+						<option selected="selected">{{project.state}}</option>
+						<option value="running">running</option>
+						<option value="paused">paused</option>
+						<option value="finished">finished</option>
+					</select>
+				</div>
+
 				<div id="creator">Creator: {{project.creator}}</div>
-				<div id="description">Description: {{project.description}}</div>
+				<div   *ngIf="!editor" id="description" class="mt-2">Description: {{project.description}}</div>
+
+				<div *ngIf="editor">
+
+					<div class="d-flex">
+						<div class="p-2 flex-grow-1">
+							<button  type="submit" class="btn btn-outline-success float-left" aria-label="Close" (click)="submitChanges()">
+									Submit
+							</button>
+						</div>
+						<div class="p-2">
+							<button type="button" class="close float-right mr-1 " aria-label="Close" (click)="toggleView()">
+									<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
+
+					
+				</div>
 				<!-- TODO add new way of displaying all three states of the project -->
 			</div>
 		</div>

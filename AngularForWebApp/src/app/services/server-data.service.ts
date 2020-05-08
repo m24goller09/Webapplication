@@ -94,6 +94,31 @@ export class ServerDataService {
 			console.log(value);
 		});
 	}
+
+
+
+	/*
+   	 * all posts
+	 */
+	/**
+	 * Edites an existing project with a put-request.
+	 * @param id Number to Identificate the project
+	 * @param name name of the project to add
+	 * @param description description of the project to add
+	 * @param state state of running project
+	 */
+
+	editProject(id:number,name:string,description:string,state:string){
+		let project:Object = {
+			"projectID": id, // no need to be set, is handled by the db
+			"name": name,
+			"description": description,
+			"manager": this.authService.userName, // TODO not sure if this works
+			"state" : state
+		}
+		return this.authService.putToApiWithToken('Project/',project);
+	}
+
 	/**
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
