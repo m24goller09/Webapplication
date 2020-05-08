@@ -14,9 +14,9 @@ export class ProjectViewComponent implements OnInit {
 	// TODO add loading icon
 	project:Project = null;
 
-	backlogTasks: SubTask[];
-	runningTasks: SubTask[];
-	finishedTasks: SubTask[];
+	backlogTasks: SubTask[] = [];
+	runningTasks: SubTask[] = [];
+	finishedTasks: SubTask[] = [];
 	tasks = new Map();
 	subTaskToShow: SubTask;
 	// initial sub task, show this if this project has no sub tasks
@@ -70,10 +70,6 @@ export class ProjectViewComponent implements OnInit {
 			this.subTaskToShow = this.defaultSubTask;
 			return;
 		}
-		this.backlogTasks = [];
-		this.runningTasks = [];
-		this.finishedTasks = [];
-
 		for (let subTask of subTasks){
 			// put all sub tasks in map to quickly show info
 			if (this.tasks.size === 0){
