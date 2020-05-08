@@ -21,7 +21,7 @@
 			<div class="card-header">
 				{{ task.key }}
 				<span class="add-button-container">
-					<app-add-button [state]="task.key.toString()" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
+					<app-add-button [state]="task.key.toString().toLowerCase()" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
 				</span>
 			</div>
 			<div class="projectContainer">
