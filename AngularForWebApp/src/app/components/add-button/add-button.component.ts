@@ -31,7 +31,6 @@ export class AddButtonComponent implements OnInit {
 	addSubTaskDialog(): void {
 		this.matDialog.open(CreateSubTaskComponent, {
 			width: '40vw',
-			height: '80vh',
 			data: {state: this.state, id: this.id}
 		}).afterClosed().subscribe(value => {
 			this.createdSubTask.emit(value);
