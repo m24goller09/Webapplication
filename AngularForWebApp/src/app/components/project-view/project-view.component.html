@@ -5,13 +5,13 @@
 			<button type="button" class="close float-right mr-1" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<img (click)="toggleView()" id="edit" src="../../assets/edit.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|} float-right mr-1" alt="Edit">
+			<img *ngIf="owner" (click)="toggleView()" id="edit" src="../../assets/edit.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|} float-right mr-1" alt="Edit">
 		</div>
 		<div class="card-body">
 			<div class="card-title">ID: <span class="text-info">#{{project.id}}</span></div>
 			<div class="card-text">
 				<div *ngIf="editor" class="mt-2 mb-2">
-					<div>Title:</div>					
+					<div>Title:</div>
     				<input type="text" class="form-control" id="titleInput" value="{{project.name}}">
 					<div class="mt-2">Description:</div>
 					<textarea class="form-control" colls="30" rows="5"  id="descriptionInput">{{project.description}} </textarea>
@@ -25,7 +25,10 @@
 				</div>
 
 				<div id="creator">Creator: {{project.creator}}</div>
-				<div   *ngIf="!editor" id="description" class="mt-2">Description: {{project.description}}</div>
+				<div *ngIf="!editor">
+					<div   *ngIf="!editor" id="description" class="mt-2">Description: {{project.description}}</div>
+					<button  *ngIf="!owner" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
+				</div>
 
 				<div *ngIf="editor">
 
@@ -42,7 +45,7 @@
 						</div>
 					</div>
 
-					
+
 				</div>
 				<!-- TODO add new way of displaying all three states of the project -->
 			</div>

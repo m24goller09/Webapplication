@@ -3,6 +3,7 @@ import { ServerDataService } from '../../services/server-data.service';
 import { AuthService } from '../core/authentication/auth.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {Project} from '../../models/Project';
 
 @Component({
   selector: 'app-menu-bar',
@@ -14,6 +15,7 @@ export class MenuBarComponent implements OnInit{
 	allowed:boolean;
 	userName:string;
 	email:string;
+	project:Project;
 	private subscription: Subscription;
 	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
@@ -47,5 +49,13 @@ export class MenuBarComponent implements OnInit{
 	}
 	profileTest(){
 		console.log(this.authService.getClaims());
+	}
+
+	findProject(){
+		let searchID = document.getElementById('searchID') as HTMLInputElement;
+		this.dataService.getProject(+searchID.value).subscribe(result => {
+			this.project = ServerDataService.parseProject(result);
+			window.location.href = "/projectView/" + this.project.id;
+		});
 	}
 }

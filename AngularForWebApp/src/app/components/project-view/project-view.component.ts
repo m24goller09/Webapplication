@@ -31,11 +31,12 @@ export class ProjectViewComponent implements OnInit {
 	};
 
 	editor:boolean = false;
+	owner:boolean = true;
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
 
   	ngOnInit(): void {
-		console.log(this.editor);
+		this.owner = true;
   		// default sub task is shown in the beginning
   		this.subTaskToShow = this.defaultSubTask;
 		this.route.paramMap.subscribe(params =>{
@@ -43,6 +44,10 @@ export class ProjectViewComponent implements OnInit {
 				let id:number = Number.parseInt(params.get("id"));
 				this.dataService.getProject(id).subscribe(value => {
 					this.project = ServerDataService.parseProject(value);
+					if(this.project.creator != this.authService.userName){
+						console.log("accessing foreign project!");
+						this.owner = false;
+					}
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
@@ -125,7 +130,7 @@ export class ProjectViewComponent implements OnInit {
 		}
 		else{
 			console.log('No Access to Editor-Window');
-			
+
 		}
 	}
 
@@ -133,8 +138,13 @@ export class ProjectViewComponent implements OnInit {
 		let title = document.getElementById('titleInput') as HTMLInputElement;
 		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
 		let st = document.getElementById('stateSelect') as HTMLSelectElement;
-		let stateString = st.value;		
+		let stateString = st.value;
 		this.dataService.editProject(this.project.id,title.value,desc.value,stateString);
 		this.toggleView();
+	}
+
+	joinProject(){
+		console.log("joining Project Nr.: " + this.project.id);
+		//Join Stuff
 	}
 }

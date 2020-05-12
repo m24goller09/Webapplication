@@ -98,7 +98,7 @@ export class ServerDataService {
 
 
 	/*
-   	 * all posts
+   	 * all puts
 	 */
 	/**
 	 * Edites an existing project with a put-request.
