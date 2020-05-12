@@ -81,5 +81,26 @@ namespace API.Services
                 throw new BadRequestException(e.InnerException?.Message, typeof(Project).ToString());
             }
         }
+
+        public async Task AddUser(long projectid, string userName)
+        {
+            // Check if project exists
+            NullCheck(await standardRepository.FindByIdAsync(projectid));
+            // Assign user
+            try
+            {
+                var projectAssignment = new ProjectAssignment()
+                {
+                    ProjectId = projectid,
+                    Username = userName
+                };
+                await projectAssignmentRepository.AddAsync(projectAssignment);
+                await unitOfWork.CompleteAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new BadRequestException(e.InnerException?.Message, typeof(Project).ToString());
+            }
+        }
     }
 }

@@ -57,6 +57,23 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("{projectid}/AddUser/{userName}")]
+        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddUser(long projectid, string userName)
+        {
+            try {
+                await projectService.AddUser(projectid, userName);
+                return Ok();
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+
+
         [HttpGet("ByUser/{userName}")]
         [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
