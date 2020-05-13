@@ -13,7 +13,8 @@
     },
     "MvcClient": {
       "commandName": "Project",
-      "launchBrowser": true
+      "launchBrowser": true,
+	  "applicationUrl": "http://localhost:5050"
     }
   }
 }
