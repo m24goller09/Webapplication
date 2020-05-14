@@ -1,11 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import {ServerDataService} from '../../services/server-data.service';
 import { Project } from '../../models/Project';
-import { ActivatedRoute, ROUTER_INITIALIZER} from '@angular/router';
-import { CreateProjectComponent } from '../create-project/create-project.component';
-import { MatDialog,MatDialogRef } from '@angular/material/dialog';
-import { Route } from '@angular/compiler/src/core';
-import { NgForOf } from '@angular/common';
+import { ActivatedRoute, Router} from '@angular/router';
+import { StateOfProject } from '../../models/StateOfProject';
+import { finalize } from 'rxjs/operators'
+import { AuthService } from '../core/authentication/auth.service';
 
 @Component({
 	selector: 'app-home',
@@ -14,41 +13,45 @@ import { NgForOf } from '@angular/common';
 })
 export class HomeComponent implements OnInit{
 
-	currentDialog:MatDialogRef<any> = null;
 	projects:Project[];
 	filter:string = 'def';
+	busy: boolean;
 
-	constructor(private matDialog: MatDialog, private dataService: ServerDataService, private route: ActivatedRoute) {}
+	constructor( private dataService: ServerDataService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
 
-	changeRunning(running: string) {
+	changeRunning(running:StateOfProject) {
 		this.dataService.changeRunning(running);
 	}
 
     ngOnInit(): void {
+		this.busy = true;
 		// subscribe to the parameter running
 		this.route.paramMap.subscribe(params => {
-			this.changeRunning(params.get('filter'));
+			this.changeRunning(Project.parseState(params.get('filter')));
 		});
-		// get all projects from the data service
-		this.dataService.getProjects().subscribe((result)=>{
-			this.projects = [];
-			for (let i in result){
-				const project = result[i];
-				// TODO: Get actual running state from db, if API provides that
-				this.projects.push(new Project(project.name,project.manager,project.description,true,project.projectID));
-			}
+		// get all projects from the user
+		this.dataService.getProjectOfCurrentUser().pipe(finalize(() => {
+			this.busy = false;
+		})).subscribe(result => {
+			this.projects = ServerDataService.parseProjects(result);
 		});
 	}
 
-
-	openDialog():void{
-		this.currentDialog = this.matDialog.open(CreateProjectComponent, {
-			width: '500px'
+	onLogin() {
+		console.log("Login");
+		this.authService.login().then(r =>{
+			console.log("home:");
+			console.log(r)
 		});
+	}
 
-		this.currentDialog.afterClosed().subscribe(result=>{
-			// TODO was macht das? kann das weg?
-			console.log("subscribe log");
-		})
+	async onRegister() {
+		try {
+			console.log('Register');
+			this.router.navigate(['']);
+		}
+		catch (er) {
+			console.log(er);
+		}
 	}
 }

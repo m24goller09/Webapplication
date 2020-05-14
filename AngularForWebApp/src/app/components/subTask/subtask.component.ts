@@ -1,18 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
-import {ServerDataService} from '../../services/server-data.service';
 
 @Component({
   selector: 'app-subTask',
-  templateUrl: './subTask.component.html',
+  templateUrl: './subtask.component.html',
   styleUrls: ['./subtask.component.scss']
 })
 
 export class SubTaskComponent implements OnInit {
 	@Input() subTask: SubTask;
+	@Output() selectEvent = new EventEmitter<SubTask>();
 	state: string = "task-";
-	constructor(private dataService:ServerDataService) {}
+	constructor() {}
 	ngOnInit(): void {
 		switch (this.subTask.state) {
 			case StateOfTask.Backlog:
@@ -28,7 +28,6 @@ export class SubTaskComponent implements OnInit {
 	}
 
 	selectThisSubTask(){
-		this.dataService.selectSubTaskToShow(this.subTask.id);
-		console.log("jap"+this.subTask.id);
+		this.selectEvent.emit(this.subTask);
 	}
 }

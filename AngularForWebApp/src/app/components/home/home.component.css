@@ -1,8 +1,14 @@
-.add-button{
-	margin-left: 2.5rem;
-	margin-top: 2.5rem;
-	color:lightgrey;
+.login {
+    text-decoration-line: underline;
+    color: blue;
 }
-.add-button:hover{
-	color: lightslategray;
+
+#login:hover {
+    cursor: pointer;
+}
+
+.flex-element{
+	margin: 0.5rem;
+	width: 18rem;
+	height: 16rem;
 }

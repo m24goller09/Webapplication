@@ -4,105 +4,44 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Project} from '../models/Project';
 import {SubTask} from '../models/SubTask';
 import {StateOfTask} from '../models/StateOfTask';
+import {StateOfProject} from '../models/StateOfProject';
+import {environment} from '../../environments/environment';
+import {AuthService} from '../components/core/authentication/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServerDataService {
-	projects: Project[];
-	subTasksDummy:SubTask[];
-	dataBaseURL:string = "http://localhost:5050/";
+	formProject: Project;
+	dataBaseURL:string = environment.server;
 
-	private runningParameter = new BehaviorSubject<string>("def");
-	currentRunning = this.runningParameter.asObservable();
+	// setting all observables to share data across the websites
+	private stateOfProject = new BehaviorSubject<StateOfProject>(null);
+	stateOfProjectObservable = this.stateOfProject.asObservable();
 
-	private subTaskToShow = new BehaviorSubject<number>(-1);
-	taskToShow = this.subTaskToShow.asObservable();
-
-  	constructor(private http:HttpClient) {
-  		this.subTasksDummy = [
-  			{
-  				id:1,
-				name: 'sub task backlog',
-				creator: 'me',
-				description: 'This is sub task 1, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Backlog
-			},
-			{
-				id:2,
-				name: 'sub task running',
-				creator: 'nice',
-				description: ' 2 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			},
-			{
-				id:3,
-				name: 'sub task finished',
-				creator: 'not me',
-				description: '3 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Finished
-			},
-			{
-				id:4,
-				name: 'sub task backlog 2',
-				creator: 'nice',
-				description: '4 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Backlog
-			},
-			{
-				id:5,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '5 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			},
-			{
-				id:6,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '6 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Finished
-			},
-			{
-				id:7,
-				name: 'sub task running',
-				creator: 'nice',
-				description: '7 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore\n' +
-					'\t\t\tmagna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n' +
-					'\t\t\tgubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing\n' +
-					'\t\t\telitr',
-				state: StateOfTask.Running
-			}
-		]
-  	}
+  	constructor(private http:HttpClient, private authService:AuthService) {}
 
 	/*
 	 * all getters
 	 */
+
 	/**
 	 * Gets all projects of the db
 	 */
 	getProjects(){
-		let queryURL = this.dataBaseURL + "Project"
-		return this.http.get(queryURL);
+		return this.authService.getFromApiWithToken("Project/");
+	}
+
+	getProjectOfCurrentUser(){
+		return this.authService.getFromApiWithToken("Project/ByUser/" + this.authService.userName);
+	}
+
+	/**
+	 * Get the project of the db, which is identified by the given id
+	 * @param idOfProject the id of the project to get from the db
+	 */
+	getProject(idOfProject:number){
+		return this.authService.getFromApiWithToken("Project/" + idOfProject);
 	}
 
 	/**
@@ -110,11 +49,7 @@ export class ServerDataService {
 	 * @param idOfProject which specifies the project
 	 */
 	getSubTasks(idOfProject:number){
-  		/* TODO:
-		* let queryURL = this.dataBaseURL +"SubTasks/"+idOfProject;
-		* return this.http.get(queryURL);
-  		 */
-		return this.subTasksDummy;
+		return this.authService.getFromApiWithToken("SubTask/ByProject/"+idOfProject);
   	}
 
 	/*
@@ -122,34 +57,38 @@ export class ServerDataService {
 	 */
 	/**
 	 * Creates an project and adds it to the database with a post.
-	 * @param name
-	 * @param creator
-	 * @param description
+	 * @param name name of the project to add
+	 * @param description description of the project to add
 	 */
-	addProject(name:string, creator:string, description:string){
+	addProject(name:string, description:string){
 		let project:Object = {
 			"projectID": 0, // no need to be set, is handled by the db
 			"name": name,
 			"description": description,
-			"manager": creator
+			"manager": this.authService.userName,
+			"state" : "running"
 		}
-		this.http.post(this.dataBaseURL+"Project", project).subscribe(value => {
-			console.log(value);
-		});
+		return this.authService.postToApiWithToken('Project/',project);
+	}
+
+	/**
+	 * Adds an sub task to the database using the api
+	 * @param subTask
+	 */
+	addSubTask(subTask: any){
+		return this.authService.postToApiWithToken('Subtask/',subTask);
 	}
 
 	/**
 	 * TODO wait for final version from API
 	 * Adds a user to the user database.
 	 * @param username which is the primary key of the user
-	 * @param placeholder
-	 * @param placeholder2
+	 * @param name
 	 */
-	addUser(username:string, placeholder:string,placeholder2:string){
+	addUser(username:string,name:string){
 		let user = {
 			"username": username,
-			"firstname":placeholder,
-			"lastname":placeholder2
+			"name":name,
 		}
 		this.http.post(this.dataBaseURL+"User",user).subscribe(value => {
 			console.log(value);
@@ -159,16 +98,50 @@ export class ServerDataService {
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
 	 */
-  	changeRunning(running: string){
-  		this.runningParameter.next(running);
+  	changeRunning(running:StateOfProject){
+  		this.stateOfProject.next(running);
 	}
 
 	/**
-	 * Selects the sub task, which is identified by the given number and than more detailed information is shown on the project view.
-	 * @param idOfSubTask
+	 * Parses an array of JSON Objects to an array of projects
+	 * @param rawProjects an array of json objects which represent projects
+	 * @return an array of parsed projects
 	 */
-	selectSubTaskToShow(idOfSubTask:number){
-		this.subTaskToShow.next(idOfSubTask);
-		console.log("new subtask selected"+idOfSubTask);
+	static parseProjects(rawProjects:Object){
+		let projects = [];
+		for (let i in rawProjects){
+			const project = rawProjects[i];
+			projects.push(ServerDataService.parseProject(project));
+		}
+		return projects;
+	}
+
+	/**
+	 * Parses an JSON Object to an project object.
+	 * @param project the json object to parse
+	 */
+	static parseProject(project:any){
+		return new Project(project.name,project.manager,project.description,project.state,project.projectID);
+	}
+
+	/**
+	 * Parses an array of JSON Objects to an array of sub tasks
+	 * @param subTasks an array of json objects which represent sub tasks
+	 * @return an array of parsed sub tasks
+	 */
+	static parseSubTasks(subTasks:Object){
+		let parsedSubTasks = [];
+		for (let i in subTasks){
+			parsedSubTasks.push(ServerDataService.parseSubTask(subTasks[i]));
+		}
+		return parsedSubTasks;
+	}
+
+	/**
+	 * Parses an JSON Object to an sub task object.
+	 * @param subTask the json object to parse
+	 */
+	static parseSubTask(subTask:any){
+		return new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.description,subTask.state);
 	}
 }

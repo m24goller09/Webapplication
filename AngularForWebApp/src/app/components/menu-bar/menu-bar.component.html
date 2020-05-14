@@ -1,33 +1,48 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-
 	<a class="navbar-brand" [routerLink]="['home','def']">PROMAS</a>
 	<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
 			aria-controls="collapsibleNavId"
 			aria-expanded="false" aria-label="Toggle navigation"></button>
-	<div class="collapse navbar-collapse" id="collapsibleNavId">
-		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
-				   aria-expanded="false">Projects <span class="sr-only">(current)</span></a>
-				<div class="dropdown-menu" aria-labelledby="dropdownId">
-					<a class="dropdown-item" [routerLink]="['home','def']" routerLinkActive="router-link-active" >All Projects</a>
-					<a class="dropdown-item" [routerLink]="['home','true']">Running Projects</a>
-					<a class="dropdown-item" [routerLink]="['home','false']">Finished Projects</a>
-				</div>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Placeholder Link</a>
-			</li>
-		</ul>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="text" placeholder="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
-	</div>
-	<div class="navbar-collapse collapse w-20 order-3 dual-collapse2">
+		<div *ngIf="allowed" class="collapse navbar-collapse" id="collapsibleNavId">
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Projects <span class="sr-only">(current)</span></a>
+					<div class="dropdown-menu" aria-labelledby="dropdownId">
+						<a id="all" class="dropdown-item" [routerLink]="['home','def']" routerLinkActive="router-link-active" >All Projects</a>
+						<a id="running" class="dropdown-item" [routerLink]="['home','running']">Running Projects</a>
+						<a id="paused" class="dropdown-item" [routerLink]="['home','paused']">Paused Projects</a>
+						<a id="finished" class="dropdown-item" [routerLink]="['home','finished']">Finished Projects</a>
+					</div>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<!--TODO connect search to something-->
+				<input class="form-control mr-sm-2" type="text" placeholder="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+		<div *ngIf="allowed" class="navbar-collapse collapse w-20 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" (click)="signout()" href="javascript:void(0)">Log Out</a>
+				<li  class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Profile </a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId" id="profileDrop">
+ 						<span id="profileHeader" class="dropdown-item-text">Your Profile:</span>
+    					<div class="dropdown-divider"></div>
+						<span  id="profileElement" class="dropdown-item-text" >{{this.userName}}</span>
+						<span id="profileElement" class="dropdown-item-text" >{{this.email}}</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="!allowed" class="navbar-collapse collapse w-20 order-3 dual-collapse2">
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#">Profil</a>
+				<a class="nav-link" (click)="onLogin()" href="javascript:void(0)">Log In</a>
+			</li>
 		</ul>
-	</div>
+		</div>
 </nav>

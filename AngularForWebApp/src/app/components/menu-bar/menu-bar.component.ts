@@ -1,21 +1,51 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ServerDataService } from '../../services/server-data.service';
+import { AuthService } from '../core/authentication/auth.service';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-menu-bar',
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css']
 })
-export class MenuBarComponent implements OnInit {
+export class MenuBarComponent implements OnInit{
 	@Input() title:string;
-	filter: string;
-	constructor(private dataService:ServerDataService) {
+	allowed:boolean;
+	userName:string;
+	email:string;
+	private subscription: Subscription;
+	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
 
 	ngOnInit(): void {
-		// running parameter as an observable
-		//this.dataService.currentRunning.subscribe(currentRunning => this.running = currentRunning);
+		this.subscription = this.authService.authNavStatus$.subscribe(status => {
+			this.allowed = status
+			this.email = this.authService.getClaims()['email'];
+			this.userName = this.authService.getClaims()['name'];
+			this.profileTest()
+		});
+	}
 
+	async signout() {
+		try{
+			console.log('Signout');
+			await this.authService.signout();
+			await this.router.navigate(['']);
+		}
+		catch(er){
+			console.log(er);
+		}
+	}
 
+	onLogin() {
+		console.log("Login");
+		this.authService.login().then(r =>{
+			console.log("menu-bar:");
+			console.log(r)
+		});
+	}
+	profileTest(){
+		console.log(this.authService.getClaims());
 	}
 }

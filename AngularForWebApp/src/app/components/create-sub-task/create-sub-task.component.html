@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Create an sub task</h1>
+<div mat-dialog-content style="height: 100%;">
+	<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<p>
+		<mat-form-field appearance="fill">
+			<mat-label>Title of the sub task</mat-label>
+			<label>
+				<input matInput placeholder="Your title" formControlName="name" required>
+			</label>
+			<mat-error *ngIf="title.invalid">{{getErrorMessage(title)}}</mat-error>
+		</mat-form-field>
+		</p>
+		<p>
+		<mat-form-field style="width: 30vw" appearance="fill">
+			<mat-label>Enter your description:</mat-label>
+			<label style="width: 100%">
+				<textarea matInput placeholder="Your description" formControlName="description" required></textarea>
+			</label>
+			<mat-hint align="end">At least 10 characters.</mat-hint>
+			<mat-error *ngIf="description.invalid">{{getErrorMessage(description)}}</mat-error>
+		</mat-form-field>
+		</p>
+		<p>
+		<mat-form-field appearance="fill">
+			<mat-label>State of task</mat-label>
+			<mat-select formControlName="state">
+				<mat-option value="backlog">Backlog</mat-option>
+				<mat-option value="running">Running</mat-option>
+				<mat-option value="finished">Finished</mat-option>
+			</mat-select>
+		</mat-form-field>
+		</p>
+		<p mat-dialog-actions>
+			<button mat-button type="button" (click)="cancel()">No Thanks</button>
+			<button mat-button type="submit" [disabled]="form.invalid">Add</button>
+		</p>
+	</form>
+</div>

@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+	production: false,
+	server: "https://promasapi.herokuapp.com/",//server: "http://localhost:5050/",
+	home: "http://localhost:4200/"
 };
 
 /*

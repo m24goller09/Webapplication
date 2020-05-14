@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import { ServerDataService } from '../../services/server-data.service';
-import { ActivatedRoute,Router } from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
+import {NgForm} from '@angular/forms';
+import { StateOfProject } from '../../models/StateOfProject';
 
 @Component({
   selector: 'app-create-project',
@@ -13,24 +14,33 @@ export class CreateProjectComponent implements OnInit {
 	@ViewChild('nameInput') nameInput: ElementRef;
 	@ViewChild('descInput') descInput: ElementRef;
 
-	count:number=0;
-
-	constructor(private dataService: ServerDataService,private dialogRef:MatDialogRef<CreateProjectComponent>) { }
+	constructor(public dataService: ServerDataService,private dialogRef:MatDialogRef<CreateProjectComponent>) { }
 
   	ngOnInit(): void {
+		  this.resetForm();
 	}
 
-	submit(){
-		let tempName:string = this.nameInput.nativeElement.value;
-		let tempDescription:string = this.descInput.nativeElement.value;
-		let tempCreator = "me" + ++this.count;
-		this.dataService.addData(tempName,tempCreator,tempDescription);
-		this.onClose();
+	resetForm(form?:NgForm){
+		if(form!=null)
+		form.resetForm();
 
+		this.dataService.formProject = {
+			name:"",
+			creator:"",
+			description:"",
+			id:0,
+			state: StateOfProject.Running
+		}
 	}
 
 	onClose(){
-		this.dialogRef.close()
+		this.dialogRef.close();
 	}
 
+	onSubmit(form:NgForm){
+		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription).subscribe(value => {
+			let id = ServerDataService.parseProject(value).id;
+			window.location.href ="/projectView/"+id;
+		})
+	}
 }

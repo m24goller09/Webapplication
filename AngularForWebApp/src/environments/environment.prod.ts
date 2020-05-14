@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+	production: true,
+	server: "https://promasapi.herokuapp.com/",
+	home:"https://promas.herokuapp.com/"
 };
