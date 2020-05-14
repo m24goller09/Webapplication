@@ -91,6 +91,24 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{projectid}/ListUser")]
+        [ProducesResponseType(typeof(IEnumerable<UserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUsersByProject(long projectid)
+        {
+            try
+            {
+                var dtos = from model in (await projectService.GetUserByProjectAsync(projectid))
+                           select mapper.Map<User, UserDTO>(model.UsernameNavigation);
+                return Ok(dtos);
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+
+
         [HttpPost]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
