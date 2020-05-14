@@ -54,5 +54,13 @@ namespace API.Persistence.Repository
                 .Include(d => d.ProjectNavigation)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ProjectAssignment>> ListAsyncByProject(long projectid)
+        {
+            return await dbContext.ProjectAssignment
+                .Where(s => s.ProjectId.Equals(projectid))
+                .Include(d => d.UsernameNavigation)
+                .ToListAsync();
+        }
     }
 }

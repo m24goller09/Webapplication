@@ -52,14 +52,24 @@ namespace API.Services
             return project;
         }
 
-        public async Task <IEnumerable<ProjectAssignment>> GetProjectByUserAsync(string userName)
+        public async Task<IEnumerable<ProjectAssignment>> GetProjectByUserAsync(string userName)
         {
-            var projects = await projectAssignmentRepository.ListAsyncByUser(userName);
-            if(projects.Count() == 0)
+            var projectAssignments = await projectAssignmentRepository.ListAsyncByUser(userName);
+            if(projectAssignments.Count() == 0)
             {
                 throw new NotFoundException("No projects for asked user", typeof(Project).ToString());
             }
-            return projects;
+            return projectAssignments;
+        }
+
+        public async Task<IEnumerable<ProjectAssignment>> GetUserByProjectAsync(long projectid)
+        {
+            var projectAssignments = await projectAssignmentRepository.ListAsyncByProject(projectid);
+            if(projectAssignments.Count() == 0)
+            {
+                throw new NotFoundException("No users for this project", typeof(Project).ToString());
+            }
+            return projectAssignments;
         }
 
         public override async Task Update(Project modelToUpdate)
