@@ -44,18 +44,10 @@ namespace AuthServer
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseErrorEvents = true;
-                options.IssuerUri = "https://promasauthserver.herokuapp.com/";
-                options.PublicOrigin = "https://promasauthserver.herokuapp.com";
+                options.IssuerUri = Configuration.GetConnectionString("IssuerUri");
+                options.PublicOrigin = Configuration.GetConnectionString("PublicOrigin");
             })
-                .AddDeveloperSigningCredential()/*
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder => builder.UseNpgsql(Configuration.GetConnectionString("Default"));
-
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                })*/
-                //.AddInMemoryPersistedGrants()
+                .AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
