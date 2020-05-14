@@ -32,6 +32,7 @@ export class ProjectViewComponent implements OnInit {
 
 	editor:boolean = false;
 	owner:boolean = true;
+	member:boolean = false;
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
 
@@ -42,6 +43,8 @@ export class ProjectViewComponent implements OnInit {
 		this.route.paramMap.subscribe(params =>{
 			try {
 				let id:number = Number.parseInt(params.get("id"));
+				let users:any;
+				let username:string = this.authService.userName;
 				this.dataService.getProject(id).subscribe(value => {
 					this.project = ServerDataService.parseProject(value);
 					if(this.project.creator != this.authService.userName){
@@ -51,12 +54,25 @@ export class ProjectViewComponent implements OnInit {
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
+					})
+
+					this.dataService.getUserOfProject(this.project.id).subscribe(res => {
+						users = res;
+						users.forEach(function (user) {
+							if(user['username'] == username) {
+								isMember(true);
+							}
+						});
 					});
+
 				});
 			}catch (e) {
 				throw e;
 			}
 		});
+		const isMember = bool => {
+			this.member = bool;
+		};
 	}
 
 	receiveSubTaskSelected($event){
@@ -146,14 +162,9 @@ export class ProjectViewComponent implements OnInit {
 	}
 
 	joinProject(){
-		/*
-			ToDo: check if already part of project
-		*/
-
 		console.log("joining Project Nr.: " + this.project.id);
-		//Join Stuff
 		this.dataService.joinProject(this.project.id);
-		console.log("after join");
+		this.member = true;
 
 	}
 }

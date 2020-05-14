@@ -85,7 +85,6 @@ export class AuthService extends BaseService {
 
 	postToApiWithToken(call: string, bodyData?: any) {
 		const token: string = this.authorizationHeaderValue;
-		console.log(bodyData);
 		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
@@ -98,9 +97,6 @@ export class AuthService extends BaseService {
 
 	postToApiWithTokenNoBody(call: string) {
 		const token: string = this.authorizationHeaderValue;
-		console.log("in Auth:" + call);
-		console.log(token);
-
 		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',

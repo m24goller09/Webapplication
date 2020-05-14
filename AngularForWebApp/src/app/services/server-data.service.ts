@@ -50,7 +50,16 @@ export class ServerDataService {
 	 */
 	getSubTasks(idOfProject:number){
 		return this.authService.getFromApiWithToken("SubTask/ByProject/"+idOfProject);
-  	}
+	}
+
+	/**
+ 	* Returns all Members of the specified project, by the id.
+ 	* @param idOfProject which specifies the project
+ 	*/
+	getUserOfProject(idOfProject:number){
+		return this.authService.getFromApiWithToken('Project/'+idOfProject+'/ListUser');
+	}
+
 
 	/*
    	 * all posts
@@ -100,8 +109,6 @@ export class ServerDataService {
 	 * @param projectID
 	 */
 	joinProject(projectID:number){
-		console.log("in DataServer");
-
 		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName);
 	}
 
