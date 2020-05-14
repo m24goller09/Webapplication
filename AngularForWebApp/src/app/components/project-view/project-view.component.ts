@@ -140,11 +140,20 @@ export class ProjectViewComponent implements OnInit {
 		let st = document.getElementById('stateSelect') as HTMLSelectElement;
 		let stateString = st.value;
 		this.dataService.editProject(this.project.id,title.value,desc.value,stateString);
+		this.project.description = desc.value;
+		this.project.name = title.value;
 		this.toggleView();
 	}
 
 	joinProject(){
+		/*
+			ToDo: check if already part of project
+		*/
+
 		console.log("joining Project Nr.: " + this.project.id);
 		//Join Stuff
+		this.dataService.joinProject(this.project.id);
+		console.log("after join");
+
 	}
 }

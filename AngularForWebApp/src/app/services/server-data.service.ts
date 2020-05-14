@@ -95,6 +95,16 @@ export class ServerDataService {
 		});
 	}
 
+	/**
+	 * Join an existing Project via ProjectID
+	 * @param projectID
+	 */
+	joinProject(projectID:number){
+		console.log("in DataServer");
+
+		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName);
+	}
+
 
 
 	/*
