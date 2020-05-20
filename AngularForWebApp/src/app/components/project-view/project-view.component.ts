@@ -33,6 +33,7 @@ export class ProjectViewComponent implements OnInit {
 	editor:boolean = false;
 	owner:boolean = true;
 	member:boolean = false;
+	projectState:string;
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
 
@@ -51,6 +52,7 @@ export class ProjectViewComponent implements OnInit {
 						console.log("accessing foreign project!");
 						this.owner = false;
 					}
+					this.parseStateNumToString(this.project.state);
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
@@ -136,8 +138,8 @@ export class ProjectViewComponent implements OnInit {
 		if(this.authService.userName == this.project.creator){
 			if(this.editor == false){
 				console.log("entered Editor");
+				this.parseStateNumToString(this.project.state);
 				this.editor = true;
-				console.log(this.project.state);
 			}
 			else{
 				console.log("left editor");
@@ -158,6 +160,7 @@ export class ProjectViewComponent implements OnInit {
 		this.dataService.editProject(this.project.id,title.value,desc.value,stateString);
 		this.project.description = desc.value;
 		this.project.name = title.value;
+		this.project.state = this.parseStateStringToEnum(stateString);
 		this.toggleView();
 	}
 
@@ -165,6 +168,41 @@ export class ProjectViewComponent implements OnInit {
 		console.log("joining Project Nr.: " + this.project.id);
 		this.dataService.joinProject(this.project.id);
 		this.member = true;
+	}
 
+	parseStateNumToString(value:number){
+		switch (value) {
+			case 0: {
+				this.projectState = "running";
+				break;
+			}
+			case 1: {
+				this.projectState = "paused";
+				break;
+			}
+			case 2: {
+				this.projectState = "finished";
+				break;
+			}
+		}
+	}
+
+	parseStateStringToEnum(value: string) {
+		let state:StateOfProject;
+		switch (value) {
+			case 'running': {
+				state = StateOfProject.Running;
+				break;
+			}
+			case 'paused': {
+				state = StateOfProject.Paused;
+				break;
+			}
+			case 'finished': {
+				state = StateOfProject.Finished;
+				break;
+			}
+		}
+		return state;
 	}
 }
