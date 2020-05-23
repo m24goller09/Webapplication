@@ -28,6 +28,16 @@
 				<div *ngIf="!editor">
 					<div   *ngIf="!editor" id="description" class="mt-2">Description: {{project.description}}</div>
 					<button  *ngIf="!owner && !member" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
+					<div class="dropdown">
+						<button class="btn btn-sm mt-1 dropdown-toggle  member-list" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Member
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<label class="dropdown-item" *ngFor="let mem of projectMember">{{mem}}</label>
+						</div>
+					</div>
+
+
 				</div>
 
 				<div *ngIf="editor">

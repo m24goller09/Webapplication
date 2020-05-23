@@ -34,6 +34,7 @@ export class ProjectViewComponent implements OnInit {
 	owner:boolean = true;
 	member:boolean = false;
 	projectState:string;
+	projectMember:string[] = [];
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
 
@@ -61,6 +62,7 @@ export class ProjectViewComponent implements OnInit {
 					this.dataService.getUserOfProject(this.project.id).subscribe(res => {
 						users = res;
 						users.forEach(function (user) {
+							updateMember(user['username']);
 							if(user['username'] == username) {
 								isMember(true);
 							}
@@ -75,6 +77,13 @@ export class ProjectViewComponent implements OnInit {
 		const isMember = bool => {
 			this.member = bool;
 		};
+
+		const updateMember = username => {
+			this.projectMember.push(username);
+		};
+
+
+		console.log(this.projectMember);
 	}
 
 	receiveSubTaskSelected($event){
