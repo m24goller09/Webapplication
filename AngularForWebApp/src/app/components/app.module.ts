@@ -26,6 +26,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 let routes: Routes;
 routes = [
@@ -80,22 +81,23 @@ routes = [
 	AddButtonComponent,
 	CreateSubTaskComponent,
   ],
-	imports: [
-		BrowserModule,
-		RouterModule.forRoot(routes),
-		HttpClientModule,
-		BrowserAnimationsModule,
-		MatDialogModule,
-		FormsModule,
-		ReactiveFormsModule,
-		CoreModule,
-		SharedModule,
-		MatButtonModule,
-		MatInputModule,
-		MatSliderModule,
-		MatOptionModule,
-		MatSelectModule,
-	],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(routes),
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CoreModule,
+        SharedModule,
+        MatButtonModule,
+        MatInputModule,
+        MatSliderModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+    ],
   exports:[RouterModule],
   providers: [
 	  Title,
