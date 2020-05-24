@@ -4,7 +4,7 @@
 				<div *ngFor="let project of projects">
 					<app-project [project]="project"></app-project>
 				</div>
-				<app-add-button class="flex-element"></app-add-button>
+				<app-add-button *ngIf="loggedIn" class="flex-element"></app-add-button>
 			</div>
 		</div>
 		<mat-spinner *ngIf="busy" color="primary" class="m-5"></mat-spinner>

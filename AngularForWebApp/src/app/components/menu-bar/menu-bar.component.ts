@@ -25,7 +25,6 @@ export class MenuBarComponent implements OnInit{
 			this.allowed = status
 			this.email = this.authService.getClaims()['email'];
 			this.userName = this.authService.getClaims()['name'];
-			this.profileTest()
 		});
 	}
 
@@ -36,7 +35,7 @@ export class MenuBarComponent implements OnInit{
 			await this.router.navigate(['']);
 		}
 		catch(er){
-			console.log(er);
+			console.error(er);
 		}
 	}
 
@@ -46,9 +45,6 @@ export class MenuBarComponent implements OnInit{
 			console.log("menu-bar:");
 			console.log(r)
 		});
-	}
-	profileTest(){
-		console.log(this.authService.getClaims());
 	}
 
 	findProject(){
