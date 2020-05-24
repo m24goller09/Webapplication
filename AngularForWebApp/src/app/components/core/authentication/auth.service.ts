@@ -68,7 +68,7 @@ export class AuthService extends BaseService {
 		return this.user != null ? this.user.profile.email : '';
 	}
 
-	async signout() {
+	async signOut() {
 		await this.manager.signoutRedirect();
 	}
 
@@ -103,11 +103,7 @@ export class AuthService extends BaseService {
 				'Authorization': token
 			})
 		};
-		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).subscribe(res => {
-			console.log(res);
-			return res;
-		});
-		//pipe(catchError(this.handleError));
+		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).pipe(catchError(this.handleError));
 	}
 
 	putToApiWithToken(call:string, bodyData:any){
@@ -119,10 +115,7 @@ export class AuthService extends BaseService {
 			}),
 			body: bodyData
 		};
-		return this.http.put(this.configService.resourceApiURI + call,bodyData, httpOptions).subscribe(res => {console.log(res);
-		return res;});
-
-		//pipe(catchError(this.handleError));
+		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError));
 	}
 
 	getClaims(): any{

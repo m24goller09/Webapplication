@@ -31,7 +31,7 @@ export class MenuBarComponent implements OnInit{
 	async signout() {
 		try{
 			console.log('Signout');
-			await this.authService.signout();
+			await this.authService.signOut();
 			await this.router.navigate(['']);
 		}
 		catch(er){

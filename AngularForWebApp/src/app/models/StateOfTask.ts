@@ -1,5 +1,5 @@
 export enum StateOfTask {
-	Backlog,
-	Running,
-	Finished
+	Backlog = 'backlog',
+	Running = 'running',
+	Finished = 'finished'
 }

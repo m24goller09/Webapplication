@@ -7,6 +7,7 @@ import {StateOfTask} from '../models/StateOfTask';
 import {StateOfProject} from '../models/StateOfProject';
 import {environment} from '../../environments/environment';
 import {AuthService} from '../components/core/authentication/auth.service';
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -109,17 +110,15 @@ export class ServerDataService {
 	 * @param projectID
 	 */
 	joinProject(projectID:number){
-		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName);
+		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName).subscribe(value => (console.log(value)));
 	}
-
-
 
 	/*
    	 * all puts
 	 */
 	/**
-	 * Edites an existing project with a put-request.
-	 * @param id Number to Identificate the project
+	 * Edits an existing project with a put-request.
+	 * @param id Number to identify the project
 	 * @param name name of the project to add
 	 * @param description description of the project to add
 	 * @param state state of running project
@@ -127,13 +126,22 @@ export class ServerDataService {
 
 	editProject(id:number,name:string,description:string,state:string){
 		let project:Object = {
-			"projectID": id, // no need to be set, is handled by the db
+			"projectID": id,
 			"name": name,
 			"description": description,
-			"manager": this.authService.userName, // TODO not sure if this works
+			"manager": this.authService.userName,
 			"state" : state
 		}
 		return this.authService.putToApiWithToken('Project/',project);
+	}
+
+	/**
+	 * Edits an existing sub task with a put-request.
+	 * @param subTask The sub task object, which is already changed.
+	 */
+	editSubTask(subTask: SubTask){
+		let parameter: string = JSON.stringify(subTask);
+		return this.authService.putToApiWithToken('Subtask/', parameter);
 	}
 
 	/**

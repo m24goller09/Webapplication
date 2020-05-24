@@ -1,7 +1,7 @@
 import {StateOfTask} from './StateOfTask';
 
 export class SubTask {
-	id:number;
+	subtaskId:number;
 	name:string;
 	creator:string;
 	description:string;
@@ -11,12 +11,12 @@ export class SubTask {
 	 * Creates an sub task object.
 	 * @param id			of sub task
 	 * @param name			of sub task
-	 * @param creator		of sub task	("manager")
+	 * @param creator		of sub task
 	 * @param description	of sub task
 	 * @param state			of sub task	(as string)
 	 */
 	constructor(id:number, name:string, creator:string, description:string, state:string) {
-		this.id = id;
+		this.subtaskId = id;
 		this.name = name;
 		this.creator = creator;
 		this.description = description;
@@ -39,10 +39,44 @@ export class SubTask {
 				if (state === "finished" || state === "Finished"){
 					return StateOfTask.Finished;
 				} else {
-					throw new DOMException("Wrong type of state, cannot be converted to StateOfTask. Given state: "+ state+
+					throw new DOMException("Wrong type of state, cannot be converted to StateOfTask. Given state: "+ state +
 						"\nAllowed states are: backlog, running or finished.");
 				}
 			}
+		}
+	}
+
+	/**
+	 * Reduces the state of the sub task.
+	 * @return true, if the state was reduced
+	 */
+	reduceState(): boolean {
+		switch (this.state) {
+			case StateOfTask.Backlog:
+				return false;
+			case StateOfTask.Running:
+				this.state = StateOfTask.Backlog;
+				return true;
+			case StateOfTask.Finished:
+				this.state = StateOfTask.Running;
+				return true;
+		}
+	}
+
+	/**
+	 * Increases the state of the sub task.
+	 * @return true, if the state was increased
+	 */
+	increaseState(): boolean {
+		switch (this.state) {
+			case StateOfTask.Backlog:
+				this.state = StateOfTask.Running
+				return true;
+			case StateOfTask.Running:
+				this.state = StateOfTask.Backlog;
+				return true;
+			case StateOfTask.Finished:
+				return false;
 		}
 	}
 }

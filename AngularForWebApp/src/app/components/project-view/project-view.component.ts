@@ -22,13 +22,8 @@ export class ProjectViewComponent implements OnInit {
 	};
 	subTaskToShow: SubTask;
 	// initial sub task, show this if this project has no sub tasks
-	private defaultSubTask: SubTask = {
-		id: -1,
-		name:"No sub task to display.",
-		creator:"",
-		description:"Please create an sub task to show more information",
-		state:StateOfTask.Running
-	};
+	private defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
+		"Please create an sub task to show more information", StateOfTask.Running,);
 
 	editor:boolean = false;
 	owner:boolean = true;
@@ -50,7 +45,6 @@ export class ProjectViewComponent implements OnInit {
 				this.dataService.getProject(id).subscribe(value => {
 					this.project = ServerDataService.parseProject(value);
 					if(this.project.creator != this.authService.userName){
-						console.log("accessing foreign project!");
 						this.owner = false;
 					}
 					this.parseStateNumToString(this.project.state);
@@ -81,9 +75,6 @@ export class ProjectViewComponent implements OnInit {
 		const updateMember = username => {
 			this.projectMember.push(username);
 		};
-
-
-		console.log(this.projectMember);
 	}
 
 	receiveSubTaskSelected($event){
@@ -146,18 +137,15 @@ export class ProjectViewComponent implements OnInit {
 	toggleView(){
 		if(this.authService.userName == this.project.creator){
 			if(this.editor == false){
-				console.log("entered Editor");
 				this.parseStateNumToString(this.project.state);
 				this.editor = true;
 			}
 			else{
-				console.log("left editor");
 				this.editor = false;
 			}
 		}
 		else{
-			console.log('No Access to Editor-Window');
-
+			throw new DOMException('User is not allowed to access the editor section!');
 		}
 	}
 
@@ -166,10 +154,11 @@ export class ProjectViewComponent implements OnInit {
 		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
 		let st = document.getElementById('stateSelect') as HTMLSelectElement;
 		let stateString = st.value;
-		this.dataService.editProject(this.project.id,title.value,desc.value,stateString);
-		this.project.description = desc.value;
-		this.project.name = title.value;
-		this.project.state = this.parseStateStringToEnum(stateString);
+		this.dataService.editProject(this.project.id,title.value,desc.value,stateString).subscribe(value => {
+			this.project.description = desc.value;
+			this.project.name = title.value;
+			this.project.state = this.parseStateStringToEnum(stateString);
+		});
 		this.toggleView();
 	}
 
