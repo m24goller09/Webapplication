@@ -14,7 +14,7 @@ export class SubTask {
 	 * @param name			of sub task
 	 * @param creator		of sub task
 	 * @param description	of sub task
-	 * @param state			of sub task	(as string)
+	 * @param state			of sub task
 	 */
 	constructor(id:number, name:string, creator:string, description:string, state:string) {
 		this.subtaskId = id;

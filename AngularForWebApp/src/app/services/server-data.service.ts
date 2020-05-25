@@ -33,6 +33,9 @@ export class ServerDataService {
 		return this.authService.getFromApiWithToken("Project/");
 	}
 
+	/**
+	 * Get all projects of current user
+	 */
 	getProjectOfCurrentUser(){
 		return this.authService.getFromApiWithToken("Project/ByUser/" + this.authService.userName);
 	}

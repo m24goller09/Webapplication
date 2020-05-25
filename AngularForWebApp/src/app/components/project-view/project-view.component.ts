@@ -155,6 +155,11 @@ export class ProjectViewComponent implements OnInit {
 		return -1;
 	}
 
+	/**
+	 * button-click-event\
+	 * if current user is creator of opened project the projectView switches between the editor and spectator mode
+	 * if user is not creator mode doesnt switch
+	 */
 	toggleView(){
 		if(this.authService.userName == this.project.creator){
 			this.editor = this.editor == false;
@@ -163,6 +168,10 @@ export class ProjectViewComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * submiting changes made in editor-view to both, external Database and localy loaded project.\
+	 * after submiting the changes the user leaves editor-mode
+	 */
 	submitChanges(){
 		let title = document.getElementById('titleInput') as HTMLInputElement;
 		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
@@ -176,6 +185,9 @@ export class ProjectViewComponent implements OnInit {
 		this.toggleView();
 	}
 
+	/**
+	 * joining currently opened project
+	 */
 	joinProject(){
 		this.dataService.joinProject(this.project.id);
 		this.member = true;

@@ -9,6 +9,9 @@ import { StateOfProject } from '../../models/StateOfProject';
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.css']
 })
+/**
+ * Component that needs to be opened as a Dialog to create a new Project
+ */
 export class CreateProjectComponent implements OnInit {
 
 	@ViewChild('nameInput') nameInput: ElementRef;
@@ -20,6 +23,10 @@ export class CreateProjectComponent implements OnInit {
 		  this.resetForm();
 	}
 
+	/**
+	 * resets the form to its initial settings and resets all temporary placeholders if given form is build
+	 * @param form contains a handler to a  NgForm-Element
+	 */
 	resetForm(form?:NgForm){
 		if(form!=null)
 		form.resetForm();
@@ -37,6 +44,11 @@ export class CreateProjectComponent implements OnInit {
 		this.dialogRef.close();
 	}
 
+	/**
+	 * providing all needed information to the ServerDataService to add a new Project to Database.
+	 * After success-response changing current path to projectView of the just created Project
+	 * @param form contains a handler to a  NgForm-Element
+	 */
 	onSubmit(form:NgForm){
 		this.dataService.addProject(form.value.ProjectName,form.value.ProjectDescription).subscribe(value => {
 			let id = ServerDataService.parseProject(value).id;

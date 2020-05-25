@@ -31,6 +31,8 @@
 						</button>
 					</div>
 				</div>
+				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
+				<div id="creator">Creator: {{project.creator}}</div>
 				<button *ngIf="!owner && !member && !editor" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
 				<div *ngIf="!editor">
 					<div id="description" class="mt-2">Description: {{project.description}}</div>
