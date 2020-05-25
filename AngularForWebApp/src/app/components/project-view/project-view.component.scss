@@ -30,12 +30,12 @@
 	background: rgba(theme-color(finishedSubTask),0.15);
 }
 
-#edit{
+.edit-button{
 	height:1.1rem;
 	opacity:70%;
 }
 
-#edit:hover{
+.edit-button:hover{
 	cursor:pointer;
 	opacity:100%;
 }
@@ -43,9 +43,8 @@
 .state-select{
 	max-width: 10%;
 	min-width: 3rem;
-
 }
 
 .member-list{
-	padding-left: 0rem !important;
+	padding-left: 0 !important;
 }

@@ -6,6 +6,8 @@ import {Project} from '../../models/Project';
 import {StateOfProject} from '../../models/StateOfProject';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../core/authentication/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {CreateSubTaskComponent} from '../create-sub-task/create-sub-task.component';
 
 @Component({
   selector: 'app-project-view',
@@ -13,25 +15,35 @@ import {AuthService} from '../core/authentication/auth.service';
   styleUrls: ['./project-view.component.scss']
 })
 export class ProjectViewComponent implements OnInit {
+	/**
+	 * The current displayed project.
+	 */
 	project:Project = null;
-
+	/**
+	 * Object of arrays which hold all sub tasks.
+	 */
 	tasks = {
 		"Backlog": [],
 		"Running": [],
 		"Finished": []
 	};
+	/**
+	 * The task about which more information is displayed.
+	 */
 	subTaskToShow: SubTask;
-	// initial sub task, show this if this project has no sub tasks
+	/**
+	 * Initial sub task, show this if this project has no sub tasks.
+ 	 */
 	private defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
 		"Please create an sub task to show more information", StateOfTask.Running,);
 
 	editor:boolean = false;
 	owner:boolean = true;
 	member:boolean = false;
-	projectState:string;
 	projectMember:string[] = [];
 
-  	constructor(private route: ActivatedRoute, private dataService: ServerDataService,private authService:AuthService) { }
+  	constructor(private route: ActivatedRoute, private dataService: ServerDataService,
+				private authService: AuthService, private matDialog: MatDialog) {}
 
   	ngOnInit(): void {
 		this.owner = true;
@@ -47,7 +59,7 @@ export class ProjectViewComponent implements OnInit {
 					if(this.project.creator != this.authService.userName){
 						this.owner = false;
 					}
-					this.parseStateNumToString(this.project.state);
+					// this.projectState = this.project.state;
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
@@ -77,14 +89,21 @@ export class ProjectViewComponent implements OnInit {
 		};
 	}
 
-	receiveSubTaskSelected($event){
-  		this.subTaskToShow = $event;
+	/**
+	 * Select the given task to show more information.
+	 * @param task
+	 */
+	selectSubTask(task: SubTask){
+  		this.subTaskToShow = task;
 	}
 
-	newSubTaskCreated(value){
-		const newSubTask = ServerDataService.parseSubTask(value);
-		this.insertIntoArray(newSubTask);
-  		this.subTaskToShow = newSubTask;
+	/**
+	 * Adds sub task to arrays and selects this task.
+	 * @param task The task to add and select.
+	 */
+	addNewSubTask(task: SubTask){
+		this.insertIntoArray(task);
+  		this.selectSubTask(task);
 	}
 
 	/**
@@ -129,22 +148,17 @@ export class ProjectViewComponent implements OnInit {
 		}
 	}
 
-	// keep insert order on iterating
-	asIsOrder(a, b) {
+	/**
+	 * keep insert order on iterating
+ 	 */
+	order(a, b) {
 		return -1;
 	}
 
 	toggleView(){
 		if(this.authService.userName == this.project.creator){
-			if(this.editor == false){
-				this.parseStateNumToString(this.project.state);
-				this.editor = true;
-			}
-			else{
-				this.editor = false;
-			}
-		}
-		else{
+			this.editor = this.editor == false;
+		} else {
 			throw new DOMException('User is not allowed to access the editor section!');
 		}
 	}
@@ -167,23 +181,6 @@ export class ProjectViewComponent implements OnInit {
 		this.member = true;
 	}
 
-	parseStateNumToString(value:number){
-		switch (value) {
-			case 0: {
-				this.projectState = "running";
-				break;
-			}
-			case 1: {
-				this.projectState = "paused";
-				break;
-			}
-			case 2: {
-				this.projectState = "finished";
-				break;
-			}
-		}
-	}
-
 	/**
 	 * Inserts the given sub task into its new array and removes it from the other one.
 	 * @param changedTask The task which is
@@ -199,5 +196,22 @@ export class ProjectViewComponent implements OnInit {
 			}
 		}
 		throw new Error("The sub task was not found and couldn't be inserted nor removed from the array of sub tasks.\nproject-view.component.ts - insertAndRemove()");
+	}
+
+	/**
+	 * Opens a dialog which can be used to edit the given sub task. On completion the sub task is edited on the database and selected.
+	 * @param subTask The sub task which can be edited.
+	 */
+	editSubTask(subTask: SubTask) {
+		console.log(this.project.id);
+		this.matDialog.open(CreateSubTaskComponent, {
+			width: '40vw',
+			data: {projectId: this.project.id, subTask: subTask}
+		}).afterClosed().subscribe((task: SubTask) => {
+			if (task !== undefined && task !== null){
+				this.insertAndRemove(task)
+				this.subTaskToShow = task;
+			}
+		});
 	}
 }
