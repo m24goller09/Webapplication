@@ -57,7 +57,7 @@
 				</span>
 			</div>
 			<div class="projectContainer">
-				<app-subTask *ngFor="let subTask of task.value" (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
+				<app-subTask *ngFor="let subTask of task.value" (selectEvent)="receiveSubTaskSelected($event)" (changeState)="insertAndRemove($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 		<div class="tasks info w-25 card">

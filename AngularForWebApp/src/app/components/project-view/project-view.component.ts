@@ -157,13 +157,12 @@ export class ProjectViewComponent implements OnInit {
 		this.dataService.editProject(this.project.id,title.value,desc.value,stateString).subscribe(value => {
 			this.project.description = desc.value;
 			this.project.name = title.value;
-			this.project.state = this.parseStateStringToEnum(stateString);
+			this.project.state = Project.parseState(stateString);
 		});
 		this.toggleView();
 	}
 
 	joinProject(){
-		console.log("joining Project Nr.: " + this.project.id);
 		this.dataService.joinProject(this.project.id);
 		this.member = true;
 	}
@@ -185,22 +184,20 @@ export class ProjectViewComponent implements OnInit {
 		}
 	}
 
-	parseStateStringToEnum(value: string) {
-		let state:StateOfProject;
-		switch (value) {
-			case 'running': {
-				state = StateOfProject.Running;
-				break;
-			}
-			case 'paused': {
-				state = StateOfProject.Paused;
-				break;
-			}
-			case 'finished': {
-				state = StateOfProject.Finished;
-				break;
+	/**
+	 * Inserts the given sub task into its new array and removes it from the other one.
+	 * @param changedTask The task which is
+	 */
+	insertAndRemove(changedTask: SubTask): boolean {
+		for (let category in this.tasks){
+			for (let i in this.tasks[category]){
+				if (changedTask.subtaskId === this.tasks[category][i].subtaskId){
+					this.tasks[category].splice(i,1);
+					this.insertIntoArray(changedTask);
+					return;
+				}
 			}
 		}
-		return state;
+		throw new Error("The sub task was not found and couldn't be inserted nor removed from the array of sub tasks.\nproject-view.component.ts - insertAndRemove()");
 	}
 }

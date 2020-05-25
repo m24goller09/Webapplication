@@ -5,6 +5,7 @@ export class SubTask {
 	name:string;
 	creator:string;
 	description:string;
+	assigned:string;
 	state:StateOfTask;
 
 	/**
@@ -20,6 +21,7 @@ export class SubTask {
 		this.name = name;
 		this.creator = creator;
 		this.description = description;
+		this.assigned = creator;
 		this.state = SubTask.parseState(state);
 	}
 
@@ -73,7 +75,7 @@ export class SubTask {
 				this.state = StateOfTask.Running
 				return true;
 			case StateOfTask.Running:
-				this.state = StateOfTask.Backlog;
+				this.state = StateOfTask.Finished;
 				return true;
 			case StateOfTask.Finished:
 				return false;

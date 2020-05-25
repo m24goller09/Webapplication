@@ -12,6 +12,7 @@ import {ServerDataService} from '../../services/server-data.service';
 export class SubTaskComponent implements OnInit {
 	@Input() subTask: SubTask;
 	@Output() selectEvent = new EventEmitter<SubTask>();
+	@Output() changeState = new EventEmitter<SubTask>();
 	state: string;
 	constructor(private api:ServerDataService) {}
 	ngOnInit(): void {
@@ -42,8 +43,8 @@ export class SubTaskComponent implements OnInit {
 	 */
 	leftArrow() {
 		if (this.subTask.reduceState()){
-			this.api.editSubTask(this.subTask).subscribe(value => {
-				console.log(value);
+			this.api.editSubTask(this.subTask).subscribe(() => {
+				this.changeState.emit(this.subTask);
 			});
 		}
 	}
@@ -53,8 +54,8 @@ export class SubTaskComponent implements OnInit {
 	 */
 	rightArrow() {
 		if (this.subTask.increaseState()){
-			this.api.editSubTask(this.subTask).subscribe(value => {
-				// TODO
+			this.api.editSubTask(this.subTask).subscribe(() => {
+				this.changeState.emit(this.subTask);
 			});
 		}
 	}

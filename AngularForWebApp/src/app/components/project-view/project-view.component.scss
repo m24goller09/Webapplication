@@ -18,21 +18,15 @@
 	min-height: 55vh;
 }
 
-/*
-	The following classes are for the background of the sub task info
-	0 = backlog task
-	1 = running task
-	2 = finished task
-*/
-.state-0{
+.state-backlog{
 	background: rgba(theme-color(backlogSubTask),0.15);
 }
 
-.state-1{
+.state-running{
 	background: rgba(theme-color(runningSubTask),0.15);
 }
 
-.state-2{
+.state-finished{
 	background: rgba(theme-color(finishedSubTask),0.15);
 }
 
