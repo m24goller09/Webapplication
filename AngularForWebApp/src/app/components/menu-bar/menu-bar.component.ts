@@ -20,6 +20,9 @@ export class MenuBarComponent implements OnInit{
 	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
 	}
 
+	/**
+	 * sets 'allowed' boolean to the current AuthStatus value to toggle between different appearence-modes
+	 */
 	ngOnInit(): void {
 		this.subscription = this.authService.authNavStatus$.subscribe(status => {
 			this.allowed = status
@@ -47,10 +50,15 @@ export class MenuBarComponent implements OnInit{
 			console.log(r)
 		});
 	}
+
 	profileTest(){
 		console.log(this.authService.getClaims());
 	}
 
+	/**
+	 * search and open a project by its projectID.\
+	 * initiates GET-Request in services
+	 */
 	findProject(){
 		let searchID = document.getElementById('searchID') as HTMLInputElement;
 		this.dataService.getProject(+searchID.value).subscribe(result => {

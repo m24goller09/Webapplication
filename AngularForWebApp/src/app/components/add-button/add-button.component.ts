@@ -9,6 +9,9 @@ import {SubTask} from '../../models/SubTask';
   templateUrl: './add-button.component.html',
   styleUrls: ['./add-button.component.css']
 })
+/**
+ * A Component that provides the function to add either a new Project or a new Subtask of a new Project, depending of the given State
+ */
 export class AddButtonComponent implements OnInit {
 	@Input() state: string = null;
 	@Input() id: number = null;
@@ -17,6 +20,11 @@ export class AddButtonComponent implements OnInit {
 
 	ngOnInit(): void {}
 
+	/**
+	 * function called on Button-Click Event
+	 * when there is no given state a dialog is opened wich contains the CreateProjectComponent
+	 * else the addSubTaskDialog function is called
+	 */
 	openDialog():void{
 		if (this.state !== null){
 			this.addSubTaskDialog();

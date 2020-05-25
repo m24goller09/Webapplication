@@ -23,11 +23,11 @@
 						<option value="finished">finished</option>
 					</select>
 				</div>
-
+				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
 				<div id="creator">Creator: {{project.creator}}</div>
 				<div *ngIf="!editor">
 					<div   *ngIf="!editor" id="description" class="mt-2">Description: {{project.description}}</div>
-					<button  *ngIf="!owner && !member" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
+					<button  *ngIf="!owner && !member" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit"(click)="joinProject()">Join</button>
 					<div class="dropdown">
 						<button class="btn btn-sm mt-1 dropdown-toggle  member-list" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Member

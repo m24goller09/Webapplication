@@ -143,6 +143,11 @@ export class ProjectViewComponent implements OnInit {
 		return -1;
 	}
 
+	/**
+	 * button-click-event\
+	 * if current user is creator of opened project the projectView switches between the editor and spectator mode
+	 * if user is not creator mode doesnt switch
+	 */
 	toggleView(){
 		if(this.authService.userName == this.project.creator){
 			if(this.editor == false){
@@ -157,10 +162,13 @@ export class ProjectViewComponent implements OnInit {
 		}
 		else{
 			console.log('No Access to Editor-Window');
-
 		}
 	}
 
+	/**
+	 * submiting changes made in editor-view to both, external Database and localy loaded project.\
+	 * after submiting the changes the user leaves editor-mode
+	 */
 	submitChanges(){
 		let title = document.getElementById('titleInput') as HTMLInputElement;
 		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
@@ -173,12 +181,19 @@ export class ProjectViewComponent implements OnInit {
 		this.toggleView();
 	}
 
+	/**
+	 * joining currently opened project
+	 */
 	joinProject(){
 		console.log("joining Project Nr.: " + this.project.id);
 		this.dataService.joinProject(this.project.id);
 		this.member = true;
 	}
 
+	/**
+	 * mapping recieved number to matching string
+	 * @param value contains number representing the State of a given project
+	 */
 	parseStateNumToString(value:number){
 		switch (value) {
 			case 0: {
@@ -196,6 +211,10 @@ export class ProjectViewComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * mapping recieved string to a matching StateOfProject Element
+	 * @param value contains string representing the State of a given Project
+	 */
 	parseStateStringToEnum(value: string) {
 		let state:StateOfProject;
 		switch (value) {

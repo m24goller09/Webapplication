@@ -7,6 +7,10 @@ import { AuthService } from '../core/authentication/auth.service';
   templateUrl: './auth-callback.component.html',
   styleUrls: ['./auth-callback.component.css']
 })
+/**
+ * Component to handle the redirect from the authentification-server
+ * redirects to the home-page if user is succesfully logged in
+ */
 export class AuthCallbackComponent implements OnInit {
 
 	error: boolean;
