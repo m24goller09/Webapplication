@@ -1,38 +1,76 @@
 <div *ngIf="project!=null" class="project-view">
 	<div class="card mx-3 my-2">
-		<div class="card-header">
+		<div *ngIf="!editor" class="card-header">
 			{{project.name}}
-			<button type="button" class="close" aria-label="Close" [routerLink]="['/home','def']" >
+			<button type="button" class="close float-right mr-1" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>
 			</button>
+			<img *ngIf="owner" (click)="toggleView()" src="./assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
 		</div>
 		<div class="card-body">
 			<div class="card-title">ID: <span class="text-info">#{{project.id}}</span></div>
 			<div class="card-text">
+				<div *ngIf="editor" class="mt-2 mb-2">
+					<div>Title:</div>
+    				<input type="text" class="form-control" id="titleInput" value="{{project.name}}">
+					<div class="mt-2">Description:</div>
+					<textarea class="form-control" colls="30" rows="5"  id="descriptionInput">{{project.description}} </textarea>
+					<div class="mt-2"> State of Project:</div>
+					<select id="stateSelect"  class="custom-select state-select">
+						<option selected="selected">{{ project.state }}</option>
+						<option value="running">running</option>
+						<option value="paused">paused</option>
+						<option value="finished">finished</option>
+					</select>
+					<div id="buttons-editor" class="my-1">
+						<button  type="submit" class="btn btn-outline-success" (click)="submitChanges()">
+							Submit
+						</button>
+						<button type="button" class="btn btn-outline-danger ml-1" (click)="toggleView()">
+							Cancel
+						</button>
+					</div>
+				</div>
+				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
 				<div id="creator">Creator: {{project.creator}}</div>
-				<div id="description">Description: {{project.description}}</div>
-				<!-- TODO add new way of displaying all three states of the project -->
+				<button *ngIf="!owner && !member && !editor" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
+				<div *ngIf="!editor">
+					<div id="description" class="mt-2">Description: {{project.description}}</div>
+					<div class="dropdown">
+						<button class="btn btn-sm mt-1 dropdown-toggle  member-list" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Member
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<label class="dropdown-item" *ngFor="let mem of projectMember">{{mem}}</label>
+						</div>
+					</div>
+				</div>
+				<div id="creator">Creator: {{project.creator}}</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="subTask d-flex flex-md-row justify-content-center">
-		<div *ngFor="let task of tasks | keyvalue: asIsOrder" class="tasks w-25 card">
+		<div *ngFor="let task of tasks | keyvalue: order" class="tasks w-25 card">
 			<div class="card-header">
 				{{ task.key }}
 				<span class="add-button-container">
-					<app-add-button [state]="task.key.toString().toLowerCase()" [id]="project.id" (createdSubTask)="newSubTaskCreated($event)"></app-add-button>
+					<app-add-button [state]="task.key.toString().toLowerCase()" [projectId]="project.id"
+									(createdSubTask)="addNewSubTask($event)"></app-add-button>
 				</span>
 			</div>
 			<div class="projectContainer">
-				<app-subTask *ngFor="let subTask of task.value" (selectEvent)="receiveSubTaskSelected($event)" [subTask]=subTask></app-subTask>
+				<app-subTask *ngFor="let subTask of task.value" (selectEvent)="selectSubTask($event)" (changeState)="insertAndRemove($event)" [subTask]=subTask></app-subTask>
 			</div>
 		</div>
 		<div class="tasks info w-25 card">
-			<div class="card-header state-{{subTaskToShow.state}}">Task info</div>
+			<div class="card-header state-{{subTaskToShow.state}}">
+				Task info
+				<img *ngIf="subTaskToShow.subtaskId > 0" (click)="editSubTask(subTaskToShow)" src="./assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
+			</div>
 			<div class="card-body">
 				<div class="font-weight-bold border-bottom">
-					<span *ngIf="subTaskToShow.id>=0" class="text-info">#{{ subTaskToShow.id }}</span>
+					<span *ngIf="subTaskToShow.subtaskId>=0" class="text-info">#{{ subTaskToShow.subtaskId }}</span>
 					{{ subTaskToShow.name }}
 				</div>
 				<div *ngIf="subTaskToShow.creator!==''" class="text-muted">Creator: {{ subTaskToShow.creator }}</div>

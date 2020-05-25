@@ -18,8 +18,8 @@
 			</ul>
 			<form class="form-inline my-2 my-lg-0">
 				<!--TODO connect search to something-->
-				<input class="form-control mr-sm-2" type="text" placeholder="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<input id="searchID" class="form-control mr-sm-2" type="text" placeholder="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="findProject()">Search by ID</button>
 			</form>
 		</div>
 		<div *ngIf="allowed" class="navbar-collapse collapse w-20 order-3 dual-collapse2">

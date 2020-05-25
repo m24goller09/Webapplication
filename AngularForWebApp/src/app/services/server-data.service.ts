@@ -7,6 +7,7 @@ import {StateOfTask} from '../models/StateOfTask';
 import {StateOfProject} from '../models/StateOfProject';
 import {environment} from '../../environments/environment';
 import {AuthService} from '../components/core/authentication/auth.service';
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,9 @@ export class ServerDataService {
 		return this.authService.getFromApiWithToken("Project/");
 	}
 
+	/**
+	 * Get all projects of current user
+	 */
 	getProjectOfCurrentUser(){
 		return this.authService.getFromApiWithToken("Project/ByUser/" + this.authService.userName);
 	}
@@ -50,7 +54,16 @@ export class ServerDataService {
 	 */
 	getSubTasks(idOfProject:number){
 		return this.authService.getFromApiWithToken("SubTask/ByProject/"+idOfProject);
-  	}
+	}
+
+	/**
+ 	* Returns all Members of the specified project, by the id.
+ 	* @param idOfProject which specifies the project
+ 	*/
+	getUserOfProject(idOfProject:number){
+		return this.authService.getFromApiWithToken('Project/'+idOfProject+'/ListUser');
+	}
+
 
 	/*
    	 * all posts
@@ -94,6 +107,46 @@ export class ServerDataService {
 			console.log(value);
 		});
 	}
+
+	/**
+	 * Join an existing Project via ProjectID
+	 * @param projectID
+	 */
+	joinProject(projectID:number){
+		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName).subscribe(value => (console.log(value)));
+	}
+
+	/*
+   	 * all puts
+	 */
+	/**
+	 * Edits an existing project with a put-request.
+	 * @param id Number to identify the project
+	 * @param name name of the project to add
+	 * @param description description of the project to add
+	 * @param state state of running project
+	 */
+
+	editProject(id:number,name:string,description:string,state:string){
+		let project:Object = {
+			"projectID": id,
+			"name": name,
+			"description": description,
+			"manager": this.authService.userName,
+			"state" : state
+		}
+		return this.authService.putToApiWithToken('Project/',project);
+	}
+
+	/**
+	 * Edits an existing sub task with a put-request.
+	 * @param subTask The sub task object, which is already changed.
+	 */
+	editSubTask(subTask: SubTask){
+		let parameter: string = JSON.stringify(subTask);
+		return this.authService.putToApiWithToken('Subtask/', parameter);
+	}
+
 	/**
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running

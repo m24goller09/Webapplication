@@ -1,11 +1,10 @@
 import { throwError } from 'rxjs';
 
 export abstract class BaseService {
-
-	constructor() { }
-
 	protected handleError(error: any) {
-
+		return throwError(error);
+		/**
+		 * TODO implement an actual error handler
 		var applicationError = error.headers.get('Application-Error');
 
 		// either application-error in header or model error in body
@@ -22,5 +21,6 @@ export abstract class BaseService {
 
 		modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
 		return throwError(modelStateErrors || 'Server error');
+		 **/
 	}
 }
