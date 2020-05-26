@@ -27,6 +27,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 let routes: Routes;
 routes = [
@@ -80,6 +81,7 @@ routes = [
 	AuthCallbackComponent,
 	AddButtonComponent,
 	CreateSubTaskComponent,
+	ConfirmDialogComponent,
   ],
     imports: [
         BrowserModule,
