@@ -5,7 +5,7 @@
 			<button type="button" class="close float-right mr-1" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<img *ngIf="owner" (click)="toggleView()" src="./assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
+			<img *ngIf="owner" (click)="toggleView()" src="../../assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
 		</div>
 		<div class="card-body">
 			<div class="card-title">ID: <span class="text-info">#{{project.id}}</span></div>
@@ -31,9 +31,6 @@
 						</button>
 					</div>
 				</div>
-				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
-				<div id="creator">Creator: {{project.creator}}</div>
-				<button *ngIf="!owner && !member && !editor" class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" (click)="joinProject()">Join</button>
 				<div *ngIf="!editor">
 					<div id="description" class="mt-2">Description: {{project.description}}</div>
 					<div class="dropdown">
@@ -46,6 +43,9 @@
 					</div>
 				</div>
 				<div id="creator">Creator: {{project.creator}}</div>
+				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
+				<button  *ngIf="!owner && member && !editor" class="btn btn-outline-danger  my-2 my-sm-0 float-right " type="submit" (click)="leaveProject()">Leave</button>
+				<button  *ngIf="owner && member && !editor" class="btn btn-outline-danger  my-2 my-sm-0 float-right " type="submit" (click)="deleteProject()">Delete</button>
 			</div>
 		</div>
 	</div>
@@ -66,7 +66,7 @@
 		<div class="tasks info w-25 card">
 			<div class="card-header state-{{subTaskToShow.state}}">
 				Task info
-				<img *ngIf="subTaskToShow.subtaskId > 0" (click)="editSubTask(subTaskToShow)" src="./assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
+				<img *ngIf="subTaskToShow.subtaskId > 0" (click)="editSubTask(subTaskToShow)" src="../../assets/edit.png" class="img-fluid float-right mr-1 edit-button" alt="Edit">
 			</div>
 			<div class="card-body">
 				<div class="font-weight-bold border-bottom">

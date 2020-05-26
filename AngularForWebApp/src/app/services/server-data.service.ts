@@ -148,6 +148,29 @@ export class ServerDataService {
 	}
 
 	/**
+	 * Deleting a projectID -> userID assignment
+	 * @param projectID Number to identify the project
+	 */
+	leaveProject(projectID:number){
+		/**
+		 *	waiting for api to implement option
+		 * return this.authService.delToApiWithToken()
+		 */
+	}
+
+	/**
+	 * Deleting a project
+	 * @param projectID Number to identify the project
+	 */
+	deleteProject(projectID: number) {
+		/**
+		 *	waiting for api to implement option
+		 * return this.authService.delToApiWithToken()
+		 */
+	}
+
+
+	/**
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
 	 */

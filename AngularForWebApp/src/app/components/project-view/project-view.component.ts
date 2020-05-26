@@ -6,8 +6,10 @@ import {Project} from '../../models/Project';
 import {StateOfProject} from '../../models/StateOfProject';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../core/authentication/auth.service';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CreateSubTaskComponent} from '../create-sub-task/create-sub-task.component';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import { logging } from 'protractor';
 
 @Component({
   selector: 'app-project-view',
@@ -152,7 +154,13 @@ export class ProjectViewComponent implements OnInit {
 	 * keep insert order on iterating
  	 */
 	order(a, b) {
-		return -1;
+		if (a.key === 'Backlog' || a.key === 'Running' && b.key === 'Finished'){
+			return -1;
+		}
+		if (b.key === 'Backlog' || a.key === 'Finished' && b.key === 'Running'){
+			return 1;
+		}
+		return 0;
 	}
 
 	/**
@@ -191,6 +199,31 @@ export class ProjectViewComponent implements OnInit {
 	joinProject(){
 		this.dataService.joinProject(this.project.id);
 		this.member = true;
+	}
+
+	/**
+	 * leaving current project if not creator
+	 */
+	leaveProject(){
+		this.matDialog.open(ConfirmDialogComponent, {
+			width: '20%',
+			data: { projectId: this.project.id, call: "leave"}
+		}).afterClosed().subscribe(res => {
+			console.log(res);
+		});
+	}
+
+	/**
+	 * deleting current project\
+	 * only possible if owner
+	 */
+	deleteProject(){
+		this.matDialog.open(ConfirmDialogComponent, {
+			width: '20%',
+			data: { projectId: this.project.id, call: "delete" }
+		}).afterClosed().subscribe(res => {
+			console.log(res);
+		});
 	}
 
 	/**
