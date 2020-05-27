@@ -37,7 +37,7 @@ function modified {
 cd API/API
 modified . && ! dotnet build && { echo API build failed; exit 1; }
 cd ../unit_testing
-modified . && ! dotnet build && {echo unit_testing build failed; exit 1; }
+modified . && ! dotnet build && { echo unit_testing build failed; exit 1; }
 cd ../../AuthServer
 modified . && ! dotnet build && { echo AuthServer build failed; exit 1; }
 
