@@ -30,24 +30,25 @@
 	background: rgba(theme-color(finishedSubTask),0.15);
 }
 
+
 .edit-button{
 	height:1.1rem;
-	opacity:70%;
-	-webkit-opacity:70%;
-	-moz-opacity:70%;
-	-o-opacity:70%;
-	-ms-opacity:70%;
-}
+	opacity:0.7 ;
+	-webkit-opacity:0.7;
+	-moz-opacity:0.7 !important;
+	-o-opacity:0.7 !important;
+	-ms-opacity:0.7 !important;
+	}
 
 .edit-button:hover{
-	-webkit-backface-visibility: hidden;
 	cursor:pointer;
-	opacity:100%;
-	-webkit-opacity:100%;
-	-moz-opacity:100%;
-	-o-opacity:100%;
-	-ms-opacity:100%;
-}
+	opacity:1;
+	-webkit-opacity:1;
+	-moz-opacity:1 !important;
+	-o-opacity:1 !important;
+	-ms-opacity:1 !important;
+	}
+
 
 .state-select{
 	max-width: 10%;
