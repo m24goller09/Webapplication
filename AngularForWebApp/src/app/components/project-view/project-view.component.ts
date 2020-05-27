@@ -154,7 +154,13 @@ export class ProjectViewComponent implements OnInit {
 	 * keep insert order on iterating
  	 */
 	order(a, b) {
-		return -1;
+		if (a.key === 'Backlog' || a.key === 'Running' && b.key === 'Finished'){
+			return -1;
+		}
+		if (b.key === 'Backlog' || a.key === 'Finished' && b.key === 'Running'){
+			return 1;
+		}
+		return 0;
 	}
 
 	/**
