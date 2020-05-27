@@ -31,13 +31,16 @@
 }
 
 .edit-button{
-	height: 1.1rem;
-	opacity: 70%;
+	height:1.1rem;
+	opacity:70%;
+	-webkit-opacity:70%
 }
 
 .edit-button:hover{
+	-webkit-backface-visibility: hidden;
 	cursor:pointer;
 	opacity:100%;
+	-webkit-opacity:100%
 }
 
 .state-select{
