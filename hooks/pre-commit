@@ -34,9 +34,11 @@ function modified {
 	! git diff --quiet HEAD "./$1"
 }
 
-cd API
+cd API/API
 modified . && ! dotnet build && { echo API build failed; exit 1; }
-cd ../AuthServer
+cd ../unit_testing
+modified . && ! dotnet build && {echo unit_testing build failed; exit 1; }
+cd ../../AuthServer
 modified . && ! dotnet build && { echo AuthServer build failed; exit 1; }
 
 exit 0
