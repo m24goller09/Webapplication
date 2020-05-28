@@ -9,7 +9,6 @@ using API.Domain.Services;
 using API.Persistence.Context;
 using API.Services;
 using API.Persistence.Repository;
-using unit_testing.Tests.Container;
 using System.Threading.Tasks;
 
 namespace unit_testing.Tests
@@ -24,16 +23,6 @@ namespace unit_testing.Tests
         static SubtaskRepository sr;
         static UnitOfWork uow;
         static ProjectService ps{ get; set; }
-
-        public static IEnumerable<TestCaseService> TestCasesServices()
-        {
-            yield return new TestCaseService();
-        }
-
-        public static IEnumerable<TestCaseRepository> TestCasesRepository()
-        {
-            yield return null;
-        }
 
         [SetUp]
         public void Setup()
