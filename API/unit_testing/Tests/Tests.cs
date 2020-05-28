@@ -48,20 +48,6 @@ namespace unit_testing.Tests
             Assert.IsTrue(res, "ProjectAssignment is not in database!");
         }
 
-        [Test]
-        public void DBTest2()
-        {
-            //DbSet<User> dbset = db.User;
-            //User user = dbset.Find("Chris1");
-            //bool res = false;
-            //if(user != null)
-            //{
-            //    res = user.Name == "Christoph";   
-            //}
-            Assert.IsTrue(true, "Chris1 has wrong name");
-            Assert.IsTrue(true, "Chris1 has wrong name");
-        }
-
         [TearDown]
         public void Clear()
         {
