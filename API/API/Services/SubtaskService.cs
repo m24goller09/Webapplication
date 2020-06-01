@@ -42,6 +42,22 @@ namespace API.Services
             }
         }
 
+        public async Task RemoveSubtask(long subtaskId, string usrRole, string usrName)
+        {
+            var subtask = await standardRepository.FindByIdAsync(subtaskId);
+            NullCheck(subtask);
+
+            if(!usrRole.Equals("admin"))
+            {
+                if(!usrName.Equals(subtask.Creator))
+                {
+                    throw new UnauthorizedException("no permission", typeof(Subtask).ToString());
+                }
+            }
+            standardRepository.Remove(subtask);
+            await unitOfWork.CompleteAsync();
+        }
+
         public async Task<IEnumerable<Subtask>> GetSubtaskByProjectAsync(long projectid)
         {
             var subtasks = (await standardRepository.ListAsync())

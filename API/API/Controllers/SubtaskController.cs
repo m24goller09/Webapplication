@@ -104,5 +104,24 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+
+        [HttpDelete("{subtaskid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveSubtask(long subtaskid)
+        {
+            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            try
+            {
+                await subtaskService.RemoveSubtask(subtaskid, role, email);
+                return Ok();
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
     }
 }
