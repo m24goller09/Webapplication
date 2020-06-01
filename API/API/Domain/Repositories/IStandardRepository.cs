@@ -11,7 +11,6 @@ namespace API.Domain.Repository
         Task AddAsync(Model model);
         // only accepts int and string
         Task <Model> FindByIdAsync(dynamic id);
-        void Update(Model model);
         void Remove(Model model);
     }
 }

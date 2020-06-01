@@ -37,11 +37,6 @@ namespace API.Persistence.Repository
                 .ToListAsync();
         }
 
-        public void Update(ProjectAssignment projAssign)
-        {
-            dbContext.ProjectAssignment.Update(projAssign);
-        }
-
         public void Remove(ProjectAssignment projAssign)
         {
             dbContext.ProjectAssignment.Remove(projAssign);

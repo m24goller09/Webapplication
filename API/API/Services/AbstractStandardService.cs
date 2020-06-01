@@ -60,12 +60,6 @@ namespace API.Services
             return await standardRepository.ListAsync();
         }
 
-        public virtual async Task Remove(Model modelToRemove)
-        {
-            standardRepository.Remove(modelToRemove);
-            await unitOfWork.CompleteAsync();
-        }
-
         public abstract Task Update(Model modelToUpdate);
     }
 }

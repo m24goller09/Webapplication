@@ -10,7 +10,6 @@ namespace API.Domain.Services
         Task<IEnumerable<Model>> ListAsync();
         Task<Model> AddAsync(Model model);
         Task Update(Model modelsToUpdate);
-        Task Remove(Model model);
     }
 }
 

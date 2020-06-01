@@ -38,11 +38,6 @@ namespace API.Persistence.Repository
                 .ToListAsync();
         }
 
-        public void Update(Project project)
-        {
-            dbContext.Project.Update(project);
-        }
-
         public void Remove(Project project)
         {
             dbContext.Project.Remove(project);

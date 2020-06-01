@@ -35,11 +35,6 @@ namespace API.Persistence.Repository
                 .ToListAsync();
         }
 
-        public void Update(Subtask subtask)
-        {
-            dbContext.Subtask.Update(subtask);
-        }
-
         public void Remove(Subtask subtask)
         {
             dbContext.Subtask.Remove(subtask);

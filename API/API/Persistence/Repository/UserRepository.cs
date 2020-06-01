@@ -36,11 +36,6 @@ namespace API.Persistence.Repository
                 .ToListAsync();
         }
 
-        public void Update(User user)
-        {
-            dbContext.User.Update(user);
-        }
-
         public void Remove(User user)
         {
             dbContext.User.Remove(user);
