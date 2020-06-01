@@ -28,7 +28,7 @@ create table public."ProjectAssignment" (
 
 alter table "ProjectAssignment" add foreign key ("projectID") references "Project" ("projectID") on delete cascade;
 /* Deferrable foreign key due to chicken-and-egg problem */
-alter table "Project" add foreign key (manager, "projectID") references "ProjectAssignment" (username, "projectID") deferrable initially deferred;
+alter table "Project" add foreign key (manager, "projectID") references "ProjectAssignment" (username, "projectID") on delete cascade deferrable initially deferred;
 
 
 create table public."SubtaskState" (
@@ -41,12 +41,12 @@ create table public."Subtask" (
 	"subtaskID" serial primary key,
 	name text not null,
 	description text not null default '',
-	"projectID" integer not null references "Project" ("projectID"),
+	"projectID" integer not null references "Project" ("projectID") on delete cascade,
 	state text not null default 'running' references "SubtaskState" (state),
 	creator text not null,
 	assigned text,
-	foreign key (creator, "projectID") references "ProjectAssignment" (username, "projectID"),
-	foreign key (assigned, "projectID") references "ProjectAssignment" (username, "projectID")
+	foreign key (creator, "projectID") references "ProjectAssignment" (username, "projectID") on delete set null,
+	foreign key (assigned, "projectID") references "ProjectAssignment" (username, "projectID") on delete set null
 );
 
 
