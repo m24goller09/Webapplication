@@ -1,13 +1,11 @@
 <div class="home">
-	<div>
 		<div *ngIf="!busy">
 			<div class="d-flex flex-wrap">
-				<app-project class="flex-element" *ngFor="let project of projects" [project]="project"></app-project>
-				<app-add-button class="flex-element"></app-add-button>
+				<div *ngFor="let project of projects">
+					<app-project [project]="project"></app-project>
+				</div>
+				<app-add-button *ngIf="loggedIn" class="flex-element"></app-add-button>
 			</div>
 		</div>
-		<div *ngIf="busy" class="alert alert-warning  mt-3" role="alert">
-			<strong>You have no access to this area!! Please <label class="mb-2 login" (click)="onLogin()"> Login  </label> or <label class="mb-2 login" (click)="onRegister()"> create </label> a new Account</strong>
-		</div>
-	</div>
+		<mat-spinner *ngIf="busy" color="primary" class="m-5"></mat-spinner>
 </div>

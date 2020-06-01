@@ -3,7 +3,13 @@ import {ServerDataService} from '../../services/server-data.service';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
 import {Project} from '../../models/Project';
+import {StateOfProject} from '../../models/StateOfProject';
 import {ActivatedRoute} from '@angular/router';
+import {AuthService} from '../core/authentication/auth.service';
+import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {CreateSubTaskComponent} from '../create-sub-task/create-sub-task.component';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import { logging } from 'protractor';
 
 @Component({
   selector: 'app-project-view',
@@ -11,52 +17,95 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./project-view.component.scss']
 })
 export class ProjectViewComponent implements OnInit {
+	/**
+	 * The current displayed project.
+	 */
 	project:Project = null;
-
+	/**
+	 * Object of arrays which hold all sub tasks.
+	 */
 	tasks = {
 		"Backlog": [],
 		"Running": [],
 		"Finished": []
 	};
+	/**
+	 * The task about which more information is displayed.
+	 */
 	subTaskToShow: SubTask;
-	// initial sub task, show this if this project has no sub tasks
-	private defaultSubTask: SubTask = {
-		id: -1,
-		name:"No sub task to display.",
-		creator:"",
-		description:"Please create an sub task to show more information",
-		state:StateOfTask.Running
-	};
+	/**
+	 * Initial sub task, show this if this project has no sub tasks.
+ 	 */
+	private defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
+		"Please create an sub task to show more information", StateOfTask.Running,);
 
-  	constructor(private route: ActivatedRoute, private dataService: ServerDataService) { }
+	editor:boolean = false;
+	owner:boolean = true;
+	member:boolean = false;
+	projectMember:string[] = [];
+
+  	constructor(private route: ActivatedRoute, private dataService: ServerDataService,
+				private authService: AuthService, private matDialog: MatDialog) {}
 
   	ngOnInit(): void {
+		this.owner = true;
   		// default sub task is shown in the beginning
   		this.subTaskToShow = this.defaultSubTask;
 		this.route.paramMap.subscribe(params =>{
 			try {
 				let id:number = Number.parseInt(params.get("id"));
+				let users:any;
+				let username:string = this.authService.userName;
 				this.dataService.getProject(id).subscribe(value => {
 					this.project = ServerDataService.parseProject(value);
+					if(this.project.creator != this.authService.userName){
+						this.owner = false;
+					}
+					// this.projectState = this.project.state;
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
 						this.divideSubTasks(ServerDataService.parseSubTasks(value));
+					})
+
+					this.dataService.getUserOfProject(this.project.id).subscribe(res => {
+						users = res;
+						users.forEach(function (user) {
+							updateMember(user['username']);
+							if(user['username'] == username) {
+								isMember(true);
+							}
+						});
 					});
+
 				});
 			}catch (e) {
 				throw e;
 			}
 		});
+		const isMember = bool => {
+			this.member = bool;
+		};
+
+		const updateMember = username => {
+			this.projectMember.push(username);
+		};
 	}
 
-	receiveSubTaskSelected($event){
-  		this.subTaskToShow = $event;
+	/**
+	 * Select the given task to show more information.
+	 * @param task
+	 */
+	selectSubTask(task: SubTask){
+  		this.subTaskToShow = task;
 	}
 
-	newSubTaskCreated(value){
-		const newSubTask = ServerDataService.parseSubTask(value);
-		this.insertIntoArray(newSubTask);
-  		this.subTaskToShow = newSubTask;
+	/**
+	 * Adds sub task to arrays and selects this task.
+	 * @param task The task to add and select.
+	 */
+	addNewSubTask(task: SubTask){
+		this.insertIntoArray(task);
+  		this.selectSubTask(task);
 	}
 
 	/**
@@ -101,8 +150,113 @@ export class ProjectViewComponent implements OnInit {
 		}
 	}
 
-	// keep insert order on iterating
-	asIsOrder(a, b) {
-		return -1;
+	/**
+	 * keep insert order on iterating
+ 	 */
+	order(a, b) {
+		if (a.key === 'Backlog' || a.key === 'Running' && b.key === 'Finished'){
+			return -1;
+		}
+		if (b.key === 'Backlog' || a.key === 'Finished' && b.key === 'Running'){
+			return 1;
+		}
+		return 0;
+	}
+
+	/**
+	 * button-click-event\
+	 * if current user is creator of opened project the projectView switches between the editor and spectator mode
+	 * if user is not creator mode doesnt switch
+	 */
+	toggleView(){
+		if(this.authService.userName == this.project.creator){
+			this.editor = this.editor == false;
+		} else {
+			throw new DOMException('User is not allowed to access the editor section!');
+		}
+	}
+
+	/**
+	 * submiting changes made in editor-view to both, external Database and localy loaded project.\
+	 * after submiting the changes the user leaves editor-mode
+	 */
+	submitChanges(){
+		let title = document.getElementById('titleInput') as HTMLInputElement;
+		let desc = document.getElementById('descriptionInput') as HTMLInputElement;
+		let st = document.getElementById('stateSelect') as HTMLSelectElement;
+		let stateString = st.value;
+		this.dataService.editProject(this.project.id,title.value,desc.value,stateString).subscribe(value => {
+			this.project.description = desc.value;
+			this.project.name = title.value;
+			this.project.state = Project.parseState(stateString);
+		});
+		this.toggleView();
+	}
+
+	/**
+	 * joining currently opened project
+	 */
+	joinProject(){
+		this.dataService.joinProject(this.project.id);
+		this.member = true;
+	}
+
+	/**
+	 * leaving current project if not creator
+	 */
+	leaveProject(){
+		this.matDialog.open(ConfirmDialogComponent, {
+			width: '20%',
+			data: { projectId: this.project.id, call: "leave"}
+		}).afterClosed().subscribe(res => {
+			console.log(res);
+		});
+	}
+
+	/**
+	 * deleting current project\
+	 * only possible if owner
+	 */
+	deleteProject(){
+		this.matDialog.open(ConfirmDialogComponent, {
+			width: '20%',
+			data: { projectId: this.project.id, call: "delete" }
+		}).afterClosed().subscribe(res => {
+			console.log(res);
+		});
+	}
+
+	/**
+	 * Inserts the given sub task into its new array and removes it from the other one.
+	 * @param changedTask The task which is
+	 */
+	insertAndRemove(changedTask: SubTask): boolean {
+		for (let category in this.tasks){
+			for (let i in this.tasks[category]){
+				if (changedTask.subtaskId === this.tasks[category][i].subtaskId){
+					this.tasks[category].splice(i,1);
+					this.insertIntoArray(changedTask);
+					return;
+				}
+			}
+		}
+		throw new Error("The sub task was not found and couldn't be inserted nor removed from the array of sub tasks.\nproject-view.component.ts - insertAndRemove()");
+	}
+
+	/**
+	 * Opens a dialog which can be used to edit the given sub task. On completion the sub task is edited on the database and selected.
+	 * @param subTask The sub task which can be edited.
+	 */
+	editSubTask(subTask: SubTask) {
+		console.log(this.project.id);
+		this.matDialog.open(CreateSubTaskComponent, {
+			width: '40vw',
+			data: {projectId: this.project.id, subTask: subTask}
+		}).afterClosed().subscribe((task: SubTask) => {
+			if (task !== undefined && task !== null){
+				this.insertAndRemove(task)
+				this.subTaskToShow = task;
+			}
+		});
 	}
 }

@@ -1,5 +1,5 @@
 export enum StateOfProject {
-	Running,
-	Paused,
-	Finished
+	Running = 'running',
+	Paused = 'paused',
+	Finished = 'finished'
 }
