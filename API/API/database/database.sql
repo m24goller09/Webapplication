@@ -43,11 +43,34 @@ create table public."Subtask" (
 	description text not null default '',
 	"projectID" integer not null references "Project" ("projectID") on delete cascade,
 	state text not null default 'running' references "SubtaskState" (state),
-	creator text not null,
+	creator text,
 	assigned text,
-	foreign key (creator, "projectID") references "ProjectAssignment" (username, "projectID") on delete set null,
-	foreign key (assigned, "projectID") references "ProjectAssignment" (username, "projectID") on delete set null
+	foreign key (creator, "projectID") references "ProjectAssignment" (username, "projectID"),
+	foreign key (assigned, "projectID") references "ProjectAssignment" (username, "projectID")
 );
 
+/* create trigger to emulate 'on delete set null' for the foreign keys in "Subtask", but without setting projectID to null */
+create or replace function subtask_creator_fk_setnull_func()
+returns trigger as
+$$
+begin
+	update public."Subtask" subt set subt.creator = null where creator = OLD.creator and "projectID" = OLD."projectID";
+	return OLD;
+end;
+$$ language plpgsql;
+
+create trigger subtask_creator_fk_setnull before delete on public."ProjectAssignment"
+for each row execute procedure subtask_creator_fk_setnull_func();
 
 
+create or replace function subtask_assigned_fk_setnull_func()
+returns trigger as
+$$
+begin
+	update public."Subtask" subt set subt.assigned = null where assigned = OLD.creator and "projectID" = OLD."projectID";
+	return OLD;
+end;
+$$ language plpgsql;
+
+create trigger subtask_assigned_fk_setnull before delete on public."ProjectAssignment"
+for each row execute procedure subtask_assigned_fk_setnull_func();
