@@ -23,10 +23,10 @@ create table public."ProjectAssignment" (
 	"projectID" integer,
 	
 	primary key (username, "projectID"),
-	foreign key (username) references public.User (username)
+	foreign key (username) references public.User (username) on delete cascade
 );
 
-alter table "ProjectAssignment" add foreign key ("projectID") references "Project" ("projectID");
+alter table "ProjectAssignment" add foreign key ("projectID") references "Project" ("projectID") on delete cascade;
 /* Deferrable foreign key due to chicken-and-egg problem */
 alter table "Project" add foreign key (manager, "projectID") references "ProjectAssignment" (username, "projectID") deferrable initially deferred;
 
