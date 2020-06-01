@@ -15,10 +15,12 @@ namespace API.Services
     public class SubtaskService : AbstractStandardService<Subtask>
     {
         private readonly UserRepository userRepository;
-        public SubtaskService(IStandardRepository<Subtask> subtaskRepository, IStandardRepository<User> userRepository,
+        private readonly ProjectRepository projectRepository;
+        public SubtaskService(IStandardRepository<Subtask> subtaskRepository, IStandardRepository<User> userRepository, IStandardRepository<Project> projectRepository,
             IUnitOfWork unitOfWork) : base(subtaskRepository, unitOfWork)
         {
             this.userRepository = (UserRepository)userRepository;
+            this.projectRepository = (ProjectRepository)projectRepository;
         }
 
         public override async Task Update(Subtask modelToUpdate)
@@ -46,12 +48,20 @@ namespace API.Services
         {
             var subtask = await standardRepository.FindByIdAsync(subtaskId);
             NullCheck(subtask);
+            var project = await projectRepository.FindByIdAsync(subtask.ProjectId);
+            if(project == null)
+            {
+                throw new NotFoundException("Asked object does not exist", typeof(Project).ToString());
+            }
 
             if(!usrRole.Equals("admin"))
             {
                 if(!usrName.Equals(subtask.Creator))
                 {
-                    throw new UnauthorizedException("no permission", typeof(Subtask).ToString());
+                    if(!usrName.Equals(project.Manager))
+                    {
+                        throw new UnauthorizedException("no permission", typeof(Subtask).ToString());
+                    }                    
                 }
             }
             standardRepository.Remove(subtask);
