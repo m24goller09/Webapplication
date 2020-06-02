@@ -199,6 +199,7 @@ export class ProjectViewComponent implements OnInit {
 	joinProject(){
 		this.dataService.joinProject(this.project.id);
 		this.member = true;
+		this.projectMember.push(this.authService.userName);
 	}
 
 	/**
@@ -222,7 +223,6 @@ export class ProjectViewComponent implements OnInit {
 			width: '20%',
 			data: { projectId: this.project.id, call: "delete" }
 		}).afterClosed().subscribe(res => {
-			console.log(res);
 		});
 	}
 
@@ -258,5 +258,23 @@ export class ProjectViewComponent implements OnInit {
 				this.subTaskToShow = task;
 			}
 		});
+	}
+
+	/**
+	 * the owner of the project can exclude a current Project Member
+	 * @param member contains the username that needs to be kicked
+	 */
+	kick(member:string)
+	{
+		if(member != this.project.creator)
+		{
+			this.matDialog.open(ConfirmDialogComponent, {
+				width: '20%',
+				data: { user:member, projectId: this.project.id, call: "kick" }
+			}).afterClosed().subscribe(res => {
+				this.projectMember = this.projectMember.filter(f => f !== member)
+				console.log(this.projectMember);
+			});
+		}
 	}
 }

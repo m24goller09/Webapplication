@@ -5,6 +5,7 @@ import { ServerDataService } from '../../services/server-data.service';
 import { NgForm } from '@angular/forms';
 
 export interface ConfirmData {
+	user:string
 	projectId: number;
 	call: string;
 }
@@ -33,6 +34,12 @@ export class ConfirmDialogComponent{
 			this.dialogMessage = "Do you really want to delete this project?";
 			this.buttonMessage ="Delete";
 		}
+		 else if (data.call == "kick") {
+			console.log("confirm kick member", data.user);
+			this.dialogTitle = "Confirm Kicking";
+			this.dialogMessage = "Do you really want to kick '" + data.user + "' from this project?";
+			this.buttonMessage = "Kick";
+		}
 	 }
 
 	 /**
@@ -40,14 +47,25 @@ export class ConfirmDialogComponent{
 	  */
 	onSubmit() {
 		if(this.data.call=="leave"){
-			this.dataService.leaveProject(this.data.projectId);
+			this.dataService.leaveProject(this.data.projectId).subscribe(result => {
+				console.log(result);
+			})
 			console.log("left project Nr.: " + this.data.projectId);
-			window.location.href = "/home/def";
+			//window.location.href = "/home/def";
 		}
 		else if(this.data.call =="delete"){
-			this.dataService.deleteProject(this.data.projectId);
+			this.dataService.deleteProject(this.data.projectId).subscribe(result => {
+				console.log(result);
+			})
 			console.log("deleted project Nr.: " + this.data.projectId);
-			window.location.href = "home/def"
+			//window.location.href = "home/def"
+		}
+
+		else if (this.data.call == "kick") {
+			this.dataService.kickFromProject(this.data.projectId,this.data.user).subscribe(result => {
+				console.log(result);
+			})
+			console.log("kicked from  project: " + this.data.user);
 		}
   	}
 

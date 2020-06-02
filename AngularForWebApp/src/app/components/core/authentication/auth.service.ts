@@ -164,6 +164,22 @@ export class AuthService extends BaseService {
 	}
 
 	/**
+	 * Handels all DELETE-Requests beeing send to the Api-Url that require access-token-validation
+	 * The Access-Token is placed in the Request-Header
+	 * @param call contains the specific url extension to perfom the wanted DELETE-Request
+	 */
+	removeFromApiWithToken(call:string){
+		const token: string = this.authorizationHeaderValue;
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				'Authorization': token
+			})
+		};
+		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError));
+	}
+
+	/**
 	 * @return Profile Data of current user, such as name/username
 	 */
 	getClaims(): any{
