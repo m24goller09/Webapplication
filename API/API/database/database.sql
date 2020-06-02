@@ -64,11 +64,8 @@ begin
 end;
 $$ language plpgsql;
 
-drop trigger subtask_creator_fk_setnull on public."ProjectAssignment";
-
 create trigger subtask_creator_fk_setnull before delete on public."ProjectAssignment"
 for each row execute procedure subtask_creator_fk_setnull_func();
-
 
 create or replace function subtask_assigned_fk_setnull_func()
 returns trigger as
@@ -78,8 +75,6 @@ begin
 	return old;
 end;
 $$ language plpgsql;
-
-drop trigger subtask_assigned_fk_setnull on public."ProjectAssignment";
 
 create trigger subtask_assigned_fk_setnull before delete on public."ProjectAssignment"
 for each row execute procedure subtask_assigned_fk_setnull_func();
