@@ -54,8 +54,8 @@ create or replace function subtask_creator_fk_setnull_func()
 returns trigger as
 $$
 begin
-	update public."Subtask" subt set subt.creator = null where creator = OLD.creator and "projectID" = OLD."projectID";
-	return OLD;
+	update public."Subtask" subt set subt.creator = null where creator = old.username and "projectID" = old."projectID";
+	return old;
 end;
 $$ language plpgsql;
 
@@ -67,8 +67,8 @@ create or replace function subtask_assigned_fk_setnull_func()
 returns trigger as
 $$
 begin
-	update public."Subtask" subt set subt.assigned = null where assigned = OLD.creator and "projectID" = OLD."projectID";
-	return OLD;
+	update public."Subtask" subt set subt.assigned = null where assigned = old.username and "projectID" = old."projectID";
+	return old;
 end;
 $$ language plpgsql;
 
