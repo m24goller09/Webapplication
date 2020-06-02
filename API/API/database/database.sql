@@ -41,7 +41,8 @@ create table public."Subtask" (
 	"subtaskID" serial primary key,
 	name text not null,
 	description text not null default '',
-	"projectID" integer not null references "Project" ("projectID") on delete cascade,
+	/* deferrable because an immediate foreign key would cause the triggers to fail if the project is deleted, see below */
+	"projectID" integer not null references "Project" ("projectID") on delete cascade deferrable initially deferred,
 	state text not null default 'running' references "SubtaskState" (state),
 	creator text,
 	assigned text,
@@ -49,15 +50,21 @@ create table public."Subtask" (
 	foreign key (assigned, "projectID") references "ProjectAssignment" (username, "projectID")
 );
 
-/* create trigger to emulate 'on delete set null' for the foreign keys in "Subtask", but without setting projectID to null */
+/* These triggers emulate 'on delete set null' for the foreign keys in "Subtask", but without setting projectID to null because it
+might still be valid (for example, if a user leaves the project, he should be removed from all subtasks, but the subtasks are still part of the project.
+In addition to these triggers, the foreign key to Project.projectID needs to be 'deferrable initially deferred', because otherwise deleting
+a project deletes all rows in ProjectAssignment that reference it, which causes the triggers to update the Subtasks of the Project (which have not
+yet been deleted). Updating the row runs all checks related to it, and the foreign key to Project.projectID fails because the project no longer exists. */
 create or replace function subtask_creator_fk_setnull_func()
 returns trigger as
 $$
 begin
-	update public."Subtask" subt set subt.creator = null where creator = old.username and "projectID" = old."projectID";
+	update public."Subtask" set creator = null where creator = old.username and "projectID" = old."projectID";
 	return old;
 end;
 $$ language plpgsql;
+
+drop trigger subtask_creator_fk_setnull on public."ProjectAssignment";
 
 create trigger subtask_creator_fk_setnull before delete on public."ProjectAssignment"
 for each row execute procedure subtask_creator_fk_setnull_func();
@@ -67,10 +74,12 @@ create or replace function subtask_assigned_fk_setnull_func()
 returns trigger as
 $$
 begin
-	update public."Subtask" subt set subt.assigned = null where assigned = old.username and "projectID" = old."projectID";
+	update public."Subtask" set assigned = null where assigned = old.username and "projectID" = old."projectID";
 	return old;
 end;
 $$ language plpgsql;
+
+drop trigger subtask_assigned_fk_setnull on public."ProjectAssignment";
 
 create trigger subtask_assigned_fk_setnull before delete on public."ProjectAssignment"
 for each row execute procedure subtask_assigned_fk_setnull_func();
