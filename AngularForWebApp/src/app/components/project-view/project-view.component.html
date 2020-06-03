@@ -38,7 +38,12 @@
 							Member
 						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<label class="dropdown-item" *ngFor="let mem of projectMember">{{mem}}</label>
+							<label class="dropdown-item" *ngFor="let mem of projectMember">
+								{{mem}}
+								<button *ngIf="owner" type="button" class="close float-right ml-4" aria-label="Close" (click)="kick(mem)" >
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</label>
 						</div>
 					</div>
 				</div>

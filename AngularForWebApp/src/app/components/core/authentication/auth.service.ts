@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 
 import { BaseService } from "../../shared/base.service";
 import { ConfigService } from '../../shared/config.service';
@@ -109,7 +109,6 @@ export class AuthService extends BaseService {
 		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
 	}
 
-
 	/**
 	 * Handels all POST-Requests beeing send to the Api-Url that require the access-token-validation
 	 * The Access-Token is placed in the Request-Header
@@ -161,6 +160,22 @@ export class AuthService extends BaseService {
 			body: bodyData
 		};
 		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError));
+	}
+
+	/**
+	 * Handels all DELETE-Requests beeing send to the Api-Url that require access-token-validation
+	 * The Access-Token is placed in the Request-Header
+	 * @param call contains the specific url extension to perfom the wanted DELETE-Request
+	 */
+	removeFromApiWithToken(call:string){
+		const token: string = this.authorizationHeaderValue;
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				'Authorization': token
+			})
+		};
+		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError));
 	}
 
 	/**

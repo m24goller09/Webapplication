@@ -151,11 +151,16 @@ export class ServerDataService {
 	 * Deleting a projectID -> userID assignment
 	 * @param projectID Number to identify the project
 	 */
-	leaveProject(projectID:number){
-		/**
-		 *	waiting for api to implement option
-		 * return this.authService.delToApiWithToken()
-		 */
+	leaveProject(projectID: number) {
+		return this.authService.removeFromApiWithToken('Project/leaveProject/' + projectID + "/" + this.authService.userName);
+	}
+
+	/**
+	 * Deleting a projectID -> userID assignment for a user who is not yourself
+	 * @param projectID Number to identify the project
+	 */
+	kickFromProject(projectID: number,user:string) {
+		return this.authService.removeFromApiWithToken('Project/leaveProject/' + projectID + "/" + user);
 	}
 
 	/**
@@ -163,10 +168,7 @@ export class ServerDataService {
 	 * @param projectID Number to identify the project
 	 */
 	deleteProject(projectID: number) {
-		/**
-		 *	waiting for api to implement option
-		 * return this.authService.delToApiWithToken()
-		 */
+		return this.authService.removeFromApiWithToken('Project/' + projectID);
 	}
 
 
