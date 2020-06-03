@@ -3,13 +3,11 @@ import {ServerDataService} from '../../services/server-data.service';
 import {SubTask} from '../../models/SubTask';
 import {StateOfTask} from '../../models/StateOfTask';
 import {Project} from '../../models/Project';
-import {StateOfProject} from '../../models/StateOfProject';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../core/authentication/auth.service';
-import { MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {CreateSubTaskComponent} from '../create-sub-task/create-sub-task.component';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
-import { logging } from 'protractor';
 
 @Component({
   selector: 'app-project-view',

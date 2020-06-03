@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { UserManager, UserManagerSettings, User } from 'oidc-client';
-import { BehaviorSubject} from 'rxjs';
-
-import { BaseService } from "../../shared/base.service";
+import { UserManager, User } from 'oidc-client';
+import {BehaviorSubject, throwError} from 'rxjs';
 import { ConfigService } from '../../shared/config.service';
 import {environment} from '../../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class AuthService extends BaseService {
+export class AuthService {
 
 	// Observable navItem source
 	private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -22,7 +20,6 @@ export class AuthService extends BaseService {
 	private user: User = null;
 
 	constructor(private http: HttpClient, private configService: ConfigService) {
-		super();
 		//Creating generic User-Object from manager-class
 		this.manager.getUser().then(user => {
 			this.user = user;
@@ -38,7 +35,7 @@ export class AuthService extends BaseService {
 	}
 
 	/**
-	 * function waiting for Signin-Response and updating Authentificationstatus of current User
+	 * function waiting for sign-in-Response and updating authentication status of current User
 	 */
 	completeAuthentication() {
 		return this.manager.signinRedirectCallback().then(user =>{
@@ -51,7 +48,7 @@ export class AuthService extends BaseService {
 	}
 
 	/**
-	 * Sends POST-Request to authetification-server to create new Account.
+	 * Sends POST-Request to authentication-server to create new Account.
 	 * Contains Account-Data in Body
 	 * @param userRegistration is a imported class that contains username/mail/password
 	 */
@@ -60,7 +57,7 @@ export class AuthService extends BaseService {
 	}
 
 	/**
-	 * Outputs state-of-authentification for current User
+	 * Outputs state-of-authentication for current User
 	 * @return true when there is a user who has an accepted token
 	 * @return false when there is no user or user has no token/ expired token
 	 */
@@ -94,9 +91,9 @@ export class AuthService extends BaseService {
 	}
 
 	/**
-	 * Handels all GET-Requests beeing send to the Api-Url that require the access-token-validation
+	 * Handles all GET-Requests which are send to the Api-Url that require the access-token-validation
 	 * The Access-Token is placed in the Request-Header
-	 * @param call contains the specific url extention to perform the wanted GET-Request
+	 * @param call contains the specific url extension to perform the wanted GET-Request
 	 */
 	getFromApiWithToken(call: string) {
 		const token: string = this.authorizationHeaderValue;
@@ -106,14 +103,14 @@ export class AuthService extends BaseService {
 				'Authorization': token
 			})
 		};
-		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
+		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
 	}
 
 	/**
-	 * Handels all POST-Requests beeing send to the Api-Url that require the access-token-validation
+	 * Handles all POST-Requests which are send to the Api-Url that require the access-token-validation
 	 * The Access-Token is placed in the Request-Header
-	 * @param call  contains the specific url extention to perform the wanted POST-Request
-	 * @param bodyData conatins Data that needs to be stored in the DB (optional)
+	 * @param call  contains the specific url extension to perform the wanted POST-Request
+	 * @param bodyData contains Data that needs to be stored in the DB (optional)
 	 */
 	postToApiWithToken(call: string, bodyData?: any) {
 		const token: string = this.authorizationHeaderValue;
@@ -124,13 +121,13 @@ export class AuthService extends BaseService {
 			}),
 			body: bodyData
 		};
-		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError));
+		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
 	}
 
 	/**
-	 * Handels all POST-Requests (without Body-Data to Post) beeing send to the Api-Url that require the access-token-validation
+	 * Handles all POST-Requests (without Body-Data to Post) which are send to the Api-Url that require the access-token-validation
 	 * The Access-Token is placed in the Request-Header
-	 * @param call contains the specific url  extention to perfom the wanted POST-Request
+	 * @param call contains the specific url extension to perform the wanted POST-Request
 	 */
 	postToApiWithTokenNoBody(call: string) {
 		const token: string = this.authorizationHeaderValue;
@@ -140,14 +137,14 @@ export class AuthService extends BaseService {
 				'Authorization': token
 			})
 		};
-		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).pipe(catchError(this.handleError));
+		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
 	}
 
 
 	/**
-	 * Handels all PUT-Requests beeing send to the Api-Url that require the access-token-validation
-	 * The Acces-Token is placed in the Request-Header
-	 * @param call contains the specific url extension to perfom the wanted POST-Request
+	 * Handles all PUT-Requests which are send to the Api-Url that require the access-token-validation
+	 * The access-Token is placed in the Request-Header
+	 * @param call contains the specific url extension to perform the wanted POST-Request
 	 * @param bodyData contains modified Data that needs to be edited in the DB
 	 */
 	putToApiWithToken(call:string, bodyData:any){
@@ -159,13 +156,13 @@ export class AuthService extends BaseService {
 			}),
 			body: bodyData
 		};
-		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError));
+		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
 	}
 
 	/**
-	 * Handels all DELETE-Requests beeing send to the Api-Url that require access-token-validation
+	 * Handles all DELETE-Requests which are send to the Api-Url that require access-token-validation
 	 * The Access-Token is placed in the Request-Header
-	 * @param call contains the specific url extension to perfom the wanted DELETE-Request
+	 * @param call contains the specific url extension to perform the wanted DELETE-Request
 	 */
 	removeFromApiWithToken(call:string){
 		const token: string = this.authorizationHeaderValue;
@@ -175,7 +172,7 @@ export class AuthService extends BaseService {
 				'Authorization': token
 			})
 		};
-		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError));
+		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
 	}
 
 	/**
@@ -184,11 +181,32 @@ export class AuthService extends BaseService {
 	getClaims(): any{
 		return this.user != null ? this.user.profile : '';
 	}
+
+	private handleError(error: any) {
+		if (error instanceof HttpErrorResponse) {
+			if (error.error instanceof ErrorEvent) {
+				console.error("Error Event");
+			} else {
+				console.error(`error status : ${error.status} ${error.statusText}`);
+				switch (error.status) {
+					case 401:
+						this.manager.signinRedirect();
+						break;
+					case 403:
+						this.manager.signinRedirect();
+						break;
+				}
+			}
+		} else {
+			console.error("Shouldn't be here");
+		}
+		return throwError(error);
+	};
 }
 
 /**
- * Client-Settings to initialize new manager-object from wich current user gets generated.
- * @authority contains Authentification-Server Url
+ * Client-Settings to initialize new manager-object from which current user gets generated.
+ * @authority contains Authentication-Server Url
  * @redirect_uri manages which Route-Path gets called after finished Authority-Server-Redirect
  */
 export function getClientSettings(): { showDebugInformation: boolean; loadUserInfo: boolean; metadata: { jwks_uri: string; end_session_endpoint: string; issuer: string; authorization_endpoint: string; userinfo_endpoint: string }; automaticSilentRenew: boolean; authority: string; scope: string; response_type: string; redirect_uri: string; post_logout_redirect_uri: string; silent_redirect_uri: string; client_id: string; filterProtocolClaims: boolean } {
