@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 
 import { BaseService } from "../../shared/base.service";
 import { ConfigService } from '../../shared/config.service';
@@ -108,7 +108,6 @@ export class AuthService extends BaseService {
 		};
 		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
 	}
-
 
 	/**
 	 * Handels all POST-Requests beeing send to the Api-Url that require the access-token-validation

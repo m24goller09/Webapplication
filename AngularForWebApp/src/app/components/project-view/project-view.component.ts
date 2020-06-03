@@ -223,6 +223,7 @@ export class ProjectViewComponent implements OnInit {
 			width: '20%',
 			data: { projectId: this.project.id, call: "delete" }
 		}).afterClosed().subscribe(res => {
+			console.log(res);
 		});
 	}
 

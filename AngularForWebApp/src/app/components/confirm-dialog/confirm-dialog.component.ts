@@ -43,22 +43,22 @@ export class ConfirmDialogComponent{
 	 }
 
 	 /**
-	  * leavs/deletes a project
+	  * calls the requiered Service-Function depending on the given call-param
 	  */
 	onSubmit() {
 		if(this.data.call=="leave"){
 			this.dataService.leaveProject(this.data.projectId).subscribe(result => {
 				console.log(result);
+				window.location.href = "/home/def";
 			})
 			console.log("left project Nr.: " + this.data.projectId);
-			//window.location.href = "/home/def";
 		}
 		else if(this.data.call =="delete"){
 			this.dataService.deleteProject(this.data.projectId).subscribe(result => {
 				console.log(result);
+				window.location.href = "home/def"
 			})
 			console.log("deleted project Nr.: " + this.data.projectId);
-			//window.location.href = "home/def"
 		}
 
 		else if (this.data.call == "kick") {
