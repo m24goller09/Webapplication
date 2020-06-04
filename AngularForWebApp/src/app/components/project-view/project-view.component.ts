@@ -39,6 +39,7 @@ export class ProjectViewComponent implements OnInit {
 
 	editor:boolean = false;
 	owner:boolean = true;
+	admin:boolean = false;
 	member:boolean = false;
 	projectMember:string[] = [];
 
@@ -46,6 +47,11 @@ export class ProjectViewComponent implements OnInit {
 				private authService: AuthService, private matDialog: MatDialog) {}
 
   	ngOnInit(): void {
+		//provide admin with special rights
+		if(this.authService.userName == "admin@promas.de")
+		{
+			this.admin = true;
+		}
 		this.owner = true;
   		// default sub task is shown in the beginning
   		this.subTaskToShow = this.defaultSubTask;
@@ -269,7 +275,7 @@ export class ProjectViewComponent implements OnInit {
 	 */
 	kick(member:string)
 	{
-		if(member != this.project.creator)
+		if(member != this.project.creator )
 		{
 			this.matDialog.open(ConfirmDialogComponent, {
 				width: '20%',
