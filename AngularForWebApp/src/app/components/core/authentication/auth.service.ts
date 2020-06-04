@@ -16,11 +16,12 @@ export class AuthService {
 	// Observable navItem stream
 	authNavStatus$ = this._authNavStatusSource.asObservable();
 
-	private manager = new UserManager(getClientSettings());
+	public manager = null;
 	private user: User = null;
 
 	constructor(private http: HttpClient, private configService: ConfigService) {
 		//Creating generic User-Object from manager-class
+		this.manager =  new UserManager(getClientSettings());
 		this.manager.getUser().then(user => {
 			this.user = user;
 			this._authNavStatusSource.next(this.isAuthenticated());
@@ -191,10 +192,10 @@ export class AuthService {
 				switch (error.status) {
 					case 401:
 						if (this.manager == undefined){
-							window.location.reload();
+							//window.location.reload();
 						}
 						this.manager.signinRedirect();
-						break;
+						return throwError("Access denied!");
 					case 403:
 						if (this.manager == undefined){
 							window.location.reload();

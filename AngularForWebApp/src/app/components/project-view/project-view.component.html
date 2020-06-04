@@ -79,11 +79,15 @@
 					{{ subTaskToShow.name }}
 				</div>
 				<div *ngIf="subTaskToShow.creator!==''" class="text-muted">Creator: {{ subTaskToShow.creator }}</div>
+				<div *ngIf="subTaskToShow.creator!==''" class="text-muted">Assigned: {{ subTaskToShow.assigned }}</div>
 				<p class="card-text mx-1 my-3">
 					{{ subTaskToShow.description }}
 				</p>
-				<div *ngIf="subTaskToShow!==defaultSubTask" id="deleteSubTask" class="float-right">
-					<button type="button" class="btn btn-outline-danger float-right mr-1" (click)="deleteSubTask(subTaskToShow)">
+				<div *ngIf="subTaskToShow!==defaultSubTask && member" id="deleteSubTask" class="float-right">
+					<button *ngIf="subTaskToShow.assigned != authService.getClaims().email" type="button" class="btn btn-outline-warning mr-1" (click)="assignSubtask(subTaskToShow)">
+						Assign me
+					</button>
+					<button *ngIf="subTaskToShow.creator == authService.getClaims().email || owner || admin" type="button" class="btn btn-outline-danger mr-1" (click)="deleteSubTask(subTaskToShow)">
 						Delete
 					</button>
 				</div>

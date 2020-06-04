@@ -227,6 +227,6 @@ export class ServerDataService {
 	 * @param subTask the json object to parse
 	 */
 	static parseSubTask(subTask:any){
-		return new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.description,subTask.state);
+		return new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.assigned,subTask.description,subTask.state);
 	}
 }
