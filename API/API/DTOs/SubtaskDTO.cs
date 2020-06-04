@@ -18,7 +18,6 @@ namespace API.DTOs
         [Required]
         public string State { get; set; }
         public string Creator { get; set; }
-        [Required]
         public string Assigned { get; set; }
     }
 }
