@@ -105,7 +105,6 @@ namespace API.Persistence.Context
                 entity.Property(e => e.Assigned).HasColumnName("assigned");
 
                 entity.Property(e => e.Creator)
-                    .IsRequired()
                     .HasColumnName("creator");
 
                 entity.Property(e => e.Description)

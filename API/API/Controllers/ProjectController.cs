@@ -16,7 +16,6 @@ namespace API.Controllers
 {
     [Authorize(Policy = "ApiReader")]
     [Authorize(Policy = "Consumer")]
-    //[Authorize(Policy = "Admin")]
     [Route("Project")]
     [ApiController]
     

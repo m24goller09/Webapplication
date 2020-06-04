@@ -22,7 +22,10 @@ namespace API.Exceptions
 
         public override IActionResult GetActionResult()
         {
-            return new BadRequestObjectResult(problemDetails);
+            return new ObjectResult(problemDetails)
+            {
+                StatusCode = 401
+            };
         }
     }
 }
