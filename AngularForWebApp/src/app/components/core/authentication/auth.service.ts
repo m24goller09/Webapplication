@@ -103,7 +103,7 @@ export class AuthService {
 				'Authorization': token
 			})
 		};
-		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
+		return this.http.get(this.configService.resourceApiURI + call, httpOptions).pipe(catchError(this.handleError));
 	}
 
 	/**
@@ -121,7 +121,7 @@ export class AuthService {
 			}),
 			body: bodyData
 		};
-		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
+		return this.http.post(this.configService.resourceApiURI + call,bodyData,httpOptions).pipe(catchError(this.handleError));
 	}
 
 	/**
@@ -137,7 +137,7 @@ export class AuthService {
 				'Authorization': token
 			})
 		};
-		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
+		return this.http.post(this.configService.resourceApiURI + call,null, httpOptions).pipe(catchError(this.handleError));
 	}
 
 
@@ -156,7 +156,7 @@ export class AuthService {
 			}),
 			body: bodyData
 		};
-		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
+		return this.http.put(this.configService.resourceApiURI + call, bodyData, httpOptions).pipe(catchError(this.handleError));
 	}
 
 	/**
@@ -172,7 +172,7 @@ export class AuthService {
 				'Authorization': token
 			})
 		};
-		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError)).pipe(catchError(this.handleError));
+		return this.http.delete(this.configService.resourceApiURI + call,httpOptions).pipe(catchError(this.handleError));
 	}
 
 	/**
@@ -187,15 +187,24 @@ export class AuthService {
 			if (error.error instanceof ErrorEvent) {
 				console.error("Error Event");
 			} else {
-				console.error(`error status : ${error.status} ${error.statusText}`);
+
 				switch (error.status) {
 					case 401:
+						if (this.manager == undefined){
+							window.location.reload();
+						}
 						this.manager.signinRedirect();
 						break;
 					case 403:
+						if (this.manager == undefined){
+							window.location.reload();
+						}
 						this.manager.signinRedirect();
 						break;
+					case 404:
+						break;
 				}
+				return throwError("No error, but needed throw");
 			}
 		} else {
 			console.error("Shouldn't be here");

@@ -93,7 +93,6 @@ export class ServerDataService {
 	}
 
 	/**
-	 * TODO wait for final version from API
 	 * Adds a user to the user database.
 	 * @param username which is the primary key of the user
 	 * @param name
@@ -169,6 +168,14 @@ export class ServerDataService {
 	 */
 	deleteProject(projectID: number) {
 		return this.authService.removeFromApiWithToken('Project/' + projectID);
+	}
+
+	/**
+	 * Delete a sub task
+	 * @param subTaskId Number to identify the sub task
+	 */
+	deleteSubTask(subTaskId: number) {
+		return this.authService.removeFromApiWithToken('Subtask/' + subTaskId);
 	}
 
 

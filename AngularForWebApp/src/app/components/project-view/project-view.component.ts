@@ -34,7 +34,7 @@ export class ProjectViewComponent implements OnInit {
 	/**
 	 * Initial sub task, show this if this project has no sub tasks.
  	 */
-	private defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
+	public defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
 		"Please create an sub task to show more information", StateOfTask.Running,);
 
 	editor:boolean = false;
@@ -62,17 +62,21 @@ export class ProjectViewComponent implements OnInit {
 					// this.projectState = this.project.state;
 					// load in sub tasks for opened project
 					this.dataService.getSubTasks(this.project.id).subscribe(value => {
-						this.divideSubTasks(ServerDataService.parseSubTasks(value));
+						if (value != undefined){
+							this.divideSubTasks(ServerDataService.parseSubTasks(value));
+						}
 					})
 
 					this.dataService.getUserOfProject(this.project.id).subscribe(res => {
-						users = res;
-						users.forEach(function (user) {
-							updateMember(user['username']);
-							if(user['username'] == username) {
-								isMember(true);
-							}
-						});
+						if (res != undefined) {
+							users = res;
+							users.forEach(function(user) {
+								updateMember(user['username']);
+								if (user['username'] == username) {
+									isMember(true);
+								}
+							});
+						}
 					});
 
 				});
@@ -275,5 +279,45 @@ export class ProjectViewComponent implements OnInit {
 				console.log(this.projectMember);
 			});
 		}
+	}
+
+	/**
+	 * Removes the given sub task from the tasks array.
+	 * @param subTask task to delete
+	 */
+	public removeSubTask(subTask: SubTask) {
+		const state: string = subTask.state.charAt(0).toUpperCase() + subTask.state.slice(1);
+		for (let i in this.tasks[state]){
+			if (subTask.subtaskId === this.tasks[state][i].subtaskId){
+				this.tasks[state].splice(i,1);
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Deletes the sub task.
+	 * @param subTask the id of the sub task, which should be deleted
+	 */
+	deleteSubTask(subTask: SubTask) {
+		this.matDialog.open(ConfirmDialogComponent, {
+			width: '20%',
+			data: { subTaskId: subTask.subtaskId, call: "deleteSubTask" }
+		}).afterClosed().subscribe(()=>{
+				this.removeSubTask(subTask);
+				this.selectFirstSubTask();
+		});
+	}
+
+	private selectFirstSubTask() {
+		for (let category in this.tasks){
+			for (let task of this.tasks[category]){
+				if (task !== null){
+					this.selectSubTask(task);
+					return;
+				}
+			}
+		}
+		this.selectSubTask(this.defaultSubTask);
 	}
 }

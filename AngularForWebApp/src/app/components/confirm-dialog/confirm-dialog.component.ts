@@ -5,8 +5,9 @@ import { ServerDataService } from '../../services/server-data.service';
 import { NgForm } from '@angular/forms';
 
 export interface ConfirmData {
-	user:string
+	user: string;
 	projectId: number;
+	subTaskId: number;
 	call: string;
 }
 
@@ -23,22 +24,21 @@ export class ConfirmDialogComponent{
 	constructor(public dialog: MatDialogRef<ConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: ConfirmData,
 				private auth: AuthService, private dataService: ServerDataService) {
 		if (data.call == "leave"){
-			console.log("confirm leave project",data.projectId);
-			this.dialogTitle = 'Cornfirm Leaving';
+			this.dialogTitle = 'Confirm Leaving';
 			this.dialogMessage = "Do you really want to leave this project?";
 			this.buttonMessage ="Leave";
-		}
-		else if (data.call == "delete"){
-			console.log("confirm deleting project",data.projectId);
+		} else if (data.call == "delete"){
 			this.dialogTitle = "Confirm Deleting";
 			this.dialogMessage = "Do you really want to delete this project?";
 			this.buttonMessage ="Delete";
-		}
-		 else if (data.call == "kick") {
-			console.log("confirm kick member", data.user);
+		} else if (data.call == "kick") {
 			this.dialogTitle = "Confirm Kicking";
 			this.dialogMessage = "Do you really want to kick '" + data.user + "' from this project?";
 			this.buttonMessage = "Kick";
+		} else if (data.call == "deleteSubTask"){
+			this.dialogTitle = "Confirm Delete";
+			this.dialogMessage = "Do you really want to delete this sub task?";
+			this.buttonMessage ="Delete";
 		}
 	 }
 
@@ -48,24 +48,20 @@ export class ConfirmDialogComponent{
 	onSubmit() {
 		if(this.data.call=="leave"){
 			this.dataService.leaveProject(this.data.projectId).subscribe(result => {
-				console.log(result);
 				window.location.href = "/home/def";
 			})
-			console.log("left project Nr.: " + this.data.projectId);
-		}
-		else if(this.data.call =="delete"){
+		} else if(this.data.call =="delete"){
 			this.dataService.deleteProject(this.data.projectId).subscribe(result => {
-				console.log(result);
 				window.location.href = "home/def"
 			})
-			console.log("deleted project Nr.: " + this.data.projectId);
-		}
-
-		else if (this.data.call == "kick") {
+		} else if (this.data.call == "kick") {
 			this.dataService.kickFromProject(this.data.projectId,this.data.user).subscribe(result => {
 				console.log(result);
 			})
-			console.log("kicked from  project: " + this.data.user);
+		} else if (this.data.call == "deleteSubTask") {
+			this.dataService.deleteSubTask(this.data.subTaskId).subscribe(result => {
+				console.log(result);
+			})
 		}
   	}
 

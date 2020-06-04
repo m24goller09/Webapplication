@@ -82,6 +82,11 @@
 				<p class="card-text mx-1 my-3">
 					{{ subTaskToShow.description }}
 				</p>
+				<div *ngIf="subTaskToShow!==defaultSubTask" id="deleteSubTask" class="float-right">
+					<button type="button" class="btn btn-outline-danger float-right mr-1" (click)="deleteSubTask(subTaskToShow)">
+						Delete
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
