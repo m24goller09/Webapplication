@@ -40,7 +40,7 @@
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<label class="dropdown-item" *ngFor="let mem of projectMember">
 								{{mem}}
-								<button *ngIf="owner" type="button" class="close float-right ml-4" aria-label="Close" (click)="kick(mem)" >
+								<button *ngIf="owner || admin" type="button" class="close float-right ml-4" aria-label="Close" (click)="kick(mem)" >
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</label>
@@ -50,7 +50,7 @@
 				<div id="creator">Creator: {{project.creator}}</div>
 				<button  *ngIf="!owner && !member && !editor" class="btn btn-outline-success  my-2 my-sm-0 float-right " type="submit" (click)="joinProject()">Join</button>
 				<button  *ngIf="!owner && member && !editor" class="btn btn-outline-danger  my-2 my-sm-0 float-right " type="submit" (click)="leaveProject()">Leave</button>
-				<button  *ngIf="owner && member && !editor" class="btn btn-outline-danger  my-2 my-sm-0 float-right " type="submit" (click)="deleteProject()">Delete</button>
+				<button  *ngIf="owner && member && !editor || admin && !editor" class="btn btn-outline-danger  my-2 my-sm-0 float-right " type="submit" (click)="deleteProject()">Delete</button>
 			</div>
 		</div>
 	</div>
