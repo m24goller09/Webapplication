@@ -34,7 +34,7 @@ export class ProjectViewComponent implements OnInit {
 	/**
 	 * Initial sub task, show this if this project has no sub tasks.
  	 */
-	public defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "",
+	public defaultSubTask: SubTask = new SubTask(-1,"No sub task to display.", "","",
 		"Please create an sub task to show more information", StateOfTask.Running,);
 
 	editor:boolean = false;
@@ -44,7 +44,7 @@ export class ProjectViewComponent implements OnInit {
 	projectMember:string[] = [];
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,
-				private authService: AuthService, private matDialog: MatDialog) {}
+				public authService: AuthService, private matDialog: MatDialog) {}
 
   	ngOnInit(): void {
 		//provide admin with special rights
@@ -325,5 +325,13 @@ export class ProjectViewComponent implements OnInit {
 			}
 		}
 		this.selectSubTask(this.defaultSubTask);
+	}
+
+	assignSubtask(subTaskToShow: SubTask) {
+		console.log(this.authService.getClaims());
+		if (this.authService.getClaims().email != undefined){
+			subTaskToShow.assigned = this.authService.getClaims().email;
+			this.dataService.editSubTask(subTaskToShow).subscribe();
+		}
 	}
 }

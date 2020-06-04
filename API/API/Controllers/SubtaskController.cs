@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
+    [Authorize(Policy = "ApiReader")]
+    [Authorize(Policy = "Consumer")]
     [Route("Subtask")]
     [ApiController]
     public class SubtaskController : ControllerBase

@@ -2,5 +2,5 @@
 
 ## API
 
-Navigate with your console to `..\Webapplication\API` and run `dotnet run`.
+Navigate with your console to `..\Webapplication\API\API` and run `dotnet run`.
 The API will start on `http://localhost:5050`.
