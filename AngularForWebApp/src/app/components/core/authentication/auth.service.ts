@@ -5,6 +5,7 @@ import { UserManager, User } from 'oidc-client';
 import {BehaviorSubject, throwError} from 'rxjs';
 import { ConfigService } from '../../shared/config.service';
 import {environment} from '../../../../environments/environment';
+import {Router} from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
 	public manager = null;
 	private user: User = null;
 
-	constructor(private http: HttpClient, private configService: ConfigService) {
+	constructor(private http: HttpClient, private configService: ConfigService, private router:Router) {
 		//Creating generic User-Object from manager-class
 		this.manager =  new UserManager(getClientSettings());
 		this.manager.getUser().then(user => {
@@ -188,27 +189,30 @@ export class AuthService {
 			if (error.error instanceof ErrorEvent) {
 				console.error("Error Event");
 			} else {
-
 				switch (error.status) {
+					case 400:
+						return throwError("Bad login data!");
 					case 401:
 						if (this.manager == undefined){
-							//window.location.reload();
+							this.router.navigate(['/register']);
 						}
 						this.manager.signinRedirect();
 						return throwError("Access denied!");
 					case 403:
 						if (this.manager == undefined){
-							window.location.reload();
+							this.router.navigate(['/register']);
 						}
 						this.manager.signinRedirect();
 						break;
 					case 404:
 						break;
 				}
-				return throwError("No error, but needed throw");
+				if (error.status < 500 && error.status >= 400){
+					return throwError("No error, but needed throw");
+				}
 			}
 		} else {
-			console.error("Shouldn't be here");
+			console.error(error);
 		}
 		return throwError(error);
 	};
