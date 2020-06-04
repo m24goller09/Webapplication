@@ -14,12 +14,10 @@ namespace API.Services
 {
     public class SubtaskService : AbstractStandardService<Subtask>
     {
-        private readonly UserRepository userRepository;
         private readonly ProjectRepository projectRepository;
         public SubtaskService(IStandardRepository<Subtask> subtaskRepository, IStandardRepository<User> userRepository, IStandardRepository<Project> projectRepository,
             IUnitOfWork unitOfWork) : base(subtaskRepository, unitOfWork)
         {
-            this.userRepository = (UserRepository)userRepository;
             this.projectRepository = (ProjectRepository)projectRepository;
         }
 

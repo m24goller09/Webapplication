@@ -31,9 +31,6 @@ namespace API.Persistence.Repository
         public async Task<IEnumerable<ProjectAssignment>> ListAsync()
         {
             return await dbContext.ProjectAssignment
-                .Include(d => d.ProjectNavigation) //JOIN
-                .Include(d => d.UsernameNavigation) //JOIN
-                .Include(d => d.Project).ThenInclude(d => d.Subtask) // Multiple JOINS
                 .ToListAsync();
         }
 
@@ -46,7 +43,6 @@ namespace API.Persistence.Repository
         {
             return await dbContext.ProjectAssignment
                 .Where(s => s.Username.Equals(userName))
-                .Include(d => d.ProjectNavigation)
                 .ToListAsync();
         }
 
@@ -54,7 +50,6 @@ namespace API.Persistence.Repository
         {
             return await dbContext.ProjectAssignment
                 .Where(s => s.ProjectId.Equals(projectid))
-                .Include(d => d.UsernameNavigation)
                 .ToListAsync();
         }
     }
