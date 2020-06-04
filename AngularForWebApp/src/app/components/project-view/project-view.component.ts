@@ -77,9 +77,11 @@ export class ProjectViewComponent implements OnInit {
 						if (res != undefined) {
 							users = res;
 							users.forEach(function(user) {
-								updateMember(user['username']);
-								if (user['username'] == username) {
-									isMember(true);
+								if (user != null){
+									updateMember(user['username']);
+									if (user['username'] == username) {
+										isMember(true);
+									}
 								}
 							});
 						}

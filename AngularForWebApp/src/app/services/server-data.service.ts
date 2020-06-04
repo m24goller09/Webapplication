@@ -196,7 +196,9 @@ export class ServerDataService {
 		let projects = [];
 		for (let i in rawProjects){
 			const project = rawProjects[i];
-			projects.push(ServerDataService.parseProject(project));
+			if (project != null){
+				projects.push(ServerDataService.parseProject(project));
+			}
 		}
 		return projects;
 	}

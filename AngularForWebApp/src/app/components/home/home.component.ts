@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit{
 		this.dataService.getProjectOfCurrentUser().pipe(finalize(() => {
 			this.busy = false;
 		})).subscribe(result => {
-			this.projects = ServerDataService.parseProjects(result);
+			if (result != null) {
+				this.projects = ServerDataService.parseProjects(result);
+			}
 		});
 	}
 
