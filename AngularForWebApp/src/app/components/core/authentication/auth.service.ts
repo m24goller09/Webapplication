@@ -208,7 +208,7 @@ export class AuthService {
 						break;
 				}
 				if (error.status < 500 && error.status >= 400){
-					return throwError("No error, but needed throw");
+					return throwError(error.status);
 				}
 			}
 		} else {

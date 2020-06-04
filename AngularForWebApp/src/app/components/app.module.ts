@@ -28,6 +28,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 let routes: Routes;
 routes = [
@@ -99,6 +100,7 @@ routes = [
         MatOptionModule,
         MatSelectModule,
         MatProgressSpinnerModule,
+		MatSnackBarModule,
     ],
   exports:[RouterModule],
   providers: [

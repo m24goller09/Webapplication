@@ -4,6 +4,7 @@ import { AuthService } from '../core/authentication/auth.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Project} from '../../models/Project';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-bar',
@@ -17,7 +18,7 @@ export class MenuBarComponent implements OnInit{
 	email:string;
 	project:Project;
 	private subscription: Subscription;
-	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
+	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router, private snackBar:MatSnackBar) {
 	}
 
 	/**
@@ -59,6 +60,12 @@ export class MenuBarComponent implements OnInit{
 		this.dataService.getProject(+searchID.value).subscribe(result => {
 			this.project = ServerDataService.parseProject(result);
 			window.location.href = "/projectView/" + this.project.id;
-		});
+		},
+		error => {
+			if (error == 404){
+				this.snackBar.open('No project with this id.','',{duration: 2000});
+			}
+		},
+		);
 	}
 }
