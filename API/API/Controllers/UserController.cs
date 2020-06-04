@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
-    [Authorize(Policy = "ApiReader")]
-    [Authorize(Policy = "Consumer")]
     [Route("User")]
     [ApiController]
     public class UserController : ControllerBase
@@ -27,6 +25,8 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize(Policy = "ApiReader")]
+        [Authorize(Policy = "Consumer")]
         [HttpGet("{username}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
