@@ -1,6 +1,6 @@
 <div *ngIf="project!=null" class="project-view">
 	<div class="card mx-3 my-2">
-		<div *ngIf="!editor" class="card-header">
+		<div *ngIf="!editor" class="card-header state-{{ project.state }}">
 			{{project.name}}
 			<button type="button" class="close float-right mr-1" aria-label="Close" [routerLink]="['/home','def']" >
 				<span aria-hidden="true">&times;</span>

@@ -18,7 +18,7 @@
 	min-height: 55vh;
 }
 
-.state-backlog{
+.state-backlog, .state-paused{
 	background: rgba(theme-color(backlogSubTask),0.15);
 }
 

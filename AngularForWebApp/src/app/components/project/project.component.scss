@@ -1,12 +1,36 @@
 @import "../home/home.component.css";
+$pausedProjects: #ffe53c;
+$runningProjects: #0036d9;
+$finishedProjects: #83ff79;
 .card:hover {
 	border-width: 0.15rem;
-	background: rgba(40, 167, 69, 0.1);
 }
 
 .card{
 	border-left-width: 0.15rem;
-	border-left-color: rgba(40, 167, 69, 0.5);
+}
+.running{
+	border-left-color: rgba($runningProjects,0.6);
+}
+
+.paused{
+	border-left-color: rgba($pausedProjects,0.6);
+}
+
+.finished{
+	border-left-color: rgba($finishedProjects,0.6);
+}
+
+.running:hover{
+	background: rgba($runningProjects,0.1);
+}
+
+.paused:hover{
+	background: rgba($pausedProjects,0.1);
+}
+
+.finished:hover{
+	background: rgba($finishedProjects,0.1);
 }
 
 .id {
@@ -27,9 +51,9 @@
 }
 
 a{
-	width:100%;
-	height:100%;
-	display:block;
-	text-decoration: none;
-	color: inherit;
+	width:100% !important;
+	height:100% !important;
+	display:block !important;
+	text-decoration: none !important;
+	color: inherit !important;
 }
