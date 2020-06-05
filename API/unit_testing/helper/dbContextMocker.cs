@@ -76,12 +76,6 @@ namespace unit_testing.helper
                 Assigned = "Chris1"
             });
 
-            //db.SubtaskAssignment.Add(new SubtaskAssignment
-            //{
-            //    Username = "Mario1",
-            //    SubtaskId = 12
-            //});
-
             db.SubtaskState.Add(new SubtaskState
             {
                 State = "running"

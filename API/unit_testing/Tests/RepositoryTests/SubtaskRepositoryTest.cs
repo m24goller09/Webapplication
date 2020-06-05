@@ -14,7 +14,7 @@ namespace unit_testing.Tests
     {
         private dbContext db = null;
         private SubtaskRepository sr = null;
-        public SubtaskRepositoryTest(ref dbContext db, ref SubtaskRepository sr)
+        public SubtaskRepositoryTest(dbContext db, SubtaskRepository sr)
         {
             this.db = db;
             this.sr = sr;

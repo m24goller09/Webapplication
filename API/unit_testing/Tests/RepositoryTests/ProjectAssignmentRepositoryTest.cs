@@ -14,7 +14,7 @@ namespace unit_testing.Tests
     {
         private dbContext db = null;
         private ProjectAssignmentRepository par = null;
-        public ProjectAssignmentRepositoryTest(ref dbContext db, ref ProjectAssignmentRepository par)
+        public ProjectAssignmentRepositoryTest(dbContext db, ProjectAssignmentRepository par)
         {
             this.db = db;
             this.par = par;

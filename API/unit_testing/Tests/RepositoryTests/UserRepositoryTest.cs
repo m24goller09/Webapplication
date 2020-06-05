@@ -14,7 +14,7 @@ namespace unit_testing.Tests
     {
         private dbContext db = null;
         private UserRepository ur = null;
-        public UserRepositoryTest(ref dbContext db, ref UserRepository ur)
+        public UserRepositoryTest(dbContext db, UserRepository ur)
         {
             this.db = db;
             this.ur = ur;

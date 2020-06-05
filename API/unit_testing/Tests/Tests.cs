@@ -27,10 +27,10 @@ namespace unit_testing.Tests
         {
             get
             {
-                yield return new ProjectAssignmentRepositoryTest(ref db, ref par);
-                yield return new ProjectRepositoryTest(ref db, ref pr);
-                yield return new UserRepositoryTest(ref db, ref ur);
-                yield return new SubtaskRepositoryTest(ref db, ref sr);
+                yield return new ProjectAssignmentRepositoryTest(db, par);
+                yield return new ProjectRepositoryTest(db, pr);
+                //yield return new UserRepositoryTest(db, ur);
+                //yield return new SubtaskRepositoryTest(db, sr);
             }
         }
 
@@ -43,6 +43,8 @@ namespace unit_testing.Tests
         [Test, TestCaseSource("RepositoryTestCases")]
         public async Task RepositoryTestCase(ITestCase itc)
         {
+            db.Database.EnsureDeleted();
+            db = dbContextMocker.GetDbContext("TestDB");
             AssertMessage am = await itc.ExecuteTest();
             Assert.IsTrue(am.resBool, am.GetErrorMessage());
         }
