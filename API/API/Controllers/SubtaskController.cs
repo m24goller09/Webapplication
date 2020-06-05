@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
+    [Authorize(Policy = "ApiReader")]
+    [Authorize(Policy = "Consumer")]
     [Route("Subtask")]
     [ApiController]
     public class SubtaskController : ControllerBase
@@ -98,6 +100,25 @@ namespace API.Controllers
                 var dtos = (await subtaskService.GetSubtaskByProjectAsync(projectid))
                                 .Select(mapper.Map<Subtask, SubtaskDTO>);
                 return Ok(dtos);
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+
+        [HttpDelete("{subtaskid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveSubtask(long subtaskid)
+        {
+            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            try
+            {
+                await subtaskService.RemoveSubtask(subtaskid, role, email);
+                return Ok();
             }
             catch (CustomException e)
             {

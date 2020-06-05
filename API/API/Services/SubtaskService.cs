@@ -14,11 +14,11 @@ namespace API.Services
 {
     public class SubtaskService : AbstractStandardService<Subtask>
     {
-        private readonly UserRepository userRepository;
-        public SubtaskService(IStandardRepository<Subtask> subtaskRepository, IStandardRepository<User> userRepository,
+        private readonly ProjectRepository projectRepository;
+        public SubtaskService(IStandardRepository<Subtask> subtaskRepository, IStandardRepository<User> userRepository, IStandardRepository<Project> projectRepository,
             IUnitOfWork unitOfWork) : base(subtaskRepository, unitOfWork)
         {
-            this.userRepository = (UserRepository)userRepository;
+            this.projectRepository = (ProjectRepository)projectRepository;
         }
 
         public override async Task Update(Subtask modelToUpdate)
@@ -40,6 +40,30 @@ namespace API.Services
             {
                 throw new BadRequestException(e.InnerException?.Message, typeof(Subtask).ToString());
             }
+        }
+
+        public async Task RemoveSubtask(long subtaskId, string usrRole, string usrName)
+        {
+            var subtask = await standardRepository.FindByIdAsync(subtaskId);
+            NullCheck(subtask);
+            var project = await projectRepository.FindByIdAsync(subtask.ProjectId);
+            if(project == null)
+            {
+                throw new NotFoundException("Asked object does not exist", typeof(Project).ToString());
+            }
+
+            if(!usrRole.Equals("admin"))
+            {
+                if(!usrName.Equals(subtask.Creator))
+                {
+                    if(!usrName.Equals(project.Manager))
+                    {
+                        throw new UnauthorizedException("no permission", typeof(Subtask).ToString());
+                    }                    
+                }
+            }
+            standardRepository.Remove(subtask);
+            await unitOfWork.CompleteAsync();
         }
 
         public async Task<IEnumerable<Subtask>> GetSubtaskByProjectAsync(long projectid)

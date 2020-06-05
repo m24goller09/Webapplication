@@ -2,5 +2,16 @@
 
 ## API
 
-Navigate with your console to `..\Webapplication\API` and run `dotnet run`.
+Navigate with your console to `..\Webapplication\API\API` and run `dotnet run`.
 The API will start on `http://localhost:5050`.
+
+## Swager Documentation
+
+First you have to set the environment to development. 
+    `Windows: set ASPNETCORE_ENVIRONMENT=Development`
+    `Linux: ASPNETCORE_ENVIRONMENT=Development`
+Then start the API and go to `http://localhost:5050/swagger/index.html`.
+
+In case you want to go back to the production environment:
+    `Windows: set ASPNETCORE_ENVIRONMENT=Production`
+    `Linux: ASPNETCORE_ENVIRONMENT=Production`

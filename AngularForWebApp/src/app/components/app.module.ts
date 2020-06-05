@@ -26,6 +26,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 let routes: Routes;
 routes = [
@@ -79,23 +82,26 @@ routes = [
 	AuthCallbackComponent,
 	AddButtonComponent,
 	CreateSubTaskComponent,
+	ConfirmDialogComponent,
   ],
-	imports: [
-		BrowserModule,
-		RouterModule.forRoot(routes),
-		HttpClientModule,
-		BrowserAnimationsModule,
-		MatDialogModule,
-		FormsModule,
-		ReactiveFormsModule,
-		CoreModule,
-		SharedModule,
-		MatButtonModule,
-		MatInputModule,
-		MatSliderModule,
-		MatOptionModule,
-		MatSelectModule,
-	],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(routes),
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CoreModule,
+        SharedModule,
+        MatButtonModule,
+        MatInputModule,
+        MatSliderModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+		MatSnackBarModule,
+    ],
   exports:[RouterModule],
   providers: [
 	  Title,

@@ -32,15 +32,10 @@ namespace API.Persistence.Repository
         public async Task<IEnumerable<Project>> ListAsync()
         {
             return await dbContext.Project
-                .Include(d => d.Subtask) //JOIN
-                .Include(d => d.ProjectAssignmentNavigation) //JOIN
-                .Include(d => d.ProjectAssignment).ThenInclude(d => d.Project).ThenInclude(d => d.Subtask) // Multiple JOINS
+                .Include(d => d.Subtask)
+                .Include(d => d.ProjectAssignmentNavigation) 
+                .Include(d => d.ProjectAssignment)
                 .ToListAsync();
-        }
-
-        public void Update(Project project)
-        {
-            dbContext.Project.Update(project);
         }
 
         public void Remove(Project project)

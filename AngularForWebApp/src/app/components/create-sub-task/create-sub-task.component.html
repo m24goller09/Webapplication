@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Create an sub task</h1>
+<h1 mat-dialog-title>{{ dialogTitle }}</h1>
 <div mat-dialog-content style="height: 100%;">
 	<form [formGroup]="form" (ngSubmit)="onSubmit()">
 		<p>
@@ -32,7 +32,7 @@
 		</p>
 		<p mat-dialog-actions>
 			<button mat-button type="button" (click)="cancel()">No Thanks</button>
-			<button mat-button type="submit" [disabled]="form.invalid">Add</button>
+			<button mat-button type="submit" [disabled]="form.invalid">Ok</button>
 		</p>
 	</form>
 </div>

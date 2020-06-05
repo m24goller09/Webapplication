@@ -1,8 +1,18 @@
 <div class="card {{ state }} my-2" (click)="selectThisSubTask()">
 	<div class="card-body">
 		<div class="card-title font-weight-bold">
-			<span class="text-info">#{{ subTask.id }} </span>{{ subTask.name }}
+			<span *ngIf="state!='backlog'" class="switch-state float-left" (click)="leftArrow()">
+				<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+					<path d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm3 5.753l-6.44 5.247 6.44 5.263-.678.737-7.322-6 7.335-6 .665.753z"/>
+				</svg>
+			</span>
+			<span *ngIf="state!='finished'" class="switch-state float-right" (click)="rightArrow()">
+				<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+					<path d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm-3 5.753l6.44 5.247-6.44 5.263.678.737 7.322-6-7.335-6-.665.753z"/>
+				</svg>
+			</span>
+			<span class="text-info mx-1">#{{ subTask.subtaskId }} </span>{{ subTask.name }}
 		</div>
-		<p class="card-subtitle">{{ subTask.creator }}</p>
+		<p class="card-subtitle text-muted">A: {{ subTask.assigned }}</p>
 	</div>
 </div>

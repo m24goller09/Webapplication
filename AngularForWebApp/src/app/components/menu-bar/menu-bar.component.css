@@ -7,7 +7,7 @@ a:hover {
 }
 
 #profileDrop:hover{
-	cursor: pointer;
+	cursor: default;
 }
 
 #profileHeader {
@@ -15,7 +15,7 @@ a:hover {
     color: white;
 }
 
-#profileElement {
+#email,#name {
     font-size: smaller;
     color: lightgrey;
 }

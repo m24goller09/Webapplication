@@ -16,7 +16,6 @@ namespace API.Controllers
 {
     [Authorize(Policy = "ApiReader")]
     [Authorize(Policy = "Consumer")]
-    //[Authorize(Policy = "Admin")]
     [Route("Project")]
     [ApiController]
     
@@ -108,7 +107,6 @@ namespace API.Controllers
             }
         }
 
-
         [HttpPost]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -145,5 +143,43 @@ namespace API.Controllers
             }
         }
 
+        [HttpDelete("{projectid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveProject(long projectid)
+        {
+            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            var usrName = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            try
+            {
+                await projectService.RemoveProject(projectid, role, usrName);
+                return Ok();
+            }
+            catch(CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+        
+        [HttpDelete("leaveProject/{projectid}/{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> LeaveProject(long projectid, string username)
+        {
+            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            var usrName = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            try
+            {
+                await projectService.LeaveProject(projectid, username, role, usrName);
+                return Ok();
+            }
+            catch(CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+        
     }
 }

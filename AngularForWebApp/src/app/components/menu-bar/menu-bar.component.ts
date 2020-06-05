@@ -3,6 +3,8 @@ import { ServerDataService } from '../../services/server-data.service';
 import { AuthService } from '../core/authentication/auth.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {Project} from '../../models/Project';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-bar',
@@ -14,27 +16,30 @@ export class MenuBarComponent implements OnInit{
 	allowed:boolean;
 	userName:string;
 	email:string;
+	project:Project;
 	private subscription: Subscription;
-	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router) {
+	constructor(private dataService:ServerDataService, private authService:AuthService,private router:Router, private snackBar:MatSnackBar) {
 	}
 
+	/**
+	 * sets 'allowed' boolean to the current AuthStatus value to toggle between different appearence-modes
+	 */
 	ngOnInit(): void {
 		this.subscription = this.authService.authNavStatus$.subscribe(status => {
 			this.allowed = status
 			this.email = this.authService.getClaims()['email'];
 			this.userName = this.authService.getClaims()['name'];
-			this.profileTest()
 		});
 	}
 
 	async signout() {
 		try{
 			console.log('Signout');
-			await this.authService.signout();
+			await this.authService.signOut();
 			await this.router.navigate(['']);
 		}
 		catch(er){
-			console.log(er);
+			console.error(er);
 		}
 	}
 
@@ -45,7 +50,27 @@ export class MenuBarComponent implements OnInit{
 			console.log(r)
 		});
 	}
-	profileTest(){
-		console.log(this.authService.getClaims());
+
+	/**
+	 * search and open a project by its projectID.\
+	 * initiates GET-Request in services
+	 */
+	findProject(){
+		let searchID = document.getElementById('searchID') as HTMLInputElement;
+
+		if (isNaN(Number(searchID.value)) || Number(searchID.value) === 0){
+			this.snackBar.open('Please enter only numbers and not 0.','',{duration: 2000});
+			return;
+		}
+		this.dataService.getProject(+searchID.value).subscribe(result => {
+			this.project = ServerDataService.parseProject(result);
+			window.location.href = "/projectView/" + this.project.id;
+		},
+		error => {
+			if (error == 404){
+				this.snackBar.open('No project with this id.','',{duration: 2000});
+			}
+		},
+		);
 	}
 }

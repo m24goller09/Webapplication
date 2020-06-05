@@ -1,7 +1,7 @@
-<div *ngIf="state===project.state || state===null" class="card p-2">
+<div *ngIf="(state===project.state || state===null)" class="card p-2 flex-element {{ project.state }}">
 	<a [routerLink]="['/projectView',project.id]" routerLinkActive="router-link-active">
 	<div class="card-body">
-		<h5 class="card-title">{{project.name}} </h5>
+		<h5 class="card-title">{{project.name}}</h5>
 		<div class="projectCreator border-top my-1">{{project.creator}}</div>
 		<p class="card-text">
 			{{project.description}}

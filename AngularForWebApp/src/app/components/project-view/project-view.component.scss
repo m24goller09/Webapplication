@@ -14,20 +14,47 @@
 	float: right;
 }
 
-/*
-	The following classes are for the background of the sub task info
-	0 = backlog task
-	1 = running task
-	2 = finished task
-*/
-.state-0{
+.subTask{
+	min-height: 55vh;
+}
+
+.state-backlog, .state-paused{
 	background: rgba(theme-color(backlogSubTask),0.15);
 }
 
-.state-1{
+.state-running{
 	background: rgba(theme-color(runningSubTask),0.15);
 }
 
-.state-2{
+.state-finished{
 	background: rgba(theme-color(finishedSubTask),0.15);
+}
+
+
+.edit-button{
+	height:1.1rem;
+	opacity:0.7 ;
+	-webkit-opacity:0.7;
+	-moz-opacity:0.7 !important;
+	-o-opacity:0.7 !important;
+	-ms-opacity:0.7 !important;
+	}
+
+.edit-button:hover{
+	cursor:pointer;
+	opacity:1;
+	-webkit-opacity:1;
+	-moz-opacity:1 !important;
+	-o-opacity:1 !important;
+	-ms-opacity:1 !important;
+	}
+
+
+.state-select{
+	max-width: 10%;
+	min-width: 3rem;
+}
+
+.member-list{
+	padding-left: 0 !important;
 }

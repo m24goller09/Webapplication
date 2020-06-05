@@ -16,11 +16,15 @@ export class HomeComponent implements OnInit{
 	projects:Project[];
 	filter:string = 'def';
 	busy: boolean;
+	loggedIn: boolean;
 
 	constructor( private dataService: ServerDataService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
 
 	changeRunning(running:StateOfProject) {
 		this.dataService.changeRunning(running);
+		this.authService.authNavStatus$.subscribe(value => {
+			this.loggedIn = value;
+		})
 	}
 
     ngOnInit(): void {
@@ -33,7 +37,9 @@ export class HomeComponent implements OnInit{
 		this.dataService.getProjectOfCurrentUser().pipe(finalize(() => {
 			this.busy = false;
 		})).subscribe(result => {
-			this.projects = ServerDataService.parseProjects(result);
+			if (result != null) {
+				this.projects = ServerDataService.parseProjects(result);
+			}
 		});
 	}
 

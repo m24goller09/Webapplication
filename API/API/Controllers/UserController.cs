@@ -25,6 +25,8 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize(Policy = "ApiReader")]
+        [Authorize(Policy = "Consumer")]
         [HttpGet("{username}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

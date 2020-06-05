@@ -4,23 +4,28 @@
 	cursor: pointer;
 }
 
-.task-backlog{
+.backlog{
 	background-color: rgba(theme-color(backlogSubTask),0.15);
 }
-.task-backlog:hover{
+.backlog:hover{
 	background-color: rgba(theme-color(backlogSubTask),0.45);
 }
 
-.task-running{
+.running{
 	background-color: rgba(theme-color(runningSubTask),0.15);
 }
-.task-running:hover{
+.running:hover{
 	background-color: rgba(theme-color(runningSubTask),0.45);
 }
 
-.task-finished{
+.finished{
 	background-color: rgba(theme-color(finishedSubTask),0.15);
 }
-.task-finished:hover{
+.finished:hover{
 	background-color: rgba(theme-color(finishedSubTask),0.45);
+}
+
+.stateArrow{
+	height: .5rem;
+	width: .5rem;
 }

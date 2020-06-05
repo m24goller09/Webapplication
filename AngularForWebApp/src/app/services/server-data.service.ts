@@ -7,6 +7,7 @@ import {StateOfTask} from '../models/StateOfTask';
 import {StateOfProject} from '../models/StateOfProject';
 import {environment} from '../../environments/environment';
 import {AuthService} from '../components/core/authentication/auth.service';
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,9 @@ export class ServerDataService {
 		return this.authService.getFromApiWithToken("Project/");
 	}
 
+	/**
+	 * Get all projects of current user
+	 */
 	getProjectOfCurrentUser(){
 		return this.authService.getFromApiWithToken("Project/ByUser/" + this.authService.userName);
 	}
@@ -50,7 +54,16 @@ export class ServerDataService {
 	 */
 	getSubTasks(idOfProject:number){
 		return this.authService.getFromApiWithToken("SubTask/ByProject/"+idOfProject);
-  	}
+	}
+
+	/**
+ 	* Returns all Members of the specified project, by the id.
+ 	* @param idOfProject which specifies the project
+ 	*/
+	getUserOfProject(idOfProject:number){
+		return this.authService.getFromApiWithToken('Project/'+idOfProject+'/ListUser');
+	}
+
 
 	/*
    	 * all posts
@@ -80,7 +93,6 @@ export class ServerDataService {
 	}
 
 	/**
-	 * TODO wait for final version from API
 	 * Adds a user to the user database.
 	 * @param username which is the primary key of the user
 	 * @param name
@@ -94,6 +106,79 @@ export class ServerDataService {
 			console.log(value);
 		});
 	}
+
+	/**
+	 * Join an existing Project via ProjectID
+	 * @param projectID
+	 */
+	joinProject(projectID:number){
+		return this.authService.postToApiWithTokenNoBody('Project/'+projectID+'/AddUser/'+this.authService.userName).subscribe(value => (console.log(value)));
+	}
+
+	/*
+   	 * all puts
+	 */
+	/**
+	 * Edits an existing project with a put-request.
+	 * @param id Number to identify the project
+	 * @param name name of the project to add
+	 * @param description description of the project to add
+	 * @param state state of running project
+	 */
+
+	editProject(id:number,name:string,description:string,state:string){
+		let project:Object = {
+			"projectID": id,
+			"name": name,
+			"description": description,
+			"manager": this.authService.userName,
+			"state" : state
+		}
+		return this.authService.putToApiWithToken('Project/',project);
+	}
+
+	/**
+	 * Edits an existing sub task with a put-request.
+	 * @param subTask The sub task object, which is already changed.
+	 */
+	editSubTask(subTask: SubTask){
+		let parameter: string = JSON.stringify(subTask);
+		return this.authService.putToApiWithToken('Subtask/', parameter);
+	}
+
+	/**
+	 * Deleting a projectID -> userID assignment
+	 * @param projectID Number to identify the project
+	 */
+	leaveProject(projectID: number) {
+		return this.authService.removeFromApiWithToken('Project/leaveProject/' + projectID + "/" + this.authService.userName);
+	}
+
+	/**
+	 * Deleting a projectID -> userID assignment for a user who is not yourself
+	 * @param projectID Number to identify the project
+	 */
+	kickFromProject(projectID: number,user:string) {
+		return this.authService.removeFromApiWithToken('Project/leaveProject/' + projectID + "/" + user);
+	}
+
+	/**
+	 * Deleting a project
+	 * @param projectID Number to identify the project
+	 */
+	deleteProject(projectID: number) {
+		return this.authService.removeFromApiWithToken('Project/' + projectID);
+	}
+
+	/**
+	 * Delete a sub task
+	 * @param subTaskId Number to identify the sub task
+	 */
+	deleteSubTask(subTaskId: number) {
+		return this.authService.removeFromApiWithToken('Subtask/' + subTaskId);
+	}
+
+
 	/**
 	 * changes the running attribute which is used to clarify which type of projects to show in the home view.
 	 * @param running
@@ -111,7 +196,9 @@ export class ServerDataService {
 		let projects = [];
 		for (let i in rawProjects){
 			const project = rawProjects[i];
-			projects.push(ServerDataService.parseProject(project));
+			if (project != null){
+				projects.push(ServerDataService.parseProject(project));
+			}
 		}
 		return projects;
 	}
@@ -142,6 +229,6 @@ export class ServerDataService {
 	 * @param subTask the json object to parse
 	 */
 	static parseSubTask(subTask:any){
-		return new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.description,subTask.state);
+		return new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.assigned,subTask.description,subTask.state);
 	}
 }

@@ -92,6 +92,55 @@ namespace API.Services
             }
         }
 
+        public async Task RemoveProject(long projectId, string usrRole, string usrName)
+        {
+            var project = await standardRepository.FindByIdAsync(projectId);
+            NullCheck(project);
+
+            if(!usrRole.Equals("admin"))
+            {
+                if(!usrName.Equals(project.Manager))
+                {
+                    throw new UnauthorizedException("no permission", typeof(Project).ToString());
+                }
+            }
+            standardRepository.Remove(project);
+            await unitOfWork.CompleteAsync();
+        }
+
+        public async Task LeaveProject(long projectId, string usrToDelete, string usrRole, string usrName)
+        {
+            var projects = await projectAssignmentRepository.ListAsyncByProject(projectId);
+            ProjectAssignment result = null;
+            foreach(ProjectAssignment proj in projects)
+            {
+                if(proj.Username.Equals(usrToDelete))
+                {
+                    result = proj;
+                    break;
+                }
+            }
+            if(result == null)
+            {
+                throw new NotFoundException("asked assignment does not exist", typeof(ProjectAssignment).ToString());
+            }
+            var project = await standardRepository.FindByIdAsync(result.ProjectId);
+            NullCheck(project);
+
+            if(!usrRole.Equals("admin"))
+            {
+                if(!usrName.Equals(usrToDelete))
+                {
+                    if(!usrName.Equals(project.Manager))
+                    {
+                        throw new UnauthorizedException("no permission", typeof(Project).ToString());
+                    }
+                }
+            }
+            projectAssignmentRepository.Remove(result);
+            await unitOfWork.CompleteAsync();
+        }
+
         public async Task AddUser(long projectid, string userName)
         {
             // Check if project exists
