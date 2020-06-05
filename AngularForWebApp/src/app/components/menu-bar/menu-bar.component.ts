@@ -62,7 +62,7 @@ export class MenuBarComponent implements OnInit{
 			window.location.href = "/projectView/" + this.project.id;
 		},
 		error => {
-			if (error == 404){
+			if (error == 404 || error == 400){
 				this.snackBar.open('No project with this id.','',{duration: 2000});
 			}
 		},

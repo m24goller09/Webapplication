@@ -111,11 +111,12 @@ export class ProjectViewComponent implements OnInit {
 
 	/**
 	 * Adds sub task to arrays and selects this task.
-	 * @param task The task to add and select.
+	 * @param subTask The task to add and select.
 	 */
-	addNewSubTask(task: SubTask){
-		this.insertIntoArray(task);
-  		this.selectSubTask(task);
+	addNewSubTask(subTask: any){
+		const newTask:SubTask = new SubTask(subTask.subtaskId,subTask.name,subTask.creator,subTask.assigned,subTask.description,subTask.state);
+		this.insertIntoArray(newTask);
+  		this.selectSubTask(newTask);
 	}
 
 	/**

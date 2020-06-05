@@ -60,7 +60,7 @@
 			<div class="card-header">
 				{{ task.key }}
 				<span class="add-button-container">
-					<app-add-button [state]="task.key.toString().toLowerCase()" [projectId]="project.id"
+					<app-add-button *ngIf="member" [state]="task.key.toString().toLowerCase()" [projectId]="project.id"
 									(createdSubTask)="addNewSubTask($event)"></app-add-button>
 				</span>
 			</div>
