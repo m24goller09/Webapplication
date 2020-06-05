@@ -38,11 +38,17 @@ namespace unit_testing.helper
                 Username = "Mario1",
                 Name = "Mario"
             });
+
+            db.User.Add(new User
+            {
+                Username = "Jonas1",
+                Name = "Jonas"
+            });
             
             db.Project.Add(new Project
             {
                 ProjectId = 1,
-                Name = "Chirs1",
+                Name = "test project",
                 Description = "testing",
                 Manager = "Nils1",
                 State = "running"
@@ -50,8 +56,8 @@ namespace unit_testing.helper
 
             db.ProjectAssignment.Add(new ProjectAssignment
             {
-                Username = "Nils1",
-                ProjectId = 2
+                Username = "Mario1",
+                ProjectId = 1
             });
 
             db.ProjectState.Add(new ProjectState
@@ -62,12 +68,12 @@ namespace unit_testing.helper
             db.Subtask.Add(new Subtask
             {
                 SubtaskId = 12,
-                Name = "Chris1",
+                Name = "test subtask",
                 Description = "testing",
-                ProjectId = 13,
-                State = "finished",
+                ProjectId = 1,
+                State = "running",
                 Creator = "Nils1",
-                Assigned = "Mario1"
+                Assigned = "Chris1"
             });
 
             //db.SubtaskAssignment.Add(new SubtaskAssignment

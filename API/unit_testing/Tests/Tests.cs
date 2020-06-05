@@ -17,35 +17,34 @@ namespace unit_testing.Tests
     public class Tests
     {
         static dbContext db = dbContextMocker.GetDbContext("TestDB");
-        static ProjectRepository pr;
-        static ProjectAssignmentRepository par;
-        static UserRepository ur;
-        static SubtaskRepository sr;
-        static UnitOfWork uow;
-        static ProjectService ps{ get; set; }
+        static ProjectRepository pr = new ProjectRepository(db);
+        static ProjectAssignmentRepository par = new ProjectAssignmentRepository(db);
+        static UserRepository ur = new UserRepository(db);
+        static SubtaskRepository sr = new SubtaskRepository(db);
+        static UnitOfWork uow = new UnitOfWork(db);
+        static ProjectService ps = new ProjectService(pr, par, uow);
+        public static IEnumerable<ITestCase> RepositoryTestCases
+        {
+            get
+            {
+                yield return new ProjectAssignmentRepositoryTest(ref db, ref par);
+                yield return new ProjectRepositoryTest(ref db, ref pr);
+                yield return new UserRepositoryTest(ref db, ref ur);
+                yield return new SubtaskRepositoryTest(ref db, ref sr);
+            }
+        }
 
         [SetUp]
         public void Setup()
         {
-            pr = new ProjectRepository(db);
-            par = new ProjectAssignmentRepository(db);
-            ur = new UserRepository(db);
-            sr = new SubtaskRepository(db);
-            uow = new UnitOfWork(db);
-            ps = new ProjectService(pr, par, uow);
+
         }
 
-        [Test]
-        public async Task ProjectAssignmentRepositoryTest()
+        [Test, TestCaseSource("RepositoryTestCases")]
+        public async Task RepositoryTestCase(ITestCase itc)
         {
-            ProjectAssignment pa = new ProjectAssignment();
-            pa.Username = "Mario1";
-            pa.ProjectId = 1234;
-            await par.AddAsync(pa);
-            ProjectAssignment pa2 = await par.FindByIdAsync(1234);
-
-            bool res = pa2 != null;
-            Assert.IsTrue(res, "ProjectAssignment is not in database!");
+            AssertMessage am = await itc.ExecuteTest();
+            Assert.IsTrue(am.resBool, am.GetErrorMessage());
         }
 
         [TearDown]
