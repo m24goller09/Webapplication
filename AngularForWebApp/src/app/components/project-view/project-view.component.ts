@@ -42,6 +42,7 @@ export class ProjectViewComponent implements OnInit {
 	admin:boolean = false;
 	member:boolean = false;
 	projectMember:string[] = [];
+	currentUser: string = null;
 
   	constructor(private route: ActivatedRoute, private dataService: ServerDataService,
 				public authService: AuthService, private matDialog: MatDialog) {}
@@ -72,7 +73,7 @@ export class ProjectViewComponent implements OnInit {
 							this.divideSubTasks(ServerDataService.parseSubTasks(value));
 						}
 					})
-
+					this.currentUser = this.authService.getClaims().email;
 					this.dataService.getUserOfProject(this.project.id).subscribe(res => {
 						if (res != undefined) {
 							users = res;
@@ -285,7 +286,7 @@ export class ProjectViewComponent implements OnInit {
 				data: { user:member, projectId: this.project.id, call: "kick" }
 			}).afterClosed().subscribe(res => {
 				this.projectMember = this.projectMember.filter(f => f !== member)
-				console.log(this.projectMember);
+				window.location.reload();
 			});
 		}
 	}
@@ -331,10 +332,14 @@ export class ProjectViewComponent implements OnInit {
 	}
 
 	assignSubtask(subTaskToShow: SubTask) {
-		console.log(this.authService.getClaims());
-		if (this.authService.getClaims().email != undefined){
-			subTaskToShow.assigned = this.authService.getClaims().email;
+		if (this.currentUser!= undefined){
+			subTaskToShow.assigned = this.currentUser;
 			this.dataService.editSubTask(subTaskToShow).subscribe();
 		}
+	}
+
+	assignSubtaskToNoOne(subTaskToShow: SubTask) {
+		subTaskToShow.assigned = null;
+		this.dataService.editSubTask(subTaskToShow).subscribe();
 	}
 }

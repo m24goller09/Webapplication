@@ -57,12 +57,17 @@ export class MenuBarComponent implements OnInit{
 	 */
 	findProject(){
 		let searchID = document.getElementById('searchID') as HTMLInputElement;
+
+		if (isNaN(Number(searchID.value)) || Number(searchID.value) === 0){
+			this.snackBar.open('Please enter only numbers and not 0.','',{duration: 2000});
+			return;
+		}
 		this.dataService.getProject(+searchID.value).subscribe(result => {
 			this.project = ServerDataService.parseProject(result);
 			window.location.href = "/projectView/" + this.project.id;
 		},
 		error => {
-			if (error == 404 || error == 400){
+			if (error == 404){
 				this.snackBar.open('No project with this id.','',{duration: 2000});
 			}
 		},
