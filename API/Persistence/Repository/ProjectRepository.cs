@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API.Persistence.Context;
@@ -18,29 +16,38 @@ namespace API.Persistence.Repository
             this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(Project project)
+        #region List-Methods
+        // List all projects
+        public async Task<IEnumerable<Project>> ListAsync()
         {
-            await dbContext.Project.AddAsync(project);
+            return await dbContext.Project
+                .Include(d => d.Subtask)
+                .Include(d => d.ProjectAssignmentNavigation)
+                .Include(d => d.ProjectAssignment)
+                .ToListAsync();
         }
 
+
+        // Find project by id
         public async Task<Project> FindByIdAsync(dynamic id)
         {
             // Check if project is found will be made in the service class.
             return await dbContext.Project.FindAsync(id);
         }
+        #endregion List-Methods
 
-        public async Task<IEnumerable<Project>> ListAsync()
+        #region Add-Methods
+        public async Task AddAsync(Project project)
         {
-            return await dbContext.Project
-                .Include(d => d.Subtask)
-                .Include(d => d.ProjectAssignmentNavigation) 
-                .Include(d => d.ProjectAssignment)
-                .ToListAsync();
+            await dbContext.Project.AddAsync(project);
         }
+        #endregion Add-Methods
 
+        #region Delete-Methods
         public void Remove(Project project)
         {
             dbContext.Project.Remove(project);
         }
+        #endregion Delete-Methods
     }
 }

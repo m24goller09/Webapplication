@@ -29,8 +29,9 @@ namespace API.Controllers
             this.projectService =  (ProjectService) projectService;
             this.mapper = mapper;
         }
-        
-        [HttpGet]  
+
+        #region Get-Methods
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
@@ -55,23 +56,6 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
-
-        [HttpPost("{projectid}/AddUser/{userName}")]
-        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AddUser(long projectid, string userName)
-        {
-            try {
-                await projectService.AddUser(projectid, userName);
-                return Ok();
-            }
-            catch (CustomException e)
-            {
-                return e.GetActionResult();
-            }
-        }
-
 
         [HttpGet("ByUser/{userName}")]
         [ProducesResponseType(typeof(IEnumerable<ProjectDTO>), StatusCodes.Status200OK)]
@@ -106,6 +90,24 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Get-Methods
+
+        #region Post-Methods
+        [HttpPost("{projectid}/AddUser/{userName}")]
+        [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddUser(long projectid, string userName)
+        {
+            try {
+                await projectService.AddUser(projectid, userName);
+                return Ok();
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }        
 
         [HttpPost]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
@@ -125,7 +127,9 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Post-Methods
 
+        #region Put-Methods
         [HttpPut]
         [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -142,7 +146,9 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Put-Methods
 
+        #region Delete-Methods
         [HttpDelete("{projectid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -180,6 +186,6 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
-        
+        #endregion Delete-Methods
     }
 }

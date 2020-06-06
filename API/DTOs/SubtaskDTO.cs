@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
@@ -17,7 +13,9 @@ namespace API.DTOs
         public long ProjectId { get; set; }
         [Required]
         public string State { get; set; }
+        // Not Required, is allowed to be NULL
         public string Creator { get; set; }
+        // Not Required, is allowed to be NULL
         public string Assigned { get; set; }
     }
 }

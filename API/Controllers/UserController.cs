@@ -25,6 +25,7 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        #region Get-Methods
         [Authorize(Policy = "ApiReader")]
         [Authorize(Policy = "Consumer")]
         [HttpGet("{username}")]
@@ -43,7 +44,9 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Get-Methods
 
+        #region Post-Methods
         [HttpPost]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -61,5 +64,6 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Post-Methods
     }
 }

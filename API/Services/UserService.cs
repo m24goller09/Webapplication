@@ -17,10 +17,12 @@ namespace API.Services
 
         }
 
+        #region Update-Methods
         public override Task Update(User modelToUpdate)
         {
             // is never called.. 
             throw new NotImplementedException();
         }
+        #endregion Update-Methods
     }
 }

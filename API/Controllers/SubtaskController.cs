@@ -29,6 +29,7 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        #region Get-Methods
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SubtaskDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
@@ -54,6 +55,25 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("ByProject/{projectid}")]
+        [ProducesResponseType(typeof(IEnumerable<SubtaskDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetSubtasksByProject(long projectid)
+        {
+            try
+            {
+                var dtos = (await subtaskService.GetSubtaskByProjectAsync(projectid))
+                                .Select(mapper.Map<Subtask, SubtaskDTO>);
+                return Ok(dtos);
+            }
+            catch (CustomException e)
+            {
+                return e.GetActionResult();
+            }
+        }
+        #endregion Get-Methods
+
+        #region Post-Methods
         [HttpPost]
         [ProducesResponseType(typeof(SubtaskDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -72,7 +92,9 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Post-Methods
 
+        #region Put-Methods
         [HttpPut]
         [ProducesResponseType(typeof(SubtaskDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -89,24 +111,9 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Put-Methods
 
-        [HttpGet("ByProject/{projectid}")]
-        [ProducesResponseType(typeof(IEnumerable<SubtaskDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetSubtasksByProject(long projectid)
-        {
-            try
-            {
-                var dtos = (await subtaskService.GetSubtaskByProjectAsync(projectid))
-                                .Select(mapper.Map<Subtask, SubtaskDTO>);
-                return Ok(dtos);
-            }
-            catch (CustomException e)
-            {
-                return e.GetActionResult();
-            }
-        }
-
+        #region Delete-Methods
         [HttpDelete("{subtaskid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -125,5 +132,6 @@ namespace API.Controllers
                 return e.GetActionResult();
             }
         }
+        #endregion Delete-Methods
     }
 }

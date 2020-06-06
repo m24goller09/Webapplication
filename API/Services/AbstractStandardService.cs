@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +20,27 @@ namespace API.Services
             this.unitOfWork = unitOfWork;
         }
 
+        #region List-Methods
+        // List all models
+        public virtual async Task<IEnumerable<Model>> ListAsync()
+        {
+            return await standardRepository.ListAsync();
+        }
+
+        // Find model by string-id
+        public virtual async Task<Model> FindByIdAsync(string id)
+        {
+            return NullCheck(await standardRepository.FindByIdAsync(id));
+        }
+
+        // Find model by long-id
+        public virtual async Task<Model> FindByIdAsync(long id)
+        {
+            return NullCheck(await standardRepository.FindByIdAsync(id));
+        }
+        #endregion List-Methods
+
+        #region Add-Methods
         public virtual async Task<Model> AddAsync(Model modelToAdd)
         {
             try
@@ -29,23 +48,20 @@ namespace API.Services
                 await standardRepository.AddAsync(modelToAdd);
                 await unitOfWork.CompleteAsync();
             }
-            catch(DbUpdateException e)
+            catch (DbUpdateException e)
             {
+                // Return a bad request if insert fails
                 throw new BadRequestException(e.InnerException?.Message, typeof(Model).ToString());
             }
             return modelToAdd;
         }
+        #endregion Add-Methods
 
-        public virtual async Task<Model> FindByIdAsync(string id)
-        {
-            return NullCheck(await standardRepository.FindByIdAsync(id));
-        }
+        #region Update-Methods
+        public abstract Task Update(Model modelToUpdate);
+        #endregion Update-Methods
 
-        public virtual async Task<Model> FindByIdAsync(long id)
-        {
-            return NullCheck(await standardRepository.FindByIdAsync(id));
-        }
-
+        #region Helper-Methods
         protected Model NullCheck(Model model)
         {
             if (model == null)
@@ -54,12 +70,6 @@ namespace API.Services
             }
             return model;
         }
-
-        public virtual async Task<IEnumerable<Model>> ListAsync()
-        {
-            return await standardRepository.ListAsync();
-        }
-
-        public abstract Task Update(Model modelToUpdate);
+        #endregion Helper-Methods
     }
 }
