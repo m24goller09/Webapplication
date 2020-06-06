@@ -2,7 +2,7 @@
 
 ## IdentityServer Server
 
-Navigate with your console to `..\Webapplication\AuthServer\AuthServer` and run `dotnet run`.
+Navigate with your console to `..\Webapplication\AuthServer\AuthServer` and run `dotnet run`.<br/>
 The IdentityServer will start on `http://localhost:5000`.
 
 ## IdentityServer Users
