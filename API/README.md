@@ -2,7 +2,7 @@
 
 ## API
 
-Navigate with your console to `..\Webapplication\API\API` and run `dotnet run`.<br/>
+Navigate with your console to `..\Webapplication\API` and run `dotnet run`.<br/>
 The API will start on `http://localhost:5050`.<br/>
 
 ## Swager Documentation
